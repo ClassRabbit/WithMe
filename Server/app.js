@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var fcm = require('./routes/fcm');
 
 var app = express();
 
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/fcm', fcm);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -55,6 +57,27 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
+
+// var FCM = require('fcm').FCM;
+// var apiKey = '프로젝트가 같다면 기존 GCM API 코드 쓰면 됨';
+// var fcm = new FCM(apiKey);
+// var message = {
+//   registration_id: '단말기 토큰값', // required
+//   collapse_key: 'Collapse key',
+//   data1: 'this is data1 war !',
+//   data2: 'this is data2 war !'
+// };
+//
+// fcm.send(message, function(err, messageId) {
+//   if (err) {
+//     console.log("Something has gone wrong!");
+//   }
+//   else {
+//     console.log("Sent with message ID: ", messageId);
+//   }
+// });
 
 
 module.exports = app;

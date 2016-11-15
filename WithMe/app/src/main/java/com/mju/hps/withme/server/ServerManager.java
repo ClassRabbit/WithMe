@@ -49,7 +49,7 @@ public class ServerManager {
     }
 
     public String post(String url, String json) {
-        Log.i("ServerManager.post", "post(" + url + ")");
+        Log.i("ServerManager.post", "post(" + url + ", "  +  json + ")");
         try {
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder()

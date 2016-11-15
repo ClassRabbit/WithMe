@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "593806306300",
+    "firebase_url": "https://withme-149614.firebaseio.com",
+    "project_id": "withme-149614",
+    "storage_bucket": "withme-149614.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593806306300:android:58fb00022f0cdd4d",
+        "android_client_info": {
+          "package_name": "com.mju.hps.withme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593806306300-g0mrl3lt3aj53e2rm2udeml53mfc3i54.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6tgpeqkyv8pRChOS_hBPw7GZ2mPb2UF8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
