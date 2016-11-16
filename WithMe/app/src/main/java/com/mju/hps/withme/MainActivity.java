@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testAction(View view) {
-        token = "{est:'" + FirebaseInstanceId.getInstance().getToken() + "'}";
+        token = "{\"token\":\"" + FirebaseInstanceId.getInstance().getToken() + "\"}";
         Log.e("token", "token: " + token);
         new Thread() {
             public void run() {
