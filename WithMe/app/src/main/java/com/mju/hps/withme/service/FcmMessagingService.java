@@ -1,4 +1,4 @@
-package com.mju.hps.withme;
+package com.mju.hps.withme.service;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,14 +13,16 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.mju.hps.withme.MainActivity;
+import com.mju.hps.withme.R;
 
 import java.util.Map;
 
 /**
- * Created by MinChan on 2016-11-16.
+ * Created by KMC on 2016. 11. 16..
  */
 
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
+public class FcmMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage message) {
         Log.i("MessagingService", "onMessageReceived");
@@ -33,6 +35,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
+    //푸쉬 알람 생성 함수
     private void sendPushNotification(String message) {
         Log.e("noti", message);
         Intent intent = new Intent(this, MainActivity.class);
@@ -46,7 +49,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher) )
                 .setContentTitle("Push Title ")
                 .setContentText(message)
-//                .setAutoCancel(true)
+                .setAutoCancel(true)
                 .setSound(defaultSoundUri).setLights(000000255,500,2000)
                 .setContentIntent(pendingIntent);
 

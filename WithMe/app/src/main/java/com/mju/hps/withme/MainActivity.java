@@ -10,6 +10,8 @@ import android.widget.Button;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.server.ServerManager;
+import com.mju.hps.withme.service.FcmInstanceIdService;
+import com.mju.hps.withme.service.FcmMessagingService;
 
 public class MainActivity extends AppCompatActivity {
     ServerManager serverManager;
@@ -21,12 +23,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         button = (Button)findViewById(R.id.button);
-        Intent intent = new Intent(this, MyFirebaseInstanceIDService.class);
+        Intent intent = new Intent(this, FcmMessagingService.class);
         startService(intent);
-        Intent intent2 = new Intent(this, MyFirebaseMessagingService.class);
+        Intent intent2 = new Intent(this, FcmInstanceIdService.class);
         startService(intent2);
-        token = FirebaseInstanceId.getInstance().getToken();
-        Log.e("token", "token: " + token);
+
 
 
         serverManager = ServerManager.getInstance();
@@ -34,12 +35,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void testAction(View view) {
+        token = "{est:'" + FirebaseInstanceId.getInstance().getToken() + "'}";
+        Log.e("token", "token: " + token);
         new Thread() {
             public void run() {
-//                String result = serverManager.get(Constants.SERVER_URL + "/test");
-//                Log.e("result", result);
+//                String result = serverManager.get(Constants.SERVER_URL + "/fcm");
                 String result = serverManager.post(Constants.SERVER_URL + "/fcm", token);
+                Log.e("result", result);
             }
         }.start();
     }
+
 }
