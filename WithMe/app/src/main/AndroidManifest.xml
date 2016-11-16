@@ -29,6 +29,15 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+        <receiver
+            android:name=".receiver.WithMeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mju.hps.withme.sendreciver.createUserFail" />
+                <action android:name="com.mju.hps.withme.sendreciver.createUserSuccess" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

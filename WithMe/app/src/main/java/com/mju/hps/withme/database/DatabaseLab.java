@@ -2,11 +2,18 @@ package com.mju.hps.withme.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
 
-import com.mju.hps.withme.CursorWrapper.UserCursorWrapper;
+import com.mju.hps.withme.MainActivity;
+import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.model.User;
+import com.mju.hps.withme.server.ServerManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,18 +44,57 @@ public class DatabaseLab {
         return databaseLab;
     }
 
-//    public void addUser(User user){
-//        ContentValues values = getContentValues(user);
-//        database.insert(UserTable.NAME, null, values);
-//    }
+    public void createUser(MainActivity mainActivity){
+        final MainActivity finalMainActivity = mainActivity;
+        final String json = "{" +
+                "\"mail\" : \""  + User.getInstance().getMail() + "\", " +
+                "\"password\" : \""  + User.getInstance().getPassword() + "\", " +
+                "\"token\" : \""  + User.getInstance().getToken() + "\"}";
+        new Thread() {
+            public void run() {                                                       //서버 내용 수정
+                String result = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
 
-    public void updateUser(User user){          // 미구현
-//        String uuidString = phone.getId().toString();
-//        ContentValues values = getContentValues(phone);
-//        mDatabase.update(PhoneTable.NAME, values, PhoneTable.Cols.UUID + " = ?", new String[]{uudiString});
+                try {
+                    JSONObject obj = new JSONObject(result);
+                    result = obj.getString("result");
+                    if(result.equals("fail")){
+                        Log.e("createUser", "회원가입실패");
+                        finalMainActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserFail"));
+                    }
+                    else {
+                        User.getInstance().setId(result);
+                        ContentValues values = getContentValues(User.getInstance());
+                        database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
+                        Log.e("createUser", "회원가입성공");
+                        finalMainActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserSuccess"));
+                    }
+
+                } catch (Throwable t) {
+                    Log.e("createUser", t.toString());
+                }
+            }
+        }.start();
     }
 
-    private void queryUser(String whereClause, String[] whereArgs){
+    public void updateUser(){                                          //현재유저상태로 DB덮어씌움
+        ContentValues values = getContentValues(User.getInstance());
+        database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
+        final String json = "{" +
+                    "\"id\" : \"" + User.getInstance().getId() + "\", " +
+                    "\"mail\" : \""  + User.getInstance().getMail() + "\", " +
+                    "\"password\" : \""  + User.getInstance().getPassword() + "\", " +
+                    "\"token\" : \""  + User.getInstance().getToken() +
+                "\"}";
+        new Thread() {
+            public void run() {                                                       //서버 내용 수정
+                String result = ServerManager.getInstance().put(Constants.SERVER_URL + "/user", json);
+                Log.e("result", result);
+
+            }
+        }.start();
+    }
+
+    public void setUser(String whereClause, String[] whereArgs){
         Cursor cursor = database.query(
                 UserTable.NAME,
                 null, // 테이블 열이 null 인 경우, 즉 모든 열을 의미
@@ -58,15 +104,17 @@ public class DatabaseLab {
                 null,
                 null
         );
-        UserCursorWrapper userCursorWrapper = new UserCursorWrapper(cursor);
+
         try{
-            userCursorWrapper.moveToFirst();
-            userCursorWrapper.settingUser();
+            cursor.moveToFirst();
+            User.getInstance().setId(cursor.getString(cursor.getColumnIndex(UserTable.Cols.ID)));
+            User.getInstance().setMail(cursor.getString(cursor.getColumnIndex(UserTable.Cols.MAIL)));
+            User.getInstance().setPassword(cursor.getString(cursor.getColumnIndex(UserTable.Cols.PASSWORD)));
+            User.getInstance().setToken(cursor.getString(cursor.getColumnIndex(UserTable.Cols.TOKEN)));
         }
         finally {
             cursor.close();
         }
-        userCursorWrapper.settingUser();
     }
 
     private static ContentValues getContentValues(User user) {

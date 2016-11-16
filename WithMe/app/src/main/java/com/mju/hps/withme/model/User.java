@@ -3,6 +3,7 @@ package com.mju.hps.withme.model;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.mju.hps.withme.database.DatabaseLab;
 
 /**
  * Created by KMC on 2016. 11. 16..
@@ -15,16 +16,17 @@ public class User {
     private String password;
     private String token;
 
-    private User(String id, String mail, String password, String token){
-        this.id = id;
-        this.mail = mail;
-        this.password = password;
-        this.token = token;
-    }
+//    private User(String id, String mail, String password, String token){
+//        this.id = id;
+//        this.mail = mail;
+//        this.password = password;
+//        this.token = token;
+//    }
 
-    public static void setInstance(String id, String mail, String password, String token){
+    public static void setInstance(){
         if(user == null){
-            user = new User(id, mail, password, token);
+            user = new User();
+            DatabaseLab.getInstance().setUser(null, null);
         }
     }
 

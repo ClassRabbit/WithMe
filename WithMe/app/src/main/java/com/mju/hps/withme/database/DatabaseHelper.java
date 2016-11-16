@@ -23,14 +23,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.e("db", "생성");
-        db.execSQL(
+        db.execSQL(                                     //User테이블생성
             "create table " + UserTable.NAME + "(" +
-                    UserTable.Cols.ID + ", " +
-                    UserTable.Cols.PASSWORD + ", " +
-                    UserTable.Cols.MAIL +
-            ")"
+                    "flag integer," +
+                    UserTable.Cols.ID + " text, " +
+                    UserTable.Cols.PASSWORD + " text, " +
+                    UserTable.Cols.MAIL + " text, " +
+                    UserTable.Cols.TOKEN + " text" +
+                ")"
         );
-        ContentValues values = new ContentValues();
+        ContentValues values = new ContentValues();     //User 하나 넣기
+        values.put("flag", "1");
         values.put(UserTable.Cols.ID, "");
         values.put(UserTable.Cols.MAIL, "");
         values.put(UserTable.Cols.PASSWORD, "");
