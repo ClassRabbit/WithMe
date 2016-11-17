@@ -13,6 +13,10 @@ public class DatabaseSchema {
             public static final String MAIL = "mail";
             public static final String PASSWORD = "password";
             public static final String TOKEN = "token";
+            public static final String NAME = "name";
+            public static final String BIRTH = "birth";
+            public static final String PHONE = "phone";
+            public static final String GENDER = "gender";
         }
     }
 }

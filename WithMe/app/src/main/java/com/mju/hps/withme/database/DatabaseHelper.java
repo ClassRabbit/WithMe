@@ -29,7 +29,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     UserTable.Cols.ID + " text, " +
                     UserTable.Cols.PASSWORD + " text, " +
                     UserTable.Cols.MAIL + " text, " +
-                    UserTable.Cols.TOKEN + " text" +
+                    UserTable.Cols.TOKEN + " text," +
+                    UserTable.Cols.NAME + " text," +
+                    UserTable.Cols.BIRTH + " text," +
+                    UserTable.Cols.PHONE + " number," +
+                    UserTable.Cols.GENDER + " text" +
                 ")"
         );
         ContentValues values = new ContentValues();     //User 하나 넣기
@@ -38,6 +42,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(UserTable.Cols.MAIL, "");
         values.put(UserTable.Cols.PASSWORD, "");
         values.put(UserTable.Cols.TOKEN, "");
+        values.put(UserTable.Cols.NAME, "");
+        values.put(UserTable.Cols.BIRTH, "");
+        values.put(UserTable.Cols.PHONE, 0);
+        values.put(UserTable.Cols.GENDER, "");
         db.insert(UserTable.NAME, null, values);
     }
 

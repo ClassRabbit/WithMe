@@ -50,7 +50,13 @@ public class DatabaseLab {
         final String json = "{" +
                 "\"mail\" : \""  + User.getInstance().getMail() + "\", " +
                 "\"password\" : \""  + User.getInstance().getPassword() + "\", " +
-                "\"token\" : \""  + User.getInstance().getToken() + "\"}";
+                "\"token\" : \""  + User.getInstance().getToken() + "\", " +
+                "\"name\" : \""  + User.getInstance().getName() + "\", " +
+                "\"birth\" : \""  + User.getInstance().getBirth() + "\", " +
+                "\"phone\" : \""  + User.getInstance().getPhone() + "\", " +
+                "\"gender\" : \""  + User.getInstance().getGender() + "\"" +
+            "}";
+
         new Thread() {
             public void run() {                                                       //서버 내용 수정
                 String result = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
@@ -59,6 +65,12 @@ public class DatabaseLab {
                     JSONObject obj = new JSONObject(result);
                     result = obj.getString("result");
                     if(result.equals("fail")){
+                        User.getInstance().setMail("");
+                        User.getInstance().setPassword("");
+                        User.getInstance().setName("");
+                        User.getInstance().setBirth("");
+                        User.getInstance().setPhone(0);
+                        User.getInstance().setGender("");
                         Log.e("createUser", "회원가입실패");
                         finalActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserFail"));
                     }
@@ -81,10 +93,14 @@ public class DatabaseLab {
         ContentValues values = getContentValues(User.getInstance());
         database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
         final String json = "{" +
-                    "\"id\" : \"" + User.getInstance().getId() + "\", " +
+//                    "\"id\" : \"" + User.getInstance().getId() + "\", " +
                     "\"mail\" : \""  + User.getInstance().getMail() + "\", " +
                     "\"password\" : \""  + User.getInstance().getPassword() + "\", " +
-                    "\"token\" : \""  + User.getInstance().getToken() +
+                    "\"token\" : \""  + User.getInstance().getToken() + "\", " +
+                    "\"name\" : \""  + User.getInstance().getName() + "\", " +
+                    "\"birth\" : \""  + User.getInstance().getBirth() + "\", " +
+                    "\"phone\" : \""  + User.getInstance().getPhone() + "\", " +
+                    "\"gender\" : \""  + User.getInstance().getGender() + "\"" +
                 "\"}";
         new Thread() {
             public void run() {                                                       //서버 내용 수정
@@ -108,10 +124,15 @@ public class DatabaseLab {
 
         try{
             cursor.moveToFirst();
+            Log.e("corsor size", "" + cursor.getCount());
             User.getInstance().setId(cursor.getString(cursor.getColumnIndex(UserTable.Cols.ID)));
             User.getInstance().setMail(cursor.getString(cursor.getColumnIndex(UserTable.Cols.MAIL)));
             User.getInstance().setPassword(cursor.getString(cursor.getColumnIndex(UserTable.Cols.PASSWORD)));
             User.getInstance().setToken(cursor.getString(cursor.getColumnIndex(UserTable.Cols.TOKEN)));
+            User.getInstance().setName(cursor.getString(cursor.getColumnIndex(UserTable.Cols.NAME)));
+            User.getInstance().setBirth(cursor.getString(cursor.getColumnIndex(UserTable.Cols.BIRTH)));
+            User.getInstance().setPhone(Integer.parseInt(cursor.getString(cursor.getColumnIndex(UserTable.Cols.PHONE))));
+            User.getInstance().setGender(cursor.getString(cursor.getColumnIndex(UserTable.Cols.GENDER)));
         }
         finally {
             cursor.close();

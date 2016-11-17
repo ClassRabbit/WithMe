@@ -26,11 +26,16 @@ router.post('/', function(req, res, next) {
   var newUser = new User({
     mail : req.body.mail,
     password : req.body.password,
-    token : req.body.token
+    token : req.body.token,
+    name: req.body.name,
+    birth: req.body.birth,
+    phone: req.body.phone,
+    gender: req.body.gender
   });
   newUser.save(function(err, user){
     if(err) {
       console.log("사용자 등록 실패");
+      console.log(err);
       return res.json({result: 'fail'});
     }
     console.log("사용자 등록 성공");

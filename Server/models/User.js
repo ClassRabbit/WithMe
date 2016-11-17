@@ -3,12 +3,13 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var schema = new Schema({
-  // , unique: true
-  mail: {type: String, required: true},
-  password: {type: String, required: true},
-  token: {type: String},
-  name: {type: String},
-  birth: {type: String},
+  mail: {type: String, required: true, unique: true},
+  password: {type: String, required: true, unique: true},
+  token: {type: String, unique: true},
+  name: {type: String, unique: true},
+  birth: {type: String, unique: true},
+  phone: {type: Number, unique: true},
+  gender: {type: String, unique: true},
   img: {type: String}
 }, {
   toJSON: {virtuals: true},

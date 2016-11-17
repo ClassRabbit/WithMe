@@ -15,6 +15,10 @@ public class User {
     private String mail;
     private String password;
     private String token;
+    private String name;
+    private String birth;
+    private int phone;
+    private String gender;
 
 //    private User(String id, String mail, String password, String token){
 //        this.id = id;
@@ -64,5 +68,37 @@ public class User {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBirth() {
+        return birth;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
