@@ -7,7 +7,7 @@ var fcm = new FCM(serverkey);
 
 var message = {
     // to: 'registration_token_or_topics', // 보낼 사람의 기기 토큰을 넣는다.
-    to: 'fcBQTnV3Q8o:APA91bEMktSEVXFINk8y24FKnqS0mpykHuVK1PbQRU1pO91pGA73TwJc6g8RHUnTRMJvOEy5c39xizbhdFULOqQsw6A0huxvrY1go4eRZ8zn1ugI-3xc5t4EDltV6vTdaMtyz8uLL9i4',
+    to: '',
     collapse_key: 'your_collapse_key',
     data: {                            //이안의 보낼 데이터를 세팅한다.
         data1: 'Data1 입니다.',

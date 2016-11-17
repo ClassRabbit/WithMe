@@ -34,5 +34,22 @@
         android:layout_alignEnd="@+id/button"
         android:layout_marginTop="20dp"
         android:id="@+id/button2"
-        android:onClick="testCreateUser"/>
+        android:onClick="moveAction"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/timeInfo" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/timeInfo"
+        android:layout_alignEnd="@+id/timeInfo"
+        android:layout_marginTop="45dp"
+        android:id="@+id/status" />
 </RelativeLayout>

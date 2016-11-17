@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mju.hps.withme">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,24 +11,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <service
-            android:name=".service.FcmMessagingService">
+
+        <service android:name=".service.FcmMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".service.FcmInstanceIdService">
+        <service android:name=".service.FcmInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
+        <service android:name=".service.TimeService">
+
+            <intent-filter>
+                <action android:name="com.mju.hps.withme.TimeService">
+                </action></intent-filter>
+
+        </service>
+
         <receiver
             android:name=".receiver.WithMeReceiver"
             android:enabled="true"
@@ -38,6 +40,17 @@
                 <action android:name="com.mju.hps.withme.sendreciver.createUserSuccess" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".SubActivity" />
+        <activity android:name=".SubActivity2" />
+        <activity android:name=".IntroActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

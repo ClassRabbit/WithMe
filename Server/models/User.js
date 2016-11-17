@@ -3,7 +3,8 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var schema = new Schema({
-  mail: {type: String, required: true, unique: true},
+  // , unique: true
+  mail: {type: String, required: true},
   password: {type: String, required: true},
   token: {type: String},
   name: {type: String},
@@ -23,6 +24,6 @@ schema.methods.validatePassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-var Product = mongoose.model('Product', schema);
+var Product = mongoose.model('User', schema);
 
 module.exports = Product;

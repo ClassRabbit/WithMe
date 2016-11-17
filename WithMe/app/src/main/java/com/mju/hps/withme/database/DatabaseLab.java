@@ -1,5 +1,6 @@
 package com.mju.hps.withme.database;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -44,8 +45,8 @@ public class DatabaseLab {
         return databaseLab;
     }
 
-    public void createUser(MainActivity mainActivity){
-        final MainActivity finalMainActivity = mainActivity;
+    public void createUser(Activity activity){
+        final Activity finalActivity = activity;
         final String json = "{" +
                 "\"mail\" : \""  + User.getInstance().getMail() + "\", " +
                 "\"password\" : \""  + User.getInstance().getPassword() + "\", " +
@@ -59,14 +60,14 @@ public class DatabaseLab {
                     result = obj.getString("result");
                     if(result.equals("fail")){
                         Log.e("createUser", "회원가입실패");
-                        finalMainActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserFail"));
+                        finalActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserFail"));
                     }
                     else {
                         User.getInstance().setId(result);
                         ContentValues values = getContentValues(User.getInstance());
                         database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
                         Log.e("createUser", "회원가입성공");
-                        finalMainActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserSuccess"));
+                        finalActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserSuccess"));
                     }
 
                 } catch (Throwable t) {
