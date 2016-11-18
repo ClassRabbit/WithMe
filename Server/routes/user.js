@@ -43,6 +43,26 @@ router.post('/', function(req, res, next) {
   });
 });
 
+router.post('/login', function(req, res, next) {
+  console.log(req.body);
+  User.findOne({mail: req.body.mail, password: req.body.password}, function(err, user){
+    if(err){
+      console.log('err');
+      return res.json({result: 'error'});
+    }
+    if(user != null){
+      console.log('user != null');
+      user.result = 'success';
+      console.log(user);
+      return res.json({result: 'success', user: user});
+    }
+    else {
+      console.log('else');
+      return res.json({result: 'fail'});
+    }
+  });
+});
+
 router.put('/', function(req, res, next) {
   res.send('respond with a resource');
   console.log(req.body);

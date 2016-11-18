@@ -25,6 +25,6 @@ public class SubActivity extends AppCompatActivity {
         User.getInstance().setMail("test14@gamil.com");
         User.getInstance().setPassword("1234");
         User.getInstance().setToken(FirebaseInstanceId.getInstance().getToken());
-        DatabaseLab.getInstance().createUser(this);
+//        DatabaseLab.getInstance().createUser(this);
     }
 }

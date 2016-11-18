@@ -44,25 +44,31 @@ public class LoginActivity extends AppCompatActivity {
         final Activity activity = this;
         new Thread() {
             public void run() {
-                String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
+                String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/user/login", json);
                 Log.e("loginResponse", response);
                 try{
                     JSONObject obj = new JSONObject(response);
-                    if(obj.getString("id") != null){
-                        User.getInstance().setId(obj.getString("id"));
-                        User.getInstance().setMail(obj.getString("mail"));
-                        User.getInstance().setPassword(obj.getString("password"));
-                        User.getInstance().setToken(obj.getString("token"));
-                        User.getInstance().setName(obj.getString("name"));
-                        User.getInstance().setBirth(obj.getString("birth"));
-                        User.getInstance().setPhone(Integer.parseInt(obj.getString("phone")));
-                        User.getInstance().setGender(obj.getString("gender"));
+                    if(obj.getString("result").equals("success")){
+                        Log.e("login", "로그인 성공");
+                        JSONObject user = new JSONObject(obj.getString("user"));
+                        User.getInstance().setId(user.getString("id"));
+                        User.getInstance().setMail(user.getString("mail"));
+                        User.getInstance().setPassword(user.getString("password"));
+                        User.getInstance().setToken(user.getString("token"));
+                        User.getInstance().setName(user.getString("name"));
+                        User.getInstance().setBirth(user.getString("birth"));
+                        User.getInstance().setPhone(Integer.parseInt(user.getString("phone")));
+                        User.getInstance().setGender(user.getString("gender"));
                         DatabaseLab.getInstance().loginUser();
-                        activity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.loginSuccess"));      //리시버 만들것
+//                        activity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.loginSuccess"));      //리시버 만들것
                     }
-                    else {
+                    else if(obj.getString("result").equals("fail")) {
+                        Log.e("login", "로그인 실패");
                         //리시버 만들어서 던지기
                         //창에 입력란도 비울것
+                    }
+                    else {
+                        Log.e("login", "서버 에러");
                     }
                 }
                 catch (Exception e) {
