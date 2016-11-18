@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mju.hps.withme.LoginActivity;
 import com.mju.hps.withme.MainActivity;
 import com.mju.hps.withme.SubActivity;
 
@@ -24,11 +25,11 @@ public class WithMeReceiver extends BroadcastReceiver {
         }
         else if(action.equals("com.mju.hps.withme.sendreciver.createUserSuccess")){
 
-            Intent intent2=new Intent(context, MainActivity.class);
-            intent2.putExtra("text","data");
-            intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(intent2);
+            Intent loginIntent=new Intent(context, LoginActivity.class);
+//            intent2.putExtra("text","data");
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(loginIntent);
             Toast.makeText(context, "회원 가입에 성공하였습니다", Toast.LENGTH_SHORT).show();
         }
     }

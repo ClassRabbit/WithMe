@@ -37,6 +37,7 @@ public class SignupActivity extends AppCompatActivity {
         User.getInstance().setToken(FirebaseInstanceId.getInstance().getToken());
         User.getInstance().setName(name.getText().toString());
         User.getInstance().setBirth(birth.getText().toString());
+        // null값 들어오면 죽음
         User.getInstance().setPhone(Integer.parseInt(phone.getText().toString()));
         User.getInstance().setGender(gender.getText().toString());
         DatabaseLab.getInstance().createUser(this);

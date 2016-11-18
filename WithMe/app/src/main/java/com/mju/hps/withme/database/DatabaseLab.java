@@ -60,7 +60,7 @@ public class DatabaseLab {
         new Thread() {
             public void run() {                                                       //서버 내용 수정
                 String result = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
-
+                Log.d("createUserResult", result);
                 try {
                     JSONObject obj = new JSONObject(result);
                     result = obj.getString("result");
