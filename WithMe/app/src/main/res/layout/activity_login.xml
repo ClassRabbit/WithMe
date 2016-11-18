@@ -14,7 +14,7 @@
     <EditText
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:id="@+id/emailInput"
+        android:id="@+id/input_mail"
         android:layout_centerHorizontal="true"
         android:hint="Email"
         android:layout_marginTop="151dp" />
@@ -22,10 +22,10 @@
     <EditText
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:id="@+id/passwordInput"
+        android:id="@+id/input_password"
         android:layout_centerHorizontal="true"
         android:hint="Password"
-        android:layout_below="@+id/emailInput" />
+        android:layout_below="@+id/input_mail" />
 
     <Button
         android:layout_width="150dp"
@@ -34,7 +34,7 @@
         android:id="@+id/loginButton"
         android:textAllCaps="false"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/passwordInput"
+        android:layout_below="@+id/input_password"
         android:layout_toStartOf="@+id/signupButton"
         android:onClick="login" />
 
@@ -45,7 +45,7 @@
         android:id="@+id/signupButton"
         android:textAllCaps="false"
         android:layout_alignTop="@+id/loginButton"
-        android:layout_alignEnd="@+id/passwordInput"
+        android:layout_alignEnd="@+id/input_password"
         android:onClick="sign_up" />
 
     <TextView

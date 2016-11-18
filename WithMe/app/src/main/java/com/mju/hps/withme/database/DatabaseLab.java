@@ -45,48 +45,53 @@ public class DatabaseLab {
         return databaseLab;
     }
 
-    public void createUser(Activity activity){
-        final Activity finalActivity = activity;
-        final String json = "{" +
-                "\"mail\" : \""  + User.getInstance().getMail() + "\", " +
-                "\"password\" : \""  + User.getInstance().getPassword() + "\", " +
-                "\"token\" : \""  + User.getInstance().getToken() + "\", " +
-                "\"name\" : \""  + User.getInstance().getName() + "\", " +
-                "\"birth\" : \""  + User.getInstance().getBirth() + "\", " +
-                "\"phone\" : \""  + User.getInstance().getPhone() + "\", " +
-                "\"gender\" : \""  + User.getInstance().getGender() + "\"" +
-            "}";
+//    public void createUser(final Activity activity, final String mail, final String password, final String token,
+//                           final String name, final String birth, final int phone, final String gender){
+//        final String json = "{" +
+//                "\"mail\" : \""  + mail + "\", " +
+//                "\"password\" : \""  + password + "\", " +
+//                "\"token\" : \""  + token + "\", " +
+//                "\"name\" : \""  + name + "\", " +
+//                "\"birth\" : \""  + birth + "\", " +
+//                "\"phone\" : \""  + phone + "\", " +
+//                "\"gender\" : \""  + gender + "\"" +
+//            "}";
+//
+//        new Thread() {
+//            public void run() {                                                       //서버 내용 수정
+//                String result = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
+//                Log.d("createUserResult", result);
+//                try {
+//                    JSONObject obj = new JSONObject(result);
+//                    result = obj.getString("result");
+//                    if(result.equals("fail")){
+////                        User.getInstance().setMail("");
+////                        User.getInstance().setPassword("");
+////                        User.getInstance().setName("");
+////                        User.getInstance().setBirth("");
+////                        User.getInstance().setPhone(0);
+////                        User.getInstance().setGender("");
+//                        Log.e("createUser", "회원가입실패");
+//                        activity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserFail"));
+//                    }
+//                    else {
+////                        User.getInstance().setId(result);
+////                        ContentValues values = getContentValues(User.getInstance());
+////                        database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
+//                        Log.e("createUser", "회원가입성공");
+//                        activity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserSuccess"));
+//                    }
+//
+//                } catch (Throwable t) {
+//                    Log.e("createUser", t.toString());
+//                }
+//            }
+//        }.start();
+//    }
 
-        new Thread() {
-            public void run() {                                                       //서버 내용 수정
-                String result = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
-                Log.d("createUserResult", result);
-                try {
-                    JSONObject obj = new JSONObject(result);
-                    result = obj.getString("result");
-                    if(result.equals("fail")){
-                        User.getInstance().setMail("");
-                        User.getInstance().setPassword("");
-                        User.getInstance().setName("");
-                        User.getInstance().setBirth("");
-                        User.getInstance().setPhone(0);
-                        User.getInstance().setGender("");
-                        Log.e("createUser", "회원가입실패");
-                        finalActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserFail"));
-                    }
-                    else {
-                        User.getInstance().setId(result);
-                        ContentValues values = getContentValues(User.getInstance());
-                        database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
-                        Log.e("createUser", "회원가입성공");
-                        finalActivity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserSuccess"));
-                    }
-
-                } catch (Throwable t) {
-                    Log.e("createUser", t.toString());
-                }
-            }
-        }.start();
+    public void loginUser(){
+        ContentValues values = getContentValues(User.getInstance());
+        database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
     }
 
     public void updateUser(){                                          //현재유저상태로 DB덮어씌움

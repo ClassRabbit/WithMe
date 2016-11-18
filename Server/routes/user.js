@@ -39,7 +39,7 @@ router.post('/', function(req, res, next) {
       return res.json({result: 'fail'});
     }
     console.log("사용자 등록 성공");
-    return res.json({result: user.id});
+    return res.json({result: 'success'});
   });
 });
 
