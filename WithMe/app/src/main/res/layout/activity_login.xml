@@ -48,4 +48,13 @@
         android:layout_alignEnd="@+id/passwordInput"
         android:onClick="sign_up" />
 
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="66dp"
+        android:id="@+id/textText" />
+
 </RelativeLayout>
