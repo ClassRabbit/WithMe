@@ -15,6 +15,22 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_com_mju_hps_withme_jni_WithMeJni_getJNIString
   (JNIEnv *, jobject);
 
+/*
+ * Class:     com_mju_hps_withme_jni_WithMeJni
+ * Method:    isValidMail
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_mju_hps_withme_jni_WithMeJni_isValidMail
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mju_hps_withme_jni_WithMeJni
+ * Method:    isSamePassword
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_mju_hps_withme_jni_WithMeJni_isSamePassword
+  (JNIEnv *, jobject, jstring, jstring);
+
 #ifdef __cplusplus
 }
 #endif

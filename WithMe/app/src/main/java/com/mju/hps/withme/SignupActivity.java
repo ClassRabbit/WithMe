@@ -23,12 +23,12 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        mail = (EditText)findViewById(R.id.input_user_mail);
-        password = (EditText)findViewById(R.id.input_user_pwd);
-        name = (EditText)findViewById(R.id.input_user_name);
-        birth = (EditText)findViewById(R.id.input_user_birth);
-        phone = (EditText)findViewById(R.id.input_user_phone);
-        gender = (EditText)findViewById(R.id.input_user_gender);
+//        mail = (EditText)findViewById(R.id.input_user_mail);
+//        password = (EditText)findViewById(R.id.input_user_pwd);
+//        name = (EditText)findViewById(R.id.input_user_name);
+//        birth = (EditText)findViewById(R.id.input_user_birth);
+//        phone = (EditText)findViewById(R.id.input_user_phone);
+//        gender = (EditText)findViewById(R.id.input_user_gender);
     }
 
     public void createUser(View view) {
