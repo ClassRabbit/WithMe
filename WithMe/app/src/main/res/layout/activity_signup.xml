@@ -10,102 +10,126 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mju.hps.withme.SignupActivity">
-    
+
     <ImageView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:srcCompat="@mipmap/ic_launcher"
-    android:id="@+id/imageView"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true" />
-    
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="textPersonName"
-    android:hint="input your id"
-    android:ems="10"
-    android:layout_marginTop="19dp"
-    android:id="@+id/user_id_sign_up"
-    android:layout_below="@+id/imageView"
-    android:layout_centerHorizontal="true"
-    android:backgroundTint="@color/colorBackgroundStandard"
-    />
-    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="input your id"
+        android:ems="10"
+        android:layout_marginTop="19dp"
+        android:id="@+id/signup_input_mail"
+        android:backgroundTint="@color/colorButtonChoice"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true" />
+
     <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="textPassword"
-    android:hint="input your password"
-    android:ems="10"
-    android:id="@+id/user_pwd_sign_up"
-    android:layout_below="@+id/user_id_sign_up"
-    android:layout_alignStart="@+id/user_id_sign_up"
-    android:backgroundTint="@color/colorBackgroundStandard"
-    />
-    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="confirm your password"
+        android:ems="10"
+        android:id="@+id/signup_input_password_confirm"
+        android:backgroundTint="@color/colorButtonChoice"
+        android:layout_below="@+id/signup_input_password"
+        android:layout_alignParentStart="true" />
+
     <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="textPersonName"
-    android:hint="input your name"
-    android:ems="10"
-    android:id="@+id/user_name_sign_up"
-    android:layout_below="@+id/user_pwd_sign_up"
-    android:layout_alignStart="@+id/user_pwd_sign_up"
-    android:backgroundTint="@color/colorBackgroundStandard"
-    />
-    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="input your password"
+        android:ems="10"
+        android:id="@+id/signup_input_password"
+        android:backgroundTint="@color/colorButtonChoice"
+        android:layout_below="@+id/signup_input_mail"
+        android:layout_alignParentStart="true" />
+
     <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="phone"
-    android:ems="10"
-    android:hint="input your phone number"
-    android:id="@+id/user_phone_sign_up"
-    android:layout_below="@+id/user_name_sign_up"
-    android:layout_alignStart="@+id/user_name_sign_up"
-    android:backgroundTint="@color/colorBackgroundStandard"
-    />
-    
-    <RadioButton
-    android:text="Woman"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/gender_woman"
-    android:layout_below="@+id/user_phone_sign_up"
-    android:layout_alignStart="@+id/user_phone_sign_up"
-    />
-    
-    <RadioButton
-    android:text="Man"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/gender_man"
-    android:layout_below="@+id/user_phone_sign_up"
-    android:layout_alignStart="@+id/imageView"
-    android:layout_marginStart="25dp" />
-    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:hint="input your name"
+        android:ems="10"
+        android:id="@+id/signup_input_name"
+        android:backgroundTint="@color/colorButtonChoice"
+        android:layout_below="@+id/signup_input_password_confirm"
+        android:layout_alignParentStart="true" />
+
     <EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="date"
-    android:hint="input your birth day"
-    android:ems="10"
-    android:id="@+id/user_birth_sign_up"
-    android:layout_below="@+id/gender_woman"
-    android:layout_alignStart="@+id/gender_woman"
-    android:backgroundTint="@color/colorBackgroundStandard"
-    />
-    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:hint="input your phone number"
+        android:id="@+id/signup_input_phone"
+        android:backgroundTint="@color/colorButtonChoice"
+        android:layout_below="@+id/signup_input_name"
+        android:layout_alignParentStart="true" />
+
+
+
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:id="@+id/signup_group_gender"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/signup_input_phone"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:text="Man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signup_input_gender_man"
+            android:layout_marginRight="80dp"/>
+
+        <RadioButton
+            android:text="Woman"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/signup_input_gender_woman"/>
+
+    </RadioGroup>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="input your birth day"
+        android:ems="10"
+        android:id="@+id/signup_input_birth"
+        android:backgroundTint="@color/colorButtonChoice"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/signup_group_gender"
+        android:inputType="none"
+        android:textIsSelectable="true"
+        android:layout_alignParentStart="true"
+        android:onClick="onBirthClicked"/>
+
     <Button
-    android:text="Button"
-    android:layout_width="300dp"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/user_birth_sign_up"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="14dp"
-    android:id="@+id/sign_up"
-    android:background="@color/colorButtonChoice"/>
-    
+        android:text="Button"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/sign_up"
+        android:background="@color/colorButtonChoice"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/colorWhite"/>
+
+
+
+
 </RelativeLayout>

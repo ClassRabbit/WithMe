@@ -7,4 +7,5 @@
     <color name="colorButtonDonotChoice">#d4ad61</color>
     <color name="colorButtonChoice">#9b7948</color>
     <color name="colorButtonRealChoice">#403330</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>

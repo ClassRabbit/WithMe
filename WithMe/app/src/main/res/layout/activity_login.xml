@@ -17,7 +17,8 @@
         android:id="@+id/login_input_mail"
         android:layout_centerHorizontal="true"
         android:hint="Email"
-        android:layout_marginTop="151dp" />
+        android:layout_marginTop="151dp"
+        android:backgroundTint="@color/colorButtonChoice" />
 
     <EditText
         android:layout_width="300dp"
@@ -25,7 +26,8 @@
         android:id="@+id/login_input_password"
         android:layout_centerHorizontal="true"
         android:hint="Password"
-        android:layout_below="@+id/login_input_mail" />
+        android:layout_below="@+id/login_input_mail"
+        android:backgroundTint="@color/colorButtonChoice" />
 
     <Button
         android:layout_width="150dp"
