@@ -32,23 +32,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void testAction(View view) {
-        token = "{\"token\":\"" + FirebaseInstanceId.getInstance().getToken() + "\"}";
-        Log.e("token", "token: " + token);
-        new Thread() {
-            public void run() {
-                String result = serverManager.post(Constants.SERVER_URL + "/fcm", token);
-                Log.e("result", result);
-            }
-        }.start();
-    }
-
-    public void moveAction(View view) {
-        Intent intent2=new Intent(this, SubActivity.class);
-        intent2.putExtra("text","data");
-        this.startActivity(intent2);
-
-    }
+//    public void testAction(View view) {
+//        token = "{\"token\":\"" + FirebaseInstanceId.getInstance().getToken() + "\"}";
+//        Log.e("token", "token: " + token);
+//        new Thread() {
+//            public void run() {
+//                String result = serverManager.post(Constants.SERVER_URL + "/fcm", token);
+//                Log.e("result", result);
+//            }
+//        }.start();
+//    }
+//
+//    public void moveAction(View view) {
+//        Intent intent2=new Intent(this, SubActivity.class);
+//        intent2.putExtra("text","data");
+//        this.startActivity(intent2);
+//
+//    }
 
 
 

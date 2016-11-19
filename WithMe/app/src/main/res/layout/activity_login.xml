@@ -14,7 +14,7 @@
     <EditText
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:id="@+id/input_mail"
+        android:id="@+id/login_input_mail"
         android:layout_centerHorizontal="true"
         android:hint="Email"
         android:layout_marginTop="151dp" />
@@ -22,37 +22,36 @@
     <EditText
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:id="@+id/input_password"
+        android:id="@+id/login_input_password"
         android:layout_centerHorizontal="true"
         android:hint="Password"
-        android:layout_below="@+id/input_mail" />
+        android:layout_below="@+id/login_input_mail" />
 
     <Button
         android:layout_width="150dp"
         android:layout_height="55dp"
         android:text="Log in"
-        android:id="@+id/loginButton"
+        android:id="@+id/login_button_login"
         android:textAllCaps="false"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/input_password"
-        android:layout_toStartOf="@+id/signupButton"
-        android:onClick="login" />
+        android:layout_below="@+id/login_input_password"
+        android:layout_toStartOf="@+id/login_button_signup" />
 
     <Button
         android:layout_width="150dp"
         android:layout_height="55dp"
         android:text="Sign up"
-        android:id="@+id/signupButton"
+        android:id="@+id/login_button_signup"
         android:textAllCaps="false"
-        android:layout_alignTop="@+id/loginButton"
-        android:layout_alignEnd="@+id/input_password"
+        android:layout_alignTop="@+id/login_button_login"
+        android:layout_alignEnd="@+id/login_input_password"
         android:onClick="sign_up" />
 
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loginButton"
+        android:layout_below="@+id/login_button_login"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="66dp"
         android:id="@+id/textText" />

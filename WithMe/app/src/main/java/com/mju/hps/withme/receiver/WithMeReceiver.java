@@ -20,17 +20,33 @@ public class WithMeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         Log.e("action", action);
-        if(action.equals("com.mju.hps.withme.sendreciver.createUserFail")){
+        if(action.equals("com.mju.hps.withme.reciver.createUserFail")){
             Toast.makeText(context, "회원 가입에 실패하였습니다", Toast.LENGTH_SHORT).show();
         }
-        else if(action.equals("com.mju.hps.withme.sendreciver.createUserSuccess")){
+        else if(action.equals("com.mju.hps.withme.reciver.createUserSuccess")){
 
-            Intent loginIntent=new Intent(context, LoginActivity.class);
+            Intent resultIntent =new Intent(context, LoginActivity.class);
 //            intent2.putExtra("text","data");
-            loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(loginIntent);
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(resultIntent);
             Toast.makeText(context, "회원 가입에 성공하였습니다", Toast.LENGTH_SHORT).show();
+        }
+        else if(action.equals("com.mju.hps.withme.reciver.loginSuccess")){
+            Log.i("receiver", "loginSuccess");
+            Intent resultIntent=new Intent(context, MainActivity.class);
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            context.startActivity(resultIntent);
+            Toast.makeText(context, "로그인에 성공하였습니다", Toast.LENGTH_SHORT).show();
+        }
+        else if(action.equals("com.mju.hps.withme.reciver.loginFail")){
+            Log.i("receiver", "loginFail");
+            Toast.makeText(context, "로그인에 실패하였습니다", Toast.LENGTH_SHORT).show();
+        }
+        else if(action.equals("com.mju.hps.withme.reciver.loginError")){
+            Log.i("receiver", "loginError");
+            Toast.makeText(context, "서버에러 입니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
         }
     }
 }

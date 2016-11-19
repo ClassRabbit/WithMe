@@ -91,7 +91,9 @@ public class DatabaseLab {
 
     public void loginUser(){
         ContentValues values = getContentValues(User.getInstance());
+        Log.i("loginUser", "database Login");
         database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
+
     }
 
     public void updateUser(){                                          //현재유저상태로 DB덮어씌움
@@ -129,7 +131,6 @@ public class DatabaseLab {
 
         try{
             cursor.moveToFirst();
-            Log.e("corsor size", "" + cursor.getCount());
             User.getInstance().setId(cursor.getString(cursor.getColumnIndex(UserTable.Cols.ID)));
             User.getInstance().setMail(cursor.getString(cursor.getColumnIndex(UserTable.Cols.MAIL)));
             User.getInstance().setPassword(cursor.getString(cursor.getColumnIndex(UserTable.Cols.PASSWORD)));

@@ -33,13 +33,17 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.mju.hps.withme.sendreciver.createUserFail" />
-                <action android:name="com.mju.hps.withme.sendreciver.createUserSuccess" />
+                <action android:name="com.mju.hps.withme.reciver.createUserFail" />
+                <action android:name="com.mju.hps.withme.reciver.createUserSuccess" />
+                <action android:name="com.mju.hps.withme.reciver.loginSuccess" />
+                <action android:name="com.mju.hps.withme.reciver.loginFail" />
+                <action android:name="com.mju.hps.withme.reciver.loginError" />
             </intent-filter>
         </receiver>
 
         <activity android:name=".SubActivity" />
         <activity android:name=".SubActivity2" />
+
         <activity android:name=".IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +51,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
+
+        <activity android:name=".LoginActivity">
+        </activity>
+
         <activity android:name=".SignupActivity"></activity>
     </application>
 

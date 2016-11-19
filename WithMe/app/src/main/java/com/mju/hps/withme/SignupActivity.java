@@ -61,11 +61,11 @@ public class SignupActivity extends AppCompatActivity {
                     String result = response.getString("result");
                     if(result.equals("fail")){
                         Log.e("createUser", "회원가입실패");
-                        activity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserFail"));
+                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
                     }
                     else {
                         Log.e("createUser", "회원가입성공");
-                        activity.sendBroadcast(new Intent("com.mju.hps.withme.sendreciver.createUserSuccess"));
+                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
                     }
 
                 } catch (Throwable t) {
