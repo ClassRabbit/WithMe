@@ -1,23 +1,14 @@
 package com.mju.hps.withme.database;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.mju.hps.withme.MainActivity;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.server.ServerManager;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.mju.hps.withme.database.DatabaseSchema.*;
 
