@@ -11,13 +11,14 @@
             android:icon="@drawable/roomstatus"
             android:title="Find Room" />
         <item
+            android:id="@+id/chatting"
+            android:icon="@drawable/chat_icon"
+            android:title="Chatting" />
+        <item
             android:id="@+id/log_out"
             android:icon="@drawable/logoutapp"
             android:title="Logout" />
-        <!--<item-->
-        <!--android:id="@+id/nav_manage"-->
-        <!--android:icon="@drawable/ic_menu_manage"-->
-        <!--android:title="Tools" />-->
+        
     </group>
 
     <!--<item android:title="Communicate">-->

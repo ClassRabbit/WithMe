@@ -1,5 +1,6 @@
 package com.mju.hps.withme;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -97,10 +98,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.user_info) {
-            // Handle the camera action
+
         } else if (id == R.id.room_status) {
 
-        } else if (id == R.id.log_out) {
+        } else if (id == R.id.chatting) {
+            Intent intent = new Intent(this, ChatActivity.class);
+            startActivity(intent);
+        } else if(id == R.id.log_out) {
 
         }
 
