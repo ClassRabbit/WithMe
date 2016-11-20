@@ -31,6 +31,14 @@ JNIEXPORT jint JNICALL Java_com_mju_hps_withme_jni_WithMeJni_isValidMail
 JNIEXPORT jint JNICALL Java_com_mju_hps_withme_jni_WithMeJni_isSamePassword
   (JNIEnv *, jobject, jstring, jstring);
 
+/*
+ * Class:     com_mju_hps_withme_jni_WithMeJni
+ * Method:    isValidPhone
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_mju_hps_withme_jni_WithMeJni_isValidPhone
+  (JNIEnv *, jobject, jstring);
+
 #ifdef __cplusplus
 }
 #endif

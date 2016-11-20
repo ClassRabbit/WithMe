@@ -50,7 +50,7 @@ router.post('/login', function(req, res, next) {
       console.log('err');
       return res.json({result: 'error'});
     }
-    if(user != null){
+    if(user !== null){
       console.log('user !== null');
       user.result = 'success';
       console.log(user);

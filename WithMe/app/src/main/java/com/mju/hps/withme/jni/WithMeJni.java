@@ -12,8 +12,6 @@ public class WithMeJni {
     public native String getJNIString();
     public native int isValidMail(String mail);
     public native int isSamePassword(String password1, String password2);
+    public native int isValidPhone(String phone);
 
-    public String testRe(){
-        return getJNIString();
-    }
 }

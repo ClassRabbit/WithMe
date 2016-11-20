@@ -94,7 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/signup_input_gender_man"
-            android:layout_marginRight="80dp"/>
+            android:layout_marginRight="80dp"
+            android:checked="true" />
 
         <RadioButton
             android:text="Woman"
@@ -127,7 +128,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/colorWhite"/>
+        android:textColor="@color/colorWhite"
+        android:onClick="createUser" />
 
 
 

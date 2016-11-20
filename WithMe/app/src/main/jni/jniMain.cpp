@@ -51,3 +51,18 @@ JNIEXPORT jint JNICALL Java_com_mju_hps_withme_jni_WithMeJni_isSamePassword
     }
 
 }
+
+JNIEXPORT jint JNICALL Java_com_mju_hps_withme_jni_WithMeJni_isValidPhone
+        (JNIEnv *env, jobject obj, jstring phone) {
+    jint i;
+    const char *phone_tmp = env->GetStringUTFChars(phone, 0);
+    int length = strlen(phone_tmp);
+    if(length == 11 || length == 10) {
+        i = 1;
+        return i;
+    }
+    else {
+        i = 0;
+        return i;
+    }
+}
