@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user_info_edit"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mju.hps.withme.UserInfoEditActivity">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:src="@drawable/user_information"
+        android:id="@+id/user_profile"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/user_profile"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="22dp"
+        android:id="@+id/user_info_table">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="E-mail"
+                android:gravity="center"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="70dp"
+                android:padding="8dp"/>
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="in E-mail address"
+                android:gravity="left"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="10dp"
+                android:padding="8dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Name"
+                android:gravity="center"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="70dp"
+                android:padding="8dp"/>
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="in Name"
+                android:gravity="left"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="10dp"
+                android:padding="8dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Birthday"
+                android:gravity="center"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="70dp"
+                android:padding="8dp"/>
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="in Birthday"
+                android:gravity="left"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="10dp"
+                android:padding="8dp"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Gender"
+                android:gravity="center"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="70dp"
+                android:padding="8dp"/>
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="in Gender"
+                android:gravity="left"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="10dp"
+                android:padding="8dp"/>
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="PhoneNumber"
+                android:gravity="center"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="70dp"
+                android:padding="8dp"/>
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="in PhoneNumber"
+                android:gravity="left"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="10dp"
+                android:padding="8dp"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:text="Edit Complete"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="106dp" />
+
+</RelativeLayout>

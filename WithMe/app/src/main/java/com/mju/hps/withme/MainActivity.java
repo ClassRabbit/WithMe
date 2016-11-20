@@ -98,7 +98,8 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.user_info) {
-
+            Intent intent = new Intent(this, UserInfoActivity.class);
+            startActivity(intent);
         } else if (id == R.id.room_status) {
 
         } else if (id == R.id.chatting) {

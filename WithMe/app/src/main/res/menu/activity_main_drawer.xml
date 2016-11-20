@@ -18,7 +18,7 @@
             android:id="@+id/log_out"
             android:icon="@drawable/logoutapp"
             android:title="Logout" />
-        
+
     </group>
 
     <!--<item android:title="Communicate">-->
