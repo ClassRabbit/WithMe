@@ -11,6 +11,8 @@ var user = require('./routes/user');
 var fcm = require('./routes/fcm');
 var mongoose = require('mongoose');
 
+var room = require('./routes/room');
+
 var app = express();
 
 app.locals.moment = require('moment');
@@ -31,6 +33,9 @@ app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(path.join(__dirname, '/bower_components')));
 
+// app.use(express.bodyParser({limit: '50mb'}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use('/', routes);
 app.use('/user', user);

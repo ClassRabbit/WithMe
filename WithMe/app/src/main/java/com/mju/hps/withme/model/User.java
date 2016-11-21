@@ -20,6 +20,8 @@ public class User {
     private int phone;
     private String gender;
 
+    private String profileImage;
+
 //    private User(String id, String mail, String password, String token){
 //        this.id = id;
 //        this.mail = mail;
@@ -100,5 +102,13 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String image) {
+        this.profileImage = image;
     }
 }

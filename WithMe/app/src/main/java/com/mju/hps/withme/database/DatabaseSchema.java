@@ -17,6 +17,9 @@ public class DatabaseSchema {
             public static final String BIRTH = "birth";
             public static final String PHONE = "phone";
             public static final String GENDER = "gender";
+
+            public static final String PROFILE_IMAGE = "profileImage";
+
         }
     }
 }

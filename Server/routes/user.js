@@ -4,17 +4,18 @@ var router = express.Router();
 var multer = require('multer');
 var fs = require('fs');
 
+var multipart = require('multiparty');
+
 var storage = multer.diskStorage({
         destination: function(req, file, cb) {
             cb(null, './public/images/user'); // Make sure this folder exists
         },
         filename: function(req, file, cb) {
-            // var ext = file.originalname.split('.').pop();
-            // cb(null, file.fieldname + '-' + Date.now() + '.' + ext);
+          console.log("ok");
             cb(null, file.originalname);
         }
     }),
-    upload = multer({ storage: storage }).single('file');
+    upload = multer({ storage: storage }).single('image');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -32,6 +33,7 @@ router.post('/', function(req, res, next) {
     phone: req.body.phone,
     gender: req.body.gender
   });
+
   newUser.save(function(err, user){
     if(err) {
       console.log("사용자 등록 실패");
@@ -40,6 +42,49 @@ router.post('/', function(req, res, next) {
     }
     console.log("사용자 등록 성공");
     return res.json({result: 'success'});
+  });
+});
+
+// router.post('/image', upload);
+router.post('/image', function(req, res, next) {
+  var form = new multipart.Form();
+    form.parse(req, function(err, fields, files) {
+      var newUser = new User();
+      // console.log(files.image[0].originalFilename);
+      newUser.img = files.image[0].originalFilename;
+      var body = JSON.parse(fields.body);
+      newUser.mail = body.mail;
+      newUser.password = body.password;
+      newUser.token = body.token;
+      newUser.name = body.name;
+      newUser.birth = body.birth;
+      newUser.phone = body.phone;
+      newUser.gender = body.gender;
+      /*
+      upload(files, function (err) {
+        if (err) {
+          console.log(err);
+        }
+        // Everything went fine
+      });
+      */
+      newUser.save(function(err, user){
+        if(err) {
+          console.log("사용자 등록 실패");
+          return res.json({result: 'fail'});
+        }
+        console.log("사용자 등록 성공");
+        fs.readFile(files.image[0].path, function(err, data){
+            var filePath = "./public/images/user/" + files.image[0].originalFilename;
+            fs.writeFile(filePath, data, function(err){
+              if(err){
+                console.log(err);
+              }
+            });
+        });
+        return res.json({result: 'success'});
+      });
+     //put in here all the logic applied to your files.
   });
 });
 

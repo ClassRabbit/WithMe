@@ -2,9 +2,13 @@ package com.mju.hps.withme.server;
 
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.UnknownHostException;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -55,6 +59,25 @@ public class ServerManager {
             Request request = new Request.Builder()
                     .url(url)
                     .post(body)
+                    .build();
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+        catch(IOException e) {
+            Log.e("ServerManager.post", e.toString());
+            return null;
+        }
+    }
+    public String userSignup(String url, String json,  File file, String file_name) {
+        Log.i("userSignup", "post(" + url + ", "  +  json + ")");
+        try {
+            RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("image", file_name + ".png", RequestBody.create(MediaType.parse("image/png"), file))
+                    .addFormDataPart("body",  json)
+                    .build();
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(url)
+                    .post(requestBody)
                     .build();
             Response response = client.newCall(request).execute();
             return response.body().string();
