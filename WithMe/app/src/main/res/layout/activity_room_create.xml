@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_room_create"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mju.hps.withme.RoomCreateActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Room Content"
+        android:layout_marginTop="52dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/room_context"
+        android:background="@drawable/textview_border"
+        />
+
+    <Button
+        android:text="input photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/room_photo"
+        android:layout_marginTop="116dp"
+        android:layout_below="@+id/room_context"
+        android:layout_toStartOf="@+id/room_context"
+        android:background="@color/colorButtonChoice"/>
+
+    <Button
+        android:text="input map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/room_photo"
+        android:layout_alignStart="@+id/room_photo"
+        android:layout_marginTop="88dp"
+        android:id="@+id/room_map"
+        android:layout_alignEnd="@+id/room_photo"
+        android:background="@color/colorButtonChoice" />
+
+    <Button
+        android:text="make room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:id="@+id/create_room_with_me"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorButtonChoice"
+        android:onClick="create_room"/>
+
+</RelativeLayout>

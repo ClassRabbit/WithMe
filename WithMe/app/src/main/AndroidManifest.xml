@@ -56,7 +56,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".UserInfoEditActivity"></activity>
+        <activity android:name=".UserInfoEditActivity" />
+        <activity android:name=".RoomCreateActivity"></activity>
     </application>
 
 </manifest>
