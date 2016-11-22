@@ -6,47 +6,130 @@
     android:layout_height="match_parent"
     tools:context="com.mju.hps.withme.RoomCreateActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Room Content"
-        android:layout_marginTop="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/room_context"
-        android:background="@drawable/textview_border"
-        />
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="40sp">
 
-    <Button
-        android:text="input photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/room_photo"
-        android:layout_marginTop="116dp"
-        android:layout_below="@+id/room_context"
-        android:layout_toStartOf="@+id/room_context"
-        android:background="@color/colorButtonChoice"/>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-    <Button
-        android:text="input map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/room_photo"
-        android:layout_alignStart="@+id/room_photo"
-        android:layout_marginTop="88dp"
-        android:id="@+id/room_map"
-        android:layout_alignEnd="@+id/room_photo"
-        android:background="@color/colorButtonChoice" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room Title"
+                android:id="@+id/room_context"
+                />
 
-    <Button
-        android:text="make room"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="11dp"
-        android:id="@+id/create_room_with_me"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorButtonChoice"
-        android:onClick="create_room"/>
+            <EditText
+                android:layout_width="150sp"
+                android:layout_height="wrap_content"
+                android:id="@+id/room_title"
+                android:layout_marginLeft="15sp"
+                android:background="@drawable/textview_border"
+                android:hint="input room title" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="100sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Room Content"
+                />
+
+            <EditText
+                android:layout_width="150sp"
+                android:layout_height="wrap_content"
+                android:id="@+id/room_content"
+                android:layout_marginLeft="15sp"
+                android:background="@drawable/textview_border"
+                android:hint="input room content"
+                android:lines="5"
+                android:minLines="3"
+                android:maxLines="7"
+                android:scrollbars="vertical"
+                />
+
+        </TableRow>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="input photo"
+                android:onClick="select_photo"
+                android:background="@color/colorBackgroundStandard"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20sp"
+                android:hint="photo list"
+                android:id="@+id/photo_list" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20sp"
+            >
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="input map"
+                android:onClick="input_map"
+                android:background="@color/colorBackgroundStandard" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20sp" >
+
+            <Spinner
+                android:id="@+id/number_of_roommate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+            </Spinner>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50sp" >
+
+            <Button
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Create Room"
+                android:onClick="create_room"
+                android:background="@color/colorButtonChoice"
+                android:layout_centerHorizontal="true" />
+
+        </TableRow>
+    </TableLayout>
+
+
+
 
 </RelativeLayout>
