@@ -9,13 +9,13 @@
 
 
     <ImageView
-    android:layout_width="100dp"
-    app:srcCompat="@drawable/user_information"
-    android:id="@+id/user_profile"
-    android:layout_height="100dp"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="14dp" />
+        android:layout_width="100dp"
+        app:srcCompat="@drawable/user_information"
+        android:id="@+id/user_profile"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -51,6 +51,7 @@
                 android:layout_width="wrap_content"
                 android:text="in E-mail address"
                 android:gravity="left"
+                android:id="@+id/user_info_email"
                 android:layout_marginBottom="1dp"
                 android:layout_marginLeft="10dp"
                 android:padding="8dp"/>
@@ -74,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="in Name"
+                android:id="@+id/user_info_name"
                 android:gravity="left"
                 android:layout_marginBottom="1dp"
                 android:layout_marginLeft="10dp"
@@ -98,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="in Birthday"
+                android:id="@+id/user_info_birth"
                 android:gravity="left"
                 android:layout_marginBottom="1dp"
                 android:layout_marginLeft="10dp"
@@ -122,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="in Gender"
+                android:id="@+id/user_info_gender"
                 android:gravity="left"
                 android:layout_marginBottom="1dp"
                 android:layout_marginLeft="10dp"
@@ -148,6 +152,7 @@
                 android:layout_width="wrap_content"
                 android:text="in PhoneNumber"
                 android:gravity="left"
+                android:id="@+id/user_info_phone"
                 android:layout_marginBottom="1dp"
                 android:layout_marginLeft="10dp"
                 android:padding="8dp"/>

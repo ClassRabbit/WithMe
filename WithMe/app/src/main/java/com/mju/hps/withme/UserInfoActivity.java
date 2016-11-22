@@ -5,13 +5,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.mju.hps.withme.model.User;
 
 public class UserInfoActivity extends AppCompatActivity {
+
+    TextView email, name, birth, gender, phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+
+        email = (TextView)findViewById(R.id.user_info_email);
+        name = (TextView)findViewById(R.id.user_info_name);
+        birth = (TextView)findViewById(R.id.user_info_birth);
+        gender = (TextView)findViewById(R.id.user_info_gender);
+        phone = (TextView)findViewById(R.id.user_info_phone);
     }
 
     @Override
@@ -35,5 +46,15 @@ public class UserInfoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        email.setText(User.getInstance().getMail());
+        name.setText(User.getInstance().getName());
+        birth.setText(User.getInstance().getBirth());
+        gender.setText(User.getInstance().getGender());
+        phone.setText("" + User.getInstance().getPhone());
     }
 }
