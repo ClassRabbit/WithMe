@@ -12,7 +12,8 @@ import java.io.ByteArrayOutputStream;
 
 public class Constants {
 //    public static final String SERVER_URL = "http://192.168.40.22:3000";
-    public static final String SERVER_URL = "http://192.168.0.2:3000";
+//    public static final String SERVER_URL = "http://192.168.0.2:3000";
+    public static final String SERVER_URL = "http://192.168.0.7:3000";
 
 
     public static final int REQUEST_CODE_LOCATION_COARSE = 1;

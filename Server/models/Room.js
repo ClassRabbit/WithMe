@@ -7,7 +7,8 @@ var schema = new Schema({
   content: {type: String, required: true},
   limit: {type: Number, required: true},
   images: [String],
-  
+  latitude: {type: Number},
+  longitude: {type: Number},
   attender : [Schema.Types.ObjectId]
 }, {
   toJSON: {virtuals: true},

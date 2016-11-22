@@ -94,6 +94,14 @@
                 android:text="input map"
                 android:onClick="input_map"
                 android:background="@color/colorBackgroundStandard" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:id="@+id/selectedLocation"
+                android:layout_marginLeft="20sp"
+                android:background="@drawable/textview_border"
+                />
         </TableRow>
 
         <TableRow
