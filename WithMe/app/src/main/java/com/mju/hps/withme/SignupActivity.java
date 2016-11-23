@@ -150,7 +150,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             "\"gender\" : \""  + gender.getText().toString() + "\"}";
 
         if (photo != null){
-            imageRealPath = getRealPathFromURI(mImageCaptureUri);
+            imageRealPath = DatabaseLab.getInstance().getRealPathFromURI(mImageCaptureUri);
+//            Log.e("imageRealPath", imageRealPath);
         }
 
         final Activity activity = this;
@@ -353,16 +354,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = { MediaStore.Images.Media.DATA };
 
-        CursorLoader cursorLoader = new CursorLoader(this, contentUri, proj, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
-
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();

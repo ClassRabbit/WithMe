@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -13,7 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
+import static com.mju.hps.withme.model.User.user;
 /**
  * Created by KMC on 2016. 11. 15..
  */
@@ -75,6 +76,38 @@ public class ServerManager {
                     .addFormDataPart("image", file_name + ".png", RequestBody.create(MediaType.parse("image/png"), file))
                     .addFormDataPart("body",  json)
                     .build();
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+        catch(IOException e) {
+            Log.e("ServerManager.post", e.toString());
+            return null;
+        }
+    }
+
+    public String roomCreate(String url, String json,  ArrayList<File> files) {
+        Log.i("roomCreate", "post(" + url + ", "  +  json + ")");
+        try {
+//            RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+//                    .addFormDataPart("images", file_name + ".png", RequestBody.create(MediaType.parse("image/png"), files))
+//                    .addFormDataPart("body",  json)
+//                    .build();
+
+            MultipartBody.Builder builder = new MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("body",  json);
+
+            for(int i=0; i < files.size(); i++){
+//                user.getId() + "_"
+                builder.addFormDataPart("image",  i + ".png", RequestBody.create(MediaType.parse("image/png"), files.get(i)));
+            }
+
+            RequestBody requestBody = builder.build();
+
             okhttp3.Request request = new okhttp3.Request.Builder()
                     .url(url)
                     .post(requestBody)

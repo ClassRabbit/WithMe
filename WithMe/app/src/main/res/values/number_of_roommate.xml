@@ -3,10 +3,10 @@
 
     <string-array name="number_of_people">
 
-        <item>1명</item>
-        <item>2명</item>
-        <item>3명</item>
-        <item>4명</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
 
     </string-array>
 

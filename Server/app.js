@@ -39,6 +39,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use('/', routes);
 app.use('/user', user);
+app.use('/room', room);
 app.use('/fcm', fcm);
 
 // catch 404 and forward to error handler

@@ -93,7 +93,16 @@ dependencies {
     compile 'com.android.support:design:25.0.1'
     testCompile 'junit:junit:4.12'
     // google map Lib 추가
-
     compile 'com.google.android.gms:play-services:9.0.0'
     compile 'com.google.android.gms:play-services-maps:9.0.0'
+
+    // 여러 사진 관리 Lib 추가
+    compile 'com.yongbeam.y_photopicker:y-photopicker:0.0.1'
+
+    compile 'me.iwf.photopicker:PhotoPicker:0.9.0@aar'
+    compile "com.nineoldandroids:library:2.4.0"
+    compile "com.github.bumptech.glide:glide:3.7.0"
+    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
+
 }

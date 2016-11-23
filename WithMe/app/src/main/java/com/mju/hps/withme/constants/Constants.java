@@ -18,7 +18,7 @@ public class Constants {
 
     public static final int REQUEST_CODE_LOCATION_COARSE = 1;
     public static final int REQUEST_CODE_LOCATION_FINE = 2;
-
+    public static final int REQUEST_CODE_PHOTO_PICKER = 3;
 
     public static final int PICK_FROM_CAMERA = 4;
     public static final int PICK_FROM_ALBUM = 5;
