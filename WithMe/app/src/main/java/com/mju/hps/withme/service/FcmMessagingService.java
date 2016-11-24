@@ -29,7 +29,10 @@ public class FcmMessagingService extends FirebaseMessagingService {
         String from = message.getFrom();
         Map<String, String> data = message.getData();
         String title = data.get("data1");
-        String msg = data.get("data2");
+        String msg = data.get("text");
+//        String from = data.get("from");
+//        String time = data.get("time");
+//        String text = data.get("text");
         Log.e("MessagingService", title + "           " + msg);
         sendPushNotification(message.getData().get("data1"));
     }

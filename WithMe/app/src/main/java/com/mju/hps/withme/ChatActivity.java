@@ -1,9 +1,14 @@
 package com.mju.hps.withme;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +17,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.mju.hps.withme.constants.Constants;
+import com.mju.hps.withme.model.User;
+import com.mju.hps.withme.server.ServerManager;
+
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -24,12 +36,35 @@ public class ChatActivity extends ActionBarActivity {
     private Button sendBtn;
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> chatHistory;
+    private Handler handler;
+    private String roomId = "testRoom1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         initControls();
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String str;
+                switch (msg.what) {
+//                    case MSG_LOGIN_SUCCESS:     // 성공
+//                        str = (String)msg.obj;
+//                        break;
+//                    case MSG_LOGIN_FAIL:     // 실패
+//                        str = (String)msg.obj;
+//                        mailEditText.setText(null);
+//                        passwordEditText.setText(null);
+//                        break;
+//                    case MSG_LOGIN_ERROR:     // 에러
+//                        str = (String)msg.obj;
+//                        break;
+                }
+//                loginButton.setClickable(true);
+            }
+        };
     }
 
     @Override
@@ -59,30 +94,42 @@ public class ChatActivity extends ActionBarActivity {
         messageET = (EditText) findViewById(R.id.messageEdit);
         sendBtn = (Button) findViewById(R.id.chatSendButton);
 
-        TextView meLabel = (TextView) findViewById(R.id.meLbl);
-        TextView companionLabel = (TextView) findViewById(R.id.friendLabel);
         RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-        companionLabel.setText("My Buddy");
 
         loadDummyHistory();
 
+        //
+        // 채팅 클릭 이벤트 함수
+        //
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String messageText = messageET.getText().toString();
-                if (TextUtils.isEmpty(messageText)) {
-                    return;
-                }
+                final String json = "{" +
+                            "\"roomId\" : \"" + roomId + "\", " +
+                            "\"from\" : \"" + User.getInstance().getToken() + "\"," +
+                            "\"time\" : \"" + DateFormat.getDateTimeInstance().format(new Date()) + "\"," +
+                            "\"text\" : \"" + messageText + "\"" +
+                        "}";
+                new Thread() {
+                    public void run() {
+                        String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/fcm/chat", json);
+                        if(response == null){
+                            Log.e("login", "서버 에러");
+                            return;
+                        }
+                    }
+                }.start();
 
-                ChatMessage chatMessage = new ChatMessage();
-                chatMessage.setId(122);//dummy
-                chatMessage.setMessage(messageText);
-                chatMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-                chatMessage.setMe(true);
-
+//                ChatMessage chatMessage = new ChatMessage();
+//                chatMessage.setId(122);//dummy
+//                chatMessage.setMessage(messageText);
+//                chatMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+//                chatMessage.setMe(true);
+//
                 messageET.setText("");
-
-                displayMessage(chatMessage);
+//
+//                displayMessage(chatMessage);
             }
         });
 

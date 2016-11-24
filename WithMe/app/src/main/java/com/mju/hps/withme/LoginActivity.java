@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.database.DatabaseLab;
 import com.mju.hps.withme.database.DatabaseSchema;
@@ -91,7 +92,8 @@ public class LoginActivity extends AppCompatActivity {
     public void login(View view) {
         final String json = "{" +
                     "\"mail\" : \"" + mailEditText.getText().toString() + "\", " +
-                    "\"password\" : \"" + passwordEditText.getText().toString() + "\"" +
+                    "\"password\" : \"" + passwordEditText.getText().toString() + "\"," +
+                    "\"token\" : \"" + FirebaseInstanceId.getInstance().getToken() + "\"" +
                 "}";
         final Activity activity = this;
         new Thread() {

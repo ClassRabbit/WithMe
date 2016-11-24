@@ -95,16 +95,23 @@ router.post('/login', function(req, res, next) {
       console.log('err');
       return res.json({result: 'error'});
     }
-    if(user !== null){
-      console.log('user !== null');
-      user.result = 'success';
-      console.log(user);
-      return res.json({result: 'success', user: user});
-    }
-    else {
-      console.log('else');
-      return res.json({result: 'fail'});
-    }
+    user.token = req.body.token;
+    user.save(function(err, user){
+      if(err){
+        console.log('err');
+        return res.json({result: 'error'});
+      }
+      if(user !== null){
+        console.log('user !== null');
+        user.result = 'success';
+        console.log(user);
+        return res.json({result: 'success', user: user});
+      }
+      else {
+        console.log('else');
+        return res.json({result: 'fail'});
+      }
+    });
   });
 });
 

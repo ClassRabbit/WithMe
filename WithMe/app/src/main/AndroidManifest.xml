@@ -33,6 +33,7 @@
         android:label="@string/app_name_mine"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:name="com.mju.hps.withme.WithMeApplication"
         tools:replace = "android:label">
         <service android:name=".service.FcmMessagingService">
             <intent-filter>
