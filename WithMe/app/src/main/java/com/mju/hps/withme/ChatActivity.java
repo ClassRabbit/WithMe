@@ -31,12 +31,17 @@ import java.util.Date;
 
 public class ChatActivity extends ActionBarActivity {
 
+    public static final int MSG_CHAT_SUCCESS = 1;
+    public static final int MSG_CHAT_FAIL = 2;
+    public static final int MSG_CHAT_ERROR = 3;
+
     private EditText messageET;
     private ListView messagesContainer;
     private Button sendBtn;
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> chatHistory;
-    private Handler handler;
+
+    static public Handler handler;
     private String roomId = "testRoom1";
 
     @Override
@@ -48,19 +53,18 @@ public class ChatActivity extends ActionBarActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                String str;
+                ChatMessage chatMessage;
                 switch (msg.what) {
-//                    case MSG_LOGIN_SUCCESS:     // 성공
-//                        str = (String)msg.obj;
-//                        break;
-//                    case MSG_LOGIN_FAIL:     // 실패
-//                        str = (String)msg.obj;
-//                        mailEditText.setText(null);
-//                        passwordEditText.setText(null);
-//                        break;
-//                    case MSG_LOGIN_ERROR:     // 에러
-//                        str = (String)msg.obj;
-//                        break;
+                    case MSG_CHAT_SUCCESS:     // 성공
+                        chatMessage = (ChatMessage)msg.obj;
+                        displayMessage(chatMessage);
+                        break;
+                    case MSG_CHAT_FAIL:     // 실패
+                        Log.e("chatHandler", "2");
+                        break;
+                    case MSG_CHAT_ERROR:     // 에러
+                        Log.e("chatHandler", "3");
+                        break;
                 }
 //                loginButton.setClickable(true);
             }
@@ -171,6 +175,11 @@ public class ChatActivity extends ActionBarActivity {
             displayMessage(message);
         }
 
+    }
+
+
+    public Handler getHandler() {
+        return handler;
     }
 
 }

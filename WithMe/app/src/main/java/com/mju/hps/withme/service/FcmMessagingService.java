@@ -7,14 +7,19 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Message;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.mju.hps.withme.ChatActivity;
+import com.mju.hps.withme.ChatMessage;
+import com.mju.hps.withme.LoginActivity;
 import com.mju.hps.withme.MainActivity;
 import com.mju.hps.withme.R;
+import com.mju.hps.withme.model.User;
 
 import java.util.Map;
 
@@ -26,15 +31,28 @@ public class FcmMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage message) {
         Log.i("MessagingService", "onMessageReceived");
-        String from = message.getFrom();
+//        String from = message.getFrom();
         Map<String, String> data = message.getData();
-        String title = data.get("data1");
-        String msg = data.get("text");
-//        String from = data.get("from");
-//        String time = data.get("time");
-//        String text = data.get("text");
-        Log.e("MessagingService", title + "           " + msg);
-        sendPushNotification(message.getData().get("data1"));
+        String from = data.get("data1");
+        String time = data.get("data2");
+        String msg = data.get("data3");
+//        chatMessage.setId(122);//dummy
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setMessage(msg);
+        chatMessage.setDate(time);
+        if(from.equals(User.getInstance().getToken())){
+            chatMessage.setMe(true);
+        }
+//        Log.e("MessagingService", from + ", " + time + ", " + msg);
+//        sendPushNotification(message.getData().get("data1"));
+
+        if(ChatActivity.handler == null){
+            Log.e("handler", "null");
+        }
+        else {
+            Log.e("handler", "created");
+            ChatActivity.handler.sendMessage(Message.obtain(ChatActivity.handler, ChatActivity.MSG_CHAT_SUCCESS, chatMessage));
+        }
     }
 
 
