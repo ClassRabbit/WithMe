@@ -9,20 +9,20 @@
 
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="100sp"
         app:srcCompat="@drawable/user_information"
         android:id="@+id/user_profile"
-        android:layout_height="100dp"
+        android:layout_height="100sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp" />
+        android:layout_marginTop="14sp" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/user_profile"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="22sp"
         android:id="@+id/user_info_table">
 
         <View
@@ -38,9 +38,9 @@
                 android:layout_width="wrap_content"
                 android:text="E-mail"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -48,9 +48,8 @@
                 android:text="in E-mail address"
                 android:gravity="left"
                 android:id="@+id/user_info_email"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"/>
 
         </TableRow>
 
@@ -63,9 +62,9 @@
                 android:layout_width="wrap_content"
                 android:text="Name"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -73,9 +72,8 @@
                 android:text="in Name"
                 android:id="@+id/user_info_name"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"/>
 
         </TableRow>
 
@@ -88,9 +86,9 @@
                 android:layout_width="wrap_content"
                 android:text="Birthday"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -98,9 +96,8 @@
                 android:text="in Birthday"
                 android:id="@+id/user_info_birth"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"/>
 
         </TableRow>
 
@@ -113,9 +110,9 @@
                 android:layout_width="wrap_content"
                 android:text="Gender"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -123,9 +120,8 @@
                 android:text="in Gender"
                 android:id="@+id/user_info_gender"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"/>
 
         </TableRow>
 
@@ -139,9 +135,9 @@
                 android:layout_width="wrap_content"
                 android:text="PhoneNumber"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <TextView
                 android:layout_height="wrap_content"
@@ -149,9 +145,8 @@
                 android:text="in PhoneNumber"
                 android:gravity="left"
                 android:id="@+id/user_info_phone"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"/>
 
         </TableRow>
 
