@@ -93,6 +93,12 @@ public class LoginActivity extends AppCompatActivity {
         new Thread() {
             public void run() {
                 String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/user/login", json);
+                if(response == null){
+                    Log.e("login", "서버 에러");
+                    handler.sendMessage(Message.obtain(handler, MSG_LOGIN_ERROR, ""));
+                    activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginError"));
+                    return;
+                }
                 Log.e("loginResponse", response);
                 try{
                     JSONObject obj = new JSONObject(response);

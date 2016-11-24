@@ -16,6 +16,18 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
+        <Button
+            android:text="실행"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="11dp"
+            android:id="@+id/intro_button"
+            android:textColor="@color/colorWhite"
+            android:onClick="introButtonAct"
+            android:background="@color/colorButtonRealChoice" />
+
     </RelativeLayout>
 
 </LinearLayout>
