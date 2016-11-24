@@ -11,7 +11,7 @@ var Message = function(){
   this.collapse_key = '';
   this.data = {};
   this.notification = {};
-}
+};
 
 var messageSample = {
     // to: 'registration_token_or_topics', // 보낼 사람의 기기 토큰을 넣는다.

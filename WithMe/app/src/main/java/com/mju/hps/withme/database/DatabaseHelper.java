@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     UserTable.Cols.TOKEN + " text," +
                     UserTable.Cols.NAME + " text," +
                     UserTable.Cols.BIRTH + " text," +
-                    UserTable.Cols.PHONE + " number," +
+                    UserTable.Cols.PHONE + " text," +
                     UserTable.Cols.GENDER + " text" +
                 ")"
         );

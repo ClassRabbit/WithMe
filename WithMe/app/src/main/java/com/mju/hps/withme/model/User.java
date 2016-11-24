@@ -17,7 +17,7 @@ public class User {
     private String token;
     private String name;
     private String birth;
-    private int phone;
+    private String phone;
     private String gender;
 
     private String profileImage;
@@ -88,11 +88,11 @@ public class User {
         this.birth = birth;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

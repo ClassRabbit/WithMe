@@ -8,7 +8,7 @@ var schema = new Schema({
   token: {type: String, required: true},
   name: {type: String, required: true},
   birth: {type: String, required: true},
-  phone: {type: Number, required: true},
+  phone: {type: String, required: true},
   gender: {type: String, required: true},
   img: {type: String}
 }, {

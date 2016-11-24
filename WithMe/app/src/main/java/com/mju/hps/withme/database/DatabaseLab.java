@@ -148,7 +148,7 @@ public class DatabaseLab {
             User.getInstance().setToken(cursor.getString(cursor.getColumnIndex(UserTable.Cols.TOKEN)));
             User.getInstance().setName(cursor.getString(cursor.getColumnIndex(UserTable.Cols.NAME)));
             User.getInstance().setBirth(cursor.getString(cursor.getColumnIndex(UserTable.Cols.BIRTH)));
-            User.getInstance().setPhone(Integer.parseInt(cursor.getString(cursor.getColumnIndex(UserTable.Cols.PHONE))));
+            User.getInstance().setPhone(cursor.getString(cursor.getColumnIndex(UserTable.Cols.PHONE)));
             User.getInstance().setGender(cursor.getString(cursor.getColumnIndex(UserTable.Cols.GENDER)));
         }
         finally {
@@ -162,6 +162,10 @@ public class DatabaseLab {
         values.put(UserTable.Cols.MAIL, user.getMail());
         values.put(UserTable.Cols.PASSWORD, user.getPassword());
         values.put(UserTable.Cols.TOKEN, user.getToken());
+        values.put(UserTable.Cols.NAME, user.getName());
+        values.put(UserTable.Cols.BIRTH, user.getBirth());
+        values.put(UserTable.Cols.PHONE, user.getPhone());
+        values.put(UserTable.Cols.GENDER, user.getGender());
         return values;
     }
 

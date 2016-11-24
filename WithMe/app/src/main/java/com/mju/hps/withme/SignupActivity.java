@@ -163,6 +163,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             public void run() {
                 if(photo == null){
                     String responseStr = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
+                    if(responseStr == null){
+                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserError"));
+                        return;
+                    }
                     Log.d("createUserResult", responseStr);
                     try {
                         JSONObject response = new JSONObject(responseStr);
@@ -173,7 +177,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         else {
                             activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
                         }
-
                     } catch (Throwable t) {
                         Log.e("createUser", t.toString());
                     }

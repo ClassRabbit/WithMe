@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                         User.getInstance().setToken(user.getString("token"));
                         User.getInstance().setName(user.getString("name"));
                         User.getInstance().setBirth(user.getString("birth"));
-                        User.getInstance().setPhone(Integer.parseInt(user.getString("phone")));
+                        User.getInstance().setPhone(user.getString("phone"));
                         User.getInstance().setGender(user.getString("gender"));
                         DatabaseLab.getInstance().loginUser();
                         handler.sendMessage(Message.obtain(handler, MSG_LOGIN_SUCCESS, ""));

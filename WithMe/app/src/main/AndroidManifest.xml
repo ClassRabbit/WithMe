@@ -58,6 +58,7 @@
             <intent-filter>
                 <action android:name="com.mju.hps.withme.reciver.createUserFail" />
                 <action android:name="com.mju.hps.withme.reciver.createUserSuccess" />
+                <action android:name="com.mju.hps.withme.reciver.createUserError" />
                 <action android:name="com.mju.hps.withme.reciver.loginSuccess" />
                 <action android:name="com.mju.hps.withme.reciver.loginFail" />
                 <action android:name="com.mju.hps.withme.reciver.loginError" />
@@ -90,6 +91,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity android:name=".GoogleMapActivity"></activity>
 
