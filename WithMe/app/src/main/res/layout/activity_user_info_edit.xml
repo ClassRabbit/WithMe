@@ -7,25 +7,25 @@
     tools:context="com.mju.hps.withme.UserInfoEditActivity">
 
     <ImageView
-        android:layout_width="100dp"
+        android:layout_width="100sp"
         android:src="@drawable/user_information"
         android:id="@+id/user_profile"
-        android:layout_height="100dp"
+        android:layout_height="100sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp" />
+        android:layout_marginTop="14sp" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/user_profile"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="22sp"
         android:id="@+id/user_info_table">
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp" />
+            android:layout_height="1sp" />
 
         <TableRow
             android:layout_width="match_parent"
@@ -40,8 +40,8 @@
                 android:layout_width="wrap_content"
                 android:text="E-mail"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
                 android:padding="8dp"/>
 
             <EditText
@@ -49,9 +49,8 @@
                 android:layout_width="wrap_content"
                 android:hint="in E-mail address"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"
                 android:id="@+id/user_info_edit_email"/>
 
         </TableRow>
@@ -65,18 +64,17 @@
                 android:layout_width="wrap_content"
                 android:text="Name"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in Name"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"
                 android:id="@+id/user_info_edit_name"/>
 
         </TableRow>
@@ -90,18 +88,17 @@
                 android:layout_width="wrap_content"
                 android:text="Birthday"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in Birthday"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"
                 android:id="@+id/user_info_edit_birth"/>
 
         </TableRow>
@@ -115,18 +112,17 @@
                 android:layout_width="wrap_content"
                 android:text="Gender"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in Gender"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"
                 android:id="@+id/user_info_edit_gender" />
 
         </TableRow>
@@ -141,18 +137,17 @@
                 android:layout_width="wrap_content"
                 android:text="PhoneNumber"
                 android:gravity="center"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="70dp"
-                android:padding="8dp"/>
+                android:layout_marginBottom="1sp"
+                android:layout_marginLeft="20sp"
+                android:padding="8sp"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in PhoneNumber"
                 android:gravity="left"
-                android:layout_marginBottom="1dp"
-                android:layout_marginLeft="10dp"
-                android:padding="8dp"
+                android:layout_marginBottom="1sp"
+                android:padding="8sp"
                 android:id="@+id/user_info_edit_phone"/>
 
         </TableRow>
@@ -166,6 +161,6 @@
         android:text="Edit Complete"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="106dp" />
+        android:layout_marginBottom="106sp" />
 
 </RelativeLayout>
