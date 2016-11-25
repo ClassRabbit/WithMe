@@ -82,53 +82,36 @@ public class RoomCreateActivity extends AppCompatActivity {
     LocationListener locationListenerGps = new LocationListener() {
 
         public void onLocationChanged(Location location) {
-
             currentLocation = location;
             Log.e("GPS", "change");
-
         }
-
 
         public void onProviderDisabled(String provider) {
-
         }
-
 
         public void onProviderEnabled(String provider) {
-
         }
-
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
-
         }
-
     };
 
 
     LocationListener locationListenerNetwork = new LocationListener() {
 
         public void onLocationChanged(Location location) {
-
             currentLocation = location;
             Log.e("Network", "change");
         }
 
-
         public void onProviderDisabled(String provider) {
-
         }
-
 
         public void onProviderEnabled(String provider) {
-
         }
-
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
-
         }
-
     };
 
     @Override
@@ -136,19 +119,15 @@ public class RoomCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_create);
 
+        setupUI(findViewById(R.id.activity_room_create));
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
         gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);//GPS 이용가능 여부
-
         network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);//Network 이용가능 여부
 
         if (!gps_enabled && !network_enabled) {
-
             Log.e("LocationManagerTest", "nothing is enabled"); //모두 사용 불가
-
             return;
-
         }
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -163,14 +142,14 @@ public class RoomCreateActivity extends AppCompatActivity {
         }
 
 
-        if (gps_enabled)//GPS를 이용한 측위요청
+        if (gps_enabled) {//GPS를 이용한 측위요청
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListenerGps);// 현재 위치 업데이트
+        }
 
 
-
-        if(network_enabled)//Network를 이용한 측위요청
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListenerNetwork);// 현재 위치 업데이트
-
+        if(network_enabled) {//Network를 이용한 측위요청
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListenerNetwork);// 현재 위치 업데이트
+        }
 
         //Spiner 추가
         limitSpinner = (Spinner)findViewById(R.id.number_of_roommate);
@@ -234,7 +213,7 @@ public class RoomCreateActivity extends AppCompatActivity {
             }
         }
 
-        setupUI(findViewById(R.id.activity_room_create));
+
     }
 
     @Override
