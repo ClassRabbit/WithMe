@@ -14,6 +14,7 @@ import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
@@ -70,10 +71,106 @@ public class RoomCreateActivity extends AppCompatActivity {
     private ArrayList<String> selectedPhotos = new ArrayList<>();
     private ArrayList<File> photosFileList = new ArrayList<File>();
     private Spinner limitSpinner;
+
+    private LocationManager locationManager;
+
+    private boolean gps_enabled = false;
+
+    private boolean network_enabled = false;
+
+
+    LocationListener locationListenerGps = new LocationListener() {
+
+        public void onLocationChanged(Location location) {
+
+            currentLocation = location;
+            Log.e("GPS", "change");
+
+        }
+
+
+        public void onProviderDisabled(String provider) {
+
+        }
+
+
+        public void onProviderEnabled(String provider) {
+
+        }
+
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+    };
+
+
+    LocationListener locationListenerNetwork = new LocationListener() {
+
+        public void onLocationChanged(Location location) {
+
+            currentLocation = location;
+            Log.e("Network", "change");
+        }
+
+
+        public void onProviderDisabled(String provider) {
+
+        }
+
+
+        public void onProviderEnabled(String provider) {
+
+        }
+
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_create);
+
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);//GPS 이용가능 여부
+
+        network_enabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);//Network 이용가능 여부
+
+        if (!gps_enabled && !network_enabled) {
+
+            Log.e("LocationManagerTest", "nothing is enabled"); //모두 사용 불가
+
+            return;
+
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+
+        if (gps_enabled)//GPS를 이용한 측위요청
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListenerGps);// 현재 위치 업데이트
+
+
+
+        if(network_enabled)//Network를 이용한 측위요청
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListenerNetwork);// 현재 위치 업데이트
+
 
         //Spiner 추가
         limitSpinner = (Spinner)findViewById(R.id.number_of_roommate);
