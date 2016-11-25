@@ -14,27 +14,27 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
 
-    <!--구글 맵 관련-->
+    <!-- 구글 맵 관련 -->
     <permission
         android:name="com.mju.hps.withme.locationapi.maps.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="com.mju.hps.withme.locationapi.maps.permission.MAPS_RECEIVE" />
 
-
-
     <application
+        android:name=".WithMeApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name_mine"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="com.mju.hps.withme.WithMeApplication"
-        tools:replace = "android:label">
+        tools:replace="android:label">
         <service android:name=".service.FcmMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -81,22 +81,21 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChatActivity" />
-
-
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".UserInfoEditActivity" />
         <activity android:name=".RoomCreateActivity" />
 
-        <!--Google Api 키 삽입-->
+        <!-- Google Api 키 삽입 -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".GoogleMapActivity"></activity>
+        <activity android:name=".GoogleMapActivity" />
 
-        <!--여러사진 관련-->
+        <!-- 여러사진 관련 -->
         <activity
             android:name="com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -113,6 +112,9 @@
         <activity
             android:name="me.iwf.photopicker.PhotoPagerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>
