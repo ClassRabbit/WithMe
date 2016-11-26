@@ -13,23 +13,14 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.mju.hps.withme.constants.Constants;
-import com.mju.hps.withme.model.Room;
 import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.server.ServerManager;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 
 import static com.mju.hps.withme.database.DatabaseSchema.*;
 

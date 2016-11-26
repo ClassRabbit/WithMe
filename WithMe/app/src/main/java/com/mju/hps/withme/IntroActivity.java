@@ -19,7 +19,6 @@ import android.widget.Button;
 
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.database.DatabaseLab;
-import com.mju.hps.withme.model.Room;
 import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.service.FcmInstanceIdService;
 import com.mju.hps.withme.service.FcmMessagingService;

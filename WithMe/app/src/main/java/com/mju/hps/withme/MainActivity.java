@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case MSG_MAIN_ROOMS:
                         rooms = (JSONArray)msg.obj;
+                        adapter = new RoomListAdapter();
                         Log.e("MSG_MAIN_ROOMS", "" + rooms.length());
                         try{
                             for(int i=0;i<rooms.length();i++){
@@ -114,8 +115,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
-                RoomItem roomItem = (RoomItem) parent.getItemAtPosition(position) ;
-
+                RoomItem roomItem = (RoomItem) parent.getItemAtPosition(position);
+                Intent intent =new Intent(MainActivity.this, RoomViewActivity.class);
+                intent.putExtra("roomId", roomItem.getId());
+                MainActivity.this.startActivity(intent);
             }
         });
 
