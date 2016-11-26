@@ -112,7 +112,10 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".RoomViewActivity"></activity>
+        <activity
+            android:name=".RoomViewActivity"
+            android:label="@string/title_activity_room_view"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

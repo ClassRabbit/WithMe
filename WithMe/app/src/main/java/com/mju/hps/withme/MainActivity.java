@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     private JSONArray rooms;
     private Toolbar toolbar;
     private RoomListAdapter adapter;
+    private boolean isJoin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +71,15 @@ public class MainActivity extends AppCompatActivity
                 switch (msg.what) {
                     case MSG_MAIN_CAN_JOIN:     // 현재 가입한 방이 없음
                         str = (String)msg.obj;
+                        isJoin = false;
                         fab.setVisibility(View.VISIBLE);
                         break;
                     case MSG_MAIN_CANNOT_JOIN:     // 현재 가입한 방이 있음
                         str = (String)msg.obj;
+                        isJoin = true;
                         fab.setVisibility(View.GONE);
                         break;
-                    case MSG_MAIN_ERROR:     // 현재 가입한 방이 있음
+                    case MSG_MAIN_ERROR:     // 서버 에러
                         str = (String)msg.obj;
                         Toast.makeText(MainActivity.this, "서버에 연결하지 못했습니다.", Toast.LENGTH_SHORT).show();
                         break;
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity
                 RoomItem roomItem = (RoomItem) parent.getItemAtPosition(position);
                 Intent intent =new Intent(MainActivity.this, RoomViewActivity.class);
                 intent.putExtra("roomId", roomItem.getId());
+                intent.putExtra("isJoin", isJoin);
                 MainActivity.this.startActivity(intent);
             }
         });

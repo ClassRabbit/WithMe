@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:text="Room fix"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button4"
+        android:layout_alignBaseline="@+id/textView3Sample"
+        android:layout_alignBottom="@+id/textView3Sample"
+        android:layout_toEndOf="@+id/textView3Sample"
+        android:layout_marginStart="20dp" />
+
+    <TextView
+        android:text="Owner View"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:id="@+id/textView3Sample"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="61dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="11dp"
+        android:layout_below="@+id/button4"
+        android:id="@+id/room_view_listview_waiting"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>
