@@ -9,6 +9,7 @@ var methodOverride = require('method-override');
 var routes = require('./routes/index');
 var user = require('./routes/user');
 var fcm = require('./routes/fcm');
+var main = require('./routes/main');
 var mongoose = require('mongoose');
 
 var room = require('./routes/room');
@@ -41,6 +42,7 @@ app.use('/', routes);
 app.use('/user', user);
 app.use('/room', room);
 app.use('/fcm', fcm);
+app.use('/main', main);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

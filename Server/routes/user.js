@@ -89,11 +89,15 @@ router.post('/image', function(req, res, next) {
 });
 
 router.post('/login', function(req, res, next) {
-  console.log(req.body);
+  // console.log(req.body);
   User.findOne({mail: req.body.mail, password: req.body.password}, function(err, user){
     if(err){
       console.log('err');
       return res.json({result: 'error'});
+    }
+    if(user === null){
+      console.log('null');
+      return res.json({result: 'null'});
     }
     user.token = req.body.token;
     user.save(function(err, user){

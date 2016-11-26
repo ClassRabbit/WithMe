@@ -59,9 +59,6 @@
                 <action android:name="com.mju.hps.withme.reciver.createUserFail" />
                 <action android:name="com.mju.hps.withme.reciver.createUserSuccess" />
                 <action android:name="com.mju.hps.withme.reciver.createUserError" />
-                <action android:name="com.mju.hps.withme.reciver.loginSuccess" />
-                <action android:name="com.mju.hps.withme.reciver.loginFail" />
-                <action android:name="com.mju.hps.withme.reciver.loginError" />
             </intent-filter>
         </receiver>
 

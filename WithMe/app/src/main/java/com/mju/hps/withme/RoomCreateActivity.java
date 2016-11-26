@@ -93,7 +93,6 @@ public class RoomCreateActivity extends AppCompatActivity {
 
         public void onLocationChanged(Location location) {
             currentLocation = location;
-            Log.e("GPS", "change");
         }
 
         public void onProviderDisabled(String provider) {
@@ -111,7 +110,6 @@ public class RoomCreateActivity extends AppCompatActivity {
 
         public void onLocationChanged(Location location) {
             currentLocation = location;
-            Log.e("Network", "change");
         }
 
         public void onProviderDisabled(String provider) {
@@ -140,12 +138,20 @@ public class RoomCreateActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case MSG_CREATE_ROOM_SUCCESS:     // 성공
                         str = (String)msg.obj;
+                        Toast.makeText(RoomCreateActivity.this, "방 만들기에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                        Intent resultIntent=new Intent(RoomCreateActivity.this, MainActivity.class);
+                        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        RoomCreateActivity.this.startActivity(resultIntent);
+                        finish();
                         break;
                     case MSG_CREATE_ROOM_FAIL:     // 실패
                         str = (String)msg.obj;
+                        Toast.makeText(RoomCreateActivity.this, "방 만들기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         break;
                     case MSG_CREATE_ROOM_ERROR:     // 에러
                         str = (String)msg.obj;
+                        Toast.makeText(RoomCreateActivity.this, "서버에러 입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 createRoomButton.setClickable(true);
@@ -309,7 +315,6 @@ public class RoomCreateActivity extends AppCompatActivity {
                 if (selectedPhotos != null) {
                     String responseStr = ServerManager.getInstance().roomCreate(Constants.SERVER_URL + "/room/create", json, photosFileList);
                     if(responseStr == null){
-                        Toast.makeText(activity, "서버에러 입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_ERROR, ""));
                         return;
                     }
@@ -318,7 +323,6 @@ public class RoomCreateActivity extends AppCompatActivity {
                         JSONObject response = new JSONObject(responseStr);
                         String result = response.getString("result");
                         if(result.equals("fail")){
-                            Toast.makeText(activity, "방 만들기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                             handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_FAIL, ""));
                         }
                         else {
@@ -327,14 +331,8 @@ public class RoomCreateActivity extends AppCompatActivity {
 //                            roomContent.setText("");
 //                            selectedLatitude = null;
 //                            selectedLongitude = null;
-                            Intent resultIntent=new Intent(activity, MainActivity.class);
-                            resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            activity.startActivity(resultIntent);
-                            activity.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_right);
+
                             handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_SUCCESS, ""));
-                            Toast.makeText(activity, "방 만들기에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                            finish();
                         }
 
                     } catch (Throwable t) {

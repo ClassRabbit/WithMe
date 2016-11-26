@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final int MSG_LOGIN_SUCCESS = 1;
     private static final int MSG_LOGIN_FAIL = 2;
     private static final int MSG_LOGIN_ERROR = 3;
+    private static final int MSG_LOGIN_NULL = 4;
 
     EditText mailEditText;
     EditText passwordEditText;
@@ -52,14 +53,22 @@ public class LoginActivity extends AppCompatActivity {
                 switch (msg.what) {
                     case MSG_LOGIN_SUCCESS:     // 성공
                         str = (String)msg.obj;
+                        Toast.makeText(LoginActivity.this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
                         break;
                     case MSG_LOGIN_FAIL:     // 실패
                         str = (String)msg.obj;
                         mailEditText.setText(null);
                         passwordEditText.setText(null);
+                        Toast.makeText(LoginActivity.this, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         break;
                     case MSG_LOGIN_ERROR:     // 에러
                         str = (String)msg.obj;
+                        Toast.makeText(LoginActivity.this, "서버에러 입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MSG_LOGIN_NULL:     // 에러
+                        str = (String)msg.obj;
+                        Toast.makeText(LoginActivity.this, "입력하신 정보에 맞는 회원이 없습니다.", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 loginButton.setClickable(true);
@@ -102,7 +111,8 @@ public class LoginActivity extends AppCompatActivity {
                 if(response == null){
                     Log.e("login", "서버 에러");
                     handler.sendMessage(Message.obtain(handler, MSG_LOGIN_ERROR, ""));
-                    activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginError"));
+//                    activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginError"));
+                    Log.i("receiver", "loginError");
                     return;
                 }
                 Log.e("loginResponse", response);
@@ -121,17 +131,26 @@ public class LoginActivity extends AppCompatActivity {
                         User.getInstance().setGender(user.getString("gender"));
                         DatabaseLab.getInstance().loginUser();
                         handler.sendMessage(Message.obtain(handler, MSG_LOGIN_SUCCESS, ""));
-                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginSuccess"));
+                        Intent resultIntent=new Intent(activity, MainActivity.class);
+                        activity.startActivity(resultIntent);
+//                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginSuccess"));
                     }
                     else if(obj.getString("result").equals("fail")) {
                         Log.e("login", "로그인 실패");
                         handler.sendMessage(Message.obtain(handler, MSG_LOGIN_FAIL, ""));
-                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginFail"));
+//                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginFail"));
                     }
-                    else {
+                    else if(obj.getString("result").equals("error")) {
                         Log.e("login", "서버 에러");
                         handler.sendMessage(Message.obtain(handler, MSG_LOGIN_ERROR, ""));
-                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginError"));
+//                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginError"));
+                        Log.i("receiver", "loginError");
+                    }
+                    else {
+                        Log.e("login", "NULL 에러");
+                        handler.sendMessage(Message.obtain(handler, MSG_LOGIN_NULL, ""));
+//                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.loginError"));
+                        Log.i("receiver", "loginError");
                     }
                 }
                 catch (Exception e) {

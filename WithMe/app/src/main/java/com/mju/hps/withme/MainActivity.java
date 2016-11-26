@@ -1,9 +1,13 @@
 package com.mju.hps.withme;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,11 +18,27 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.mju.hps.withme.constants.Constants;
+import com.mju.hps.withme.database.DatabaseLab;
+import com.mju.hps.withme.model.User;
+import com.mju.hps.withme.server.ServerManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int MSG_MAIN_CAN_JOIN = 1;
+    private static final int MSG_MAIN_CANNOT_JOIN = 2;
+    private static final int MSG_MAIN_ERROR = 3;
+
+    private FloatingActionButton fab;
+    private Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +47,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
         //밑의 floating action bar
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -37,6 +56,29 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, 0);
             }
         });
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String str;
+                switch (msg.what) {
+                    case MSG_MAIN_CAN_JOIN:     // 현재 가입한 방이 없음
+                        str = (String)msg.obj;
+                        fab.setVisibility(View.VISIBLE);
+                        break;
+                    case MSG_MAIN_CANNOT_JOIN:     // 현재 가입한 방이 있음
+                        str = (String)msg.obj;
+                        fab.setVisibility(View.GONE);
+                        break;
+                    case MSG_MAIN_ERROR:     // 현재 가입한 방이 있음
+                        str = (String)msg.obj;
+                        Toast.makeText(MainActivity.this, "서버에 연결하지 못했습니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,6 +100,42 @@ public class MainActivity extends AppCompatActivity
 
         ListviewAdapter adapter = new ListviewAdapter(this, R.layout.room_item, data);
         listview.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("MainActivity", "onStart 실행");
+        final String json = "{" +
+                "\"user\" : \"" + User.getInstance().getId() + "\"" +
+                "}";
+        final Activity activity = this;
+        new Thread() {
+            public void run() {
+                String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/main", json);
+                if(response == null){
+                    Log.e("login", "서버 에러");
+                    handler.sendMessage(Message.obtain(handler, MSG_MAIN_ERROR, ""));
+                    return;
+                }
+                Log.e("loginResponse", response);
+                try{
+                    JSONObject res = new JSONObject(response);
+                    if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
+                        Log.e("isJoin", "등록한 방 없슴");
+                        handler.sendMessage(Message.obtain(handler, MSG_MAIN_CAN_JOIN, ""));
+                    }
+                    else {
+                        Log.e("isJoin", "등록한 방 있슴");
+                        handler.sendMessage(Message.obtain(handler, MSG_MAIN_CANNOT_JOIN, ""));
+                    }
+                }
+                catch (Exception e) {
+                    Log.e("login", e.toString());
+                }
+
+            }
+        }.start();
     }
 
     @Override
@@ -114,4 +192,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
