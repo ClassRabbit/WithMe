@@ -27,6 +27,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -72,6 +73,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private Bitmap photo;
 
     private String imageRealPath;
+    private Button signUpBtn;
+
+    //error handler
+    private android.support.v7.app.AlertDialog.Builder builder;
+    private android.support.v7.app.AlertDialog theAlertDialog;
 
     protected InputFilter filterPhone = new InputFilter() {
         public CharSequence filter(CharSequence source, int start, int end,
@@ -99,6 +105,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         genderGroup = (RadioGroup)findViewById(R.id.signup_group_gender);
         phone.setFilters(new InputFilter[] {filterPhone});
 
+        builder = new android.support.v7.app.AlertDialog.Builder(this);
+
+        signUpBtn = (Button) findViewById(R.id.sign_up) ;
         profileImage = (ImageView) findViewById(R.id.signup_input_profileImage);
         profileImage.setOnClickListener(this);
 
@@ -106,104 +115,146 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public void createUser(View view) {
+    private boolean errorHandlerSignUp(){
+        //error 체크 변수 처음엔 false 에러 X.
+        boolean errorCheck = false;
+
         WithMeJni jni = new WithMeJni();
+        String errMsg = "회원 정보에 관한 \n <";
+        String errValidMsg = "";
         if(mail.getText().toString().equals("")){
-            Toast.makeText(this, "메일을 입력하세요.", Toast.LENGTH_SHORT).show();
-            return;
+            errorCheck = true;
+            errMsg = errMsg + " 이메일 ";
         }
         if(password.getText().toString().equals("")){
-            Toast.makeText(this, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
-            return;
+            errorCheck = true;
+            errMsg = errMsg + " 비밀번호 ";
         }
         if(passwordConfirm.getText().toString().equals("")){
-            Toast.makeText(this, "비밀번호 확인을 입력하세요.", Toast.LENGTH_SHORT).show();
-            return;
+            errorCheck = true;
+            errMsg = errMsg + " 비밀번호확인 ";
         }
         if(name.getText().toString().equals("")){
-            Toast.makeText(this, "이름을 입력하세요.", Toast.LENGTH_SHORT).show();
-            return;
+            errorCheck = true;
+            errMsg = errMsg + " 이름 ";
+        }
+        if(phone.getText().toString().equals("")){
+            errorCheck = true;
+            errMsg = errMsg + " 휴대폰번호 ";
         }
         if(birth.getText().toString().equals("")){
-            Toast.makeText(this, "생년월일을 입력하세요.", Toast.LENGTH_SHORT).show();
-            return;
+            errorCheck = true;
+            errMsg = errMsg + " 생년월일 ";
         }
 
-        if(jni.isValidMail(mail.getText().toString()) == 0){
-            Toast.makeText(this, "메일 형식이 아닙니다.", Toast.LENGTH_SHORT).show();
-            return;
+        if( !(mail.getText().toString().equals("")) && jni.isValidMail(mail.getText().toString()) == 0){
+            errorCheck = true;
+            errValidMsg = errValidMsg + "이메일 형식이 아닙니다. \n";
         }
-        if(jni.isValidPhone(phone.getText().toString()) == 0){
-            Toast.makeText(this, "핸드폰 형식이 아닙니다.", Toast.LENGTH_SHORT).show();
-            return;
+        if(!(phone.getText().toString().equals("")) && jni.isValidPhone(phone.getText().toString()) == 0){
+            errorCheck = true;
+            errValidMsg = errValidMsg + "휴대폰 번호 형식이 아닙니다. \n";
         }
-        if(jni.isSamePassword(password.getText().toString(), passwordConfirm.getText().toString()) == 0){
-            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        RadioButton gender = (RadioButton)findViewById(genderGroup.getCheckedRadioButtonId());
-
-        final String json = "{" +
-            "\"mail\" : \""  + mail.getText().toString() + "\", " +
-            "\"password\" : \""  + password.getText().toString() + "\", " +
-            "\"token\" : \""  + FirebaseInstanceId.getInstance().getToken() + "\", " +
-            "\"name\" : \""  + name.getText().toString() + "\", " +
-            "\"birth\" : \""  + birth.getText().toString() + "\", " +
-            "\"phone\" : \""  + phone.getText().toString() + "\", " +
-            "\"gender\" : \""  + gender.getText().toString() + "\"}";
-
-        if (photo != null){
-            imageRealPath = DatabaseLab.getInstance().getRealPathFromURI(mImageCaptureUri);
-//            Log.e("imageRealPath", imageRealPath);
+        if(!(passwordConfirm.getText().toString().equals("")) && !(password.getText().toString().equals("")) && jni.isSamePassword(password.getText().toString(), passwordConfirm.getText().toString()) == 0){
+            errorCheck = true;
+            errValidMsg = errValidMsg + "비밀번호 확인과 일치하지 않습니다.";
         }
 
-        final Activity activity = this;
-        new Thread() {
-            public void run() {
-                if(photo == null){
-                    String responseStr = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
-                    if(responseStr == null){
-                        activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserError"));
-                        return;
-                    }
-                    Log.d("createUserResult", responseStr);
-                    try {
-                        JSONObject response = new JSONObject(responseStr);
-                        String result = response.getString("result");
-                        if(result.equals("fail")){
-                            activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
-                        }
-                        else {
-                            activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
-                        }
-                    } catch (Throwable t) {
-                        Log.e("createUser", t.toString());
-                    }
-                }
-
-                //c
-                else {
-                    Log.e("RealPath", imageRealPath);
-                    String responseStr = ServerManager.getInstance().userSignup(Constants.SERVER_URL + "/user/image", json, new File(imageRealPath), mail.getText().toString());
-                    Log.d("createUserResult", responseStr);
-                    try {
-                        JSONObject response = new JSONObject(responseStr);
-                        String result = response.getString("result");
-                        if(result.equals("fail")){
-                            activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
-                        }
-                        else {
-                            activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
-                        }
-
-                    } catch (Throwable t) {
-                        Log.e("createUser", t.toString());
-                    }
-                }
-
+        if(errorCheck){
+            if(errValidMsg.equals("")){
+                errMsg = errMsg + "> \n 정보를 입력 해주세요.";
+                showAlert("회원 정보 부족", errMsg);
             }
-        }.start();
+            else{
+                showAlert("재 입력 요청", errValidMsg);
+            }
+        }
+        return errorCheck;
+    }
+
+    public void showAlert(String title, String message) {
+
+        // Set alert title
+        builder.setTitle(title);
+
+        // The message
+        builder.setMessage(message);
+        builder.setPositiveButton("확인", null);
+        // Create the alert dialog and display it
+        theAlertDialog = builder.create();
+        theAlertDialog.show();
+    }
+
+    public void createUser(View view) {
+        if(errorHandlerSignUp()){
+            Log.e("Sign Up Error!", "회원 가입 에러");
+        }
+        else {
+            signUpBtn.setClickable(false);
+
+            RadioButton gender = (RadioButton)findViewById(genderGroup.getCheckedRadioButtonId());
+
+            final String json = "{" +
+                    "\"mail\" : \""  + mail.getText().toString() + "\", " +
+                    "\"password\" : \""  + password.getText().toString() + "\", " +
+                    "\"token\" : \""  + FirebaseInstanceId.getInstance().getToken() + "\", " +
+                    "\"name\" : \""  + name.getText().toString() + "\", " +
+                    "\"birth\" : \""  + birth.getText().toString() + "\", " +
+                    "\"phone\" : \""  + phone.getText().toString() + "\", " +
+                    "\"gender\" : \""  + gender.getText().toString() + "\"}";
+
+            if (photo != null){
+                imageRealPath = DatabaseLab.getInstance().getRealPathFromURI(mImageCaptureUri);
+//            Log.e("imageRealPath", imageRealPath);
+            }
+
+            final Activity activity = this;
+            new Thread() {
+                public void run() {
+                    if(photo == null){
+                        String responseStr = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
+                        if(responseStr == null){
+                            activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserError"));
+                            return;
+                        }
+                        Log.d("createUserResult", responseStr);
+                        try {
+                            JSONObject response = new JSONObject(responseStr);
+                            String result = response.getString("result");
+                            if(result.equals("fail")){
+                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
+                            }
+                            else {
+                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
+                            }
+                        } catch (Throwable t) {
+                            Log.e("createUser", t.toString());
+                        }
+                    }
+
+                    //c
+                    else {
+                        Log.e("RealPath", imageRealPath);
+                        String responseStr = ServerManager.getInstance().userSignup(Constants.SERVER_URL + "/user/image", json, new File(imageRealPath), mail.getText().toString());
+                        Log.d("createUserResult", responseStr);
+                        try {
+                            JSONObject response = new JSONObject(responseStr);
+                            String result = response.getString("result");
+                            if(result.equals("fail")){
+                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
+                            }
+                            else {
+                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
+                            }
+
+                        } catch (Throwable t) {
+                            Log.e("createUser", t.toString());
+                        }
+                    }
+
+                }
+            }.start();
+        }
     }
 
     public void onBirthClicked (View v){
