@@ -337,6 +337,13 @@ public class RoomCreateActivity extends AppCompatActivity {
         theAlertDialog.show();
     }
 
+    public void roomInfoInit(){
+        roomTitle.setText("");
+        roomContent.setText("");
+        selectedLatitude = null;
+        selectedLongitude = null;
+
+    }
     public void create_room(View view) {
         if(errorHandlerRoomCreate()){
             Log.e("방 만들기 Error", "Room Create Error");
@@ -377,12 +384,10 @@ public class RoomCreateActivity extends AppCompatActivity {
                             }
                             else {
 //                            //Init
-                                roomTitle.setText("");
-                                roomContent.setText("");
-                                selectedLatitude = null;
-                                selectedLongitude = null;
+
 
                                 handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_SUCCESS, ""));
+                                roomInfoInit();
                             }
 
                         } catch (Throwable t) {
