@@ -1,17 +1,23 @@
 package com.mju.hps.withme;
 
 import android.content.Intent;
+import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mju.hps.withme.model.User;
+import com.mju.hps.withme.server.ServerManager;
 
 public class UserInfoActivity extends AppCompatActivity {
 
     TextView email, name, birth, gender, phone;
+
+    ImageView profileImage;
+//    http://localhost:3000/images/user/yt@.png
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +29,10 @@ public class UserInfoActivity extends AppCompatActivity {
         birth = (TextView)findViewById(R.id.user_info_birth);
         gender = (TextView)findViewById(R.id.user_info_gender);
         phone = (TextView)findViewById(R.id.user_info_phone);
+
+        profileImage = (ImageView) findViewById(R.id.user_info_profile);
+
+        ServerManager.getInstance().getUserProfileImage(User.getInstance().getMail(), profileImage);
     }
 
     @Override

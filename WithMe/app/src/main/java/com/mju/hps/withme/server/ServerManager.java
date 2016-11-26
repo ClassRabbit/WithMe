@@ -1,10 +1,18 @@
 package com.mju.hps.withme.server;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
+
+import com.mju.hps.withme.constants.Constants;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -20,6 +28,7 @@ import okhttp3.Response;
 
 public class ServerManager {
     OkHttpClient client;
+
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
     static ServerManager serverManager = new ServerManager();
@@ -85,6 +94,39 @@ public class ServerManager {
         catch(IOException e) {
             Log.e("ServerManager.post", e.toString());
             return null;
+        }
+    }
+
+    private Bitmap profileImage;
+
+    public void getUserProfileImage(String id, ImageView imageView){
+
+        final String baseShoppingURL = Constants.SERVER_URL + "/images/user/" + id +".png";
+        Log.e("ImageURL", baseShoppingURL);
+        Thread mThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(baseShoppingURL); // URL 주소를 이용해서 URL 객체 생성
+                    //  아래 코드는 웹에서 이미지를 가져온 뒤
+                    //  이미지 뷰에 지정할 Bitmap을 생성하는   
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    profileImage = BitmapFactory.decodeStream(is);
+                }
+                catch(IOException ex) {
+                    Log.e("사진 읽어오기 실패", ex.toString());
+                }
+            }
+        };
+        mThread.start(); // 웹에서 이미지를 가져오는 작업 스레드 실행.
+        try {
+            mThread.join();
+            imageView.setImageBitmap(profileImage);
+        } catch (InterruptedException e) {
+
         }
     }
 

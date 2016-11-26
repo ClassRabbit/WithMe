@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="100sp"
         app:srcCompat="@drawable/user_information"
-        android:id="@+id/user_profile"
+        android:id="@+id/user_info_profile"
         android:layout_height="100sp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -20,7 +20,7 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/user_profile"
+        android:layout_below="@+id/user_info_profile"
         android:layout_alignParentStart="true"
         android:layout_marginTop="22sp"
         android:id="@+id/user_info_table">

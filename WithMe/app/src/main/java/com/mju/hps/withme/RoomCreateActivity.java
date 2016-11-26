@@ -298,7 +298,7 @@ public class RoomCreateActivity extends AppCompatActivity {
 
     private boolean errorHandlerRoomCreate(){
         //error 체크 변수 처음엔 false 에러 X.
-        
+
         boolean errorCheck = false;
         String errMsg = "이 방에 대한 <";
         if(roomTitle.getText().toString().equals("") || roomTitle == null){

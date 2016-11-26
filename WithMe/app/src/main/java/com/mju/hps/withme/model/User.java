@@ -1,5 +1,6 @@
 package com.mju.hps.withme.model;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -20,7 +21,7 @@ public class User {
     private String phone;
     private String gender;
 
-    private String profileImage;
+    private Bitmap profileImage;
 
 //    private User(String id, String mail, String password, String token){
 //        this.id = id;
@@ -104,11 +105,11 @@ public class User {
         this.gender = gender;
     }
 
-    public String getProfileImage() {
+    public Bitmap getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(String image) {
+    public void setProfileImage(Bitmap image) {
         this.profileImage = image;
     }
 }
