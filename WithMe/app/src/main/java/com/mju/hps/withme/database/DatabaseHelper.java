@@ -23,18 +23,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.e("db", "생성");
-        db.execSQL(                                     //User테이블생성
-            "create table " + UserTable.NAME + "(" +
-                    "flag integer," +
-                    UserTable.Cols.ID + " text, " +
-                    UserTable.Cols.PASSWORD + " text, " +
-                    UserTable.Cols.MAIL + " text, " +
-                    UserTable.Cols.TOKEN + " text," +
-                    UserTable.Cols.NAME + " text," +
-                    UserTable.Cols.BIRTH + " text," +
-                    UserTable.Cols.PHONE + " text," +
-                    UserTable.Cols.GENDER + " text" +
-                ")"
+        db.execSQL(                                     //User 테이블생성
+                "create table " + UserTable.NAME + "(" +
+                        "flag integer," +
+                        UserTable.Cols.ID + " text, " +
+                        UserTable.Cols.PASSWORD + " text, " +
+                        UserTable.Cols.MAIL + " text, " +
+                        UserTable.Cols.TOKEN + " text," +
+                        UserTable.Cols.NAME + " text," +
+                        UserTable.Cols.BIRTH + " text," +
+                        UserTable.Cols.PHONE + " text," +
+                        UserTable.Cols.GENDER + " text" +
+                        ")"
         );
         ContentValues values = new ContentValues();     //User 하나 넣기
         values.put("flag", "1");
@@ -47,6 +47,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(UserTable.Cols.PHONE, 0);
         values.put(UserTable.Cols.GENDER, "");
         db.insert(UserTable.NAME, null, values);
+
+//        db.execSQL(                                     //Room 테이블생성
+//                "create table " + RoomTable.NAME + "(" +
+//                        "flag integer," +
+//                        RoomTable.Cols.ID + " text " +
+//                        ")"
+//        );
+//        values = new ContentValues();     //Room 하나 넣기
+//        values.put("flag", "1");
+//        values.put(UserTable.Cols.ID, "");
+//        db.insert(RoomTable.NAME, null, values);
     }
 
     @Override

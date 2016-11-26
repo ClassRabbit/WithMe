@@ -2,14 +2,15 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var schema = new Schema({
-  user: {type: Schema.Types.ObjectId},
+  // user: {type: Schema.Types.ObjectId, required: true},
   title: {type: String, required: true},
   content: {type: String, required: true},
   limit: {type: Number, required: true},
   images: [String],
   latitude: {type: Number},
   longitude: {type: Number},
-  attender : [Schema.Types.ObjectId]
+  // attender : [Schema.Types.ObjectId]
+  createdAt: {type: Date, default: Date.now}
 }, {
   toJSON: {virtuals: true},
   toObject: {virtuals: true}

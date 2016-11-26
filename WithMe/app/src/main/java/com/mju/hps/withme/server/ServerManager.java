@@ -14,7 +14,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import static com.mju.hps.withme.model.User.user;
 /**
  * Created by KMC on 2016. 11. 15..
  */

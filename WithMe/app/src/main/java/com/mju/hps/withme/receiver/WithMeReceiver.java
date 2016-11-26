@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.mju.hps.withme.LoginActivity;
 import com.mju.hps.withme.MainActivity;
+import com.mju.hps.withme.R;
 
 /**
  * Created by KMC on 2016. 11. 17..

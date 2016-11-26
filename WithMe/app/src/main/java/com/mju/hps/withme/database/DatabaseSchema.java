@@ -8,7 +8,6 @@ public class DatabaseSchema {
     public static final class UserTable {
         public static final String NAME = "User";
         public static final class Cols {
-            //        public static final String UUID = "uuid";
             public static final String ID = "id";
             public static final String MAIL = "mail";
             public static final String PASSWORD = "password";
@@ -19,6 +18,15 @@ public class DatabaseSchema {
             public static final String GENDER = "gender";
 
             public static final String PROFILE_IMAGE = "profileImage";
+
+        }
+    }
+
+
+    public static final class RoomTable {
+        public static final String NAME = "Room";
+        public static final class Cols {
+            public static final String ID = "id";
 
         }
     }

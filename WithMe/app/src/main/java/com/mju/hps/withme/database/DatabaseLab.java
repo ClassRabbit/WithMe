@@ -13,6 +13,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.mju.hps.withme.constants.Constants;
+import com.mju.hps.withme.model.Room;
 import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.server.ServerManager;
 
@@ -104,8 +105,16 @@ public class DatabaseLab {
         ContentValues values = getContentValues(User.getInstance());
         Log.i("loginUser", "database Login");
         database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
-
     }
+
+//    public void joinRoom(String roomId){
+//        ContentValues values = new ContentValues();
+//        values.put(RoomTable.Cols.ID, roomId);
+//        Log.i("joinRoom", "database joinRoom");
+//        database.update(RoomTable.NAME, values, "flag = ?", new String[]{"1"});
+//    }
+
+
 
     public void updateUser(){                                          //현재유저상태로 DB덮어씌움
         ContentValues values = getContentValues(User.getInstance());
@@ -155,6 +164,26 @@ public class DatabaseLab {
             cursor.close();
         }
     }
+
+//    public void setRoom(String whereClause, String[] whereArgs){
+//        Cursor cursor = database.query(
+//                RoomTable.NAME,
+//                null, // 테이블 열이 null 인 경우, 즉 모든 열을 의미
+//                whereClause,
+//                whereArgs,
+//                null,
+//                null,
+//                null
+//        );
+//
+//        try{
+//            cursor.moveToFirst();
+//            Room.getInstance().setId(cursor.getString(cursor.getColumnIndex(RoomTable.Cols.ID)));
+//        }
+//        finally {
+//            cursor.close();
+//        }
+//    }
 
     private static ContentValues getContentValues(User user) {
         ContentValues values = new ContentValues();

@@ -10,7 +10,7 @@ import com.mju.hps.withme.database.DatabaseLab;
  */
 
 public class User {
-    public static User user;
+    private static User user;
     private String id;
     private String mail;
     private String password;

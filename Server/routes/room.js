@@ -1,6 +1,7 @@
 var express = require('express');
 var User = require('../models/User');
 var Room = require('../models/Room');
+var Join = require('../models/Join');
 var router = express.Router();
 var multipart = require('multiparty');
 var fs = require('fs');
@@ -21,7 +22,8 @@ router.post('/create', function(req, res, next) {
       // console.log("files.image[2]******************");
       // console.log(files.image[2]);
       // console.log("****files++**********");
-      newRoom.user = body.user;
+
+      // newRoom.user = body.user;
       newRoom.title = body.title;
       newRoom.content = body.content;
       newRoom.latitude = body.latitude;
@@ -30,26 +32,38 @@ router.post('/create', function(req, res, next) {
 
       newRoom.save(function(err, room){
         if(err) {
-          console.log("사용자 등록 실패");
+          console.log("방 등록 실패");
           return res.json({result: 'fail'});
         }
-        console.log("사용자 등록 성공");
-        var dirPath = "./public/images/room/" + room.id;
-        ensureExists(dirPath, 0777, function (err){
-          if(err){
-            console.log("mkdir ERR!!");
-            throw err;
+        console.log("방 등록 성공");
+        var newJoin = new Join();
+        newJoin.user = body.user;
+        newJoin.room = room.id;
+        newJoin.position = 'owner';
+
+        newJoin.save(function(err, join){
+          if(err) {
+            console.log("조인 등록 실패");
+            return res.json({result: 'fail'});
           }
-          else{
-            console.log('Created newdir');
+          console.log("조인 등록 성공");
+          var dirPath = "./public/images/room/" + room.id;
+          ensureExists(dirPath, 0777, function (err){
+            if(err){
+              console.log("mkdir ERR!!");
+              throw err;
+            }
+            else{
+              console.log('Created newdir');
+            }
+          });
+          console.log("Length : " + files.image.length);
+          for (var j=0; j<files.image.length; j++){
+            // console.log(files.image[j]);
+            imageUpload(files.image[j], dirPath);
           }
+          return res.json({result: 'success'});
         });
-        console.log("Length : "+files.image.length);
-        for (var j=0; j<files.image.length; j++){
-          // console.log(files.image[j]);
-          imageUpload(files.image[j], dirPath);
-        }
-        return res.json({result: 'success'});
       });
      //put in here all the logic applied to your files.
   });

@@ -143,6 +143,7 @@
                 android:text="Create Room"
                 android:onClick="create_room"
                 android:background="@color/colorButtonChoice"
+                android:id="@+id/room_create_create_button"
                 android:layout_centerHorizontal="true" />
 
         </TableRow>
