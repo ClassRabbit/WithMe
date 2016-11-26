@@ -1,5 +1,6 @@
 var express = require('express');
 var Join = require('../models/Join');
+var Room = require('../models/Room');
 var router = express.Router();
 
 /* GET home page. */
@@ -13,12 +14,17 @@ router.post('/', function (req, res){
     if(err){
       return res.json({result: 'error'});
     }
-    if(join == null){
-      return res.json({isJoin: false});
-    }
-    else {
-      return res.json({isJoin: true});
-    }
+    Room.find({}, function(err, rooms){
+      if(err){
+        return res.json({result: 'error'});
+      }
+      if(join == null){
+        return res.json({isJoin: false, rooms: rooms});
+      }
+      else {
+        return res.json({isJoin: true, rooms: rooms});
+      }
+    });
   });
 });
 

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -15,17 +14,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.mju.hps.withme.constants.Constants;
-import com.mju.hps.withme.database.DatabaseLab;
 import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.server.ServerManager;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,16 +32,25 @@ public class MainActivity extends AppCompatActivity
     private static final int MSG_MAIN_CAN_JOIN = 1;
     private static final int MSG_MAIN_CANNOT_JOIN = 2;
     private static final int MSG_MAIN_ERROR = 3;
+    private static final int MSG_MAIN_ROOMS = 100;
 
     private FloatingActionButton fab;
     private Handler handler;
+    private ListView listview;
+    private JSONArray rooms;
+    private ArrayList<RoomItem> roomList;
+    private Toolbar toolbar;
+    private ListviewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        listview = (ListView)findViewById(R.id.room_list);
+        roomList = new ArrayList<>();
         setSupportActionBar(toolbar);
+
 
         //밑의 floating action bar
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -74,6 +79,20 @@ public class MainActivity extends AppCompatActivity
                         str = (String)msg.obj;
                         Toast.makeText(MainActivity.this, "서버에 연결하지 못했습니다.", Toast.LENGTH_SHORT).show();
                         break;
+                    case MSG_MAIN_ROOMS:
+                        rooms = (JSONArray)msg.obj;
+                        Log.e("MSG_MAIN_ROOMS", "" + rooms.length());
+                        try{
+                            for(int i=0;i<rooms.length();i++){
+                                JSONObject room = rooms.getJSONObject(i);
+                                RoomItem roomItem = new RoomItem(room.getString("id"), room.getString("title"), room.getInt("limit"), room.getString("address"));
+                                roomList.add(roomItem);
+                            }
+                        }
+                        catch(Exception e) {
+                            Log.e("room change", e.toString());
+                        }
+                        break;
                 }
             }
         };
@@ -89,17 +108,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ListView listview = (ListView)findViewById(R.id.room_list);
-        ArrayList<roomitem> data = new ArrayList<>();
-        roomitem room1 = new roomitem("Room1");
-        roomitem room2 = new roomitem("Room2");
-        roomitem room3 = new roomitem("Room3");
-        data.add(room1);
-        data.add(room2);
-        data.add(room3);
 
-        ListviewAdapter adapter = new ListviewAdapter(this, R.layout.room_item, data);
-        listview.setAdapter(adapter);
+//        roomitem room1 = new roomitem("Room1");
+//        roomitem room2 = new roomitem("Room2");
+//        roomitem room3 = new roomitem("Room3");
+//        data.add(room1);
+//        data.add(room2);
+//        data.add(room3);
+
     }
 
     @Override
@@ -121,6 +137,7 @@ public class MainActivity extends AppCompatActivity
                 Log.e("loginResponse", response);
                 try{
                     JSONObject res = new JSONObject(response);
+                    //방 등록 했는지 안했는지
                     if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
                         Log.e("isJoin", "등록한 방 없슴");
                         handler.sendMessage(Message.obtain(handler, MSG_MAIN_CAN_JOIN, ""));
@@ -129,6 +146,10 @@ public class MainActivity extends AppCompatActivity
                         Log.e("isJoin", "등록한 방 있슴");
                         handler.sendMessage(Message.obtain(handler, MSG_MAIN_CANNOT_JOIN, ""));
                     }
+
+                    //방 리스트 가져오기
+                    JSONArray rooms = res.getJSONArray("rooms");
+                    handler.sendMessage(Message.obtain(handler, MSG_MAIN_ROOMS, rooms));
                 }
                 catch (Exception e) {
                     Log.e("login", e.toString());

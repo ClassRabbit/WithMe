@@ -300,6 +300,7 @@ public class RoomCreateActivity extends AppCompatActivity {
                 "\"content\" : \""  + roomContent.getText().toString() + "\", " +
                 "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
                 "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
+                "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
                 "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
                 "}";
 

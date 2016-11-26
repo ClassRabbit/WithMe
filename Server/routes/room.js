@@ -23,11 +23,12 @@ router.post('/create', function(req, res, next) {
       // console.log(files.image[2]);
       // console.log("****files++**********");
 
-      // newRoom.user = body.user;
+      newRoom.user = body.user;
       newRoom.title = body.title;
       newRoom.content = body.content;
       newRoom.latitude = body.latitude;
       newRoom.longitude = body.longitude;
+      newRoom.address = body.address;
       newRoom.limit = body.limit;
 
       newRoom.save(function(err, room){
