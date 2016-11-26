@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -88,6 +89,9 @@ public class RoomCreateActivity extends AppCompatActivity {
 
     private boolean network_enabled = false;
 
+    //error handler
+    private AlertDialog.Builder builder;
+    private AlertDialog theAlertDialog;
 
     LocationListener locationListenerGps = new LocationListener() {
 
@@ -193,6 +197,7 @@ public class RoomCreateActivity extends AppCompatActivity {
         room_people.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         limitSpinner.setAdapter(room_people);
 
+        builder = new AlertDialog.Builder(this);
 
         roomTitle = (EditText) findViewById(R.id.room_create_input_title);
         roomContent = (EditText) findViewById(R.id.room_create_input_content);
@@ -291,59 +296,103 @@ public class RoomCreateActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    private boolean errorHandlerRoomCreate(){
+        //error 체크 변수 처음엔 false 에러 X.
+        
+        boolean errorCheck = false;
+        String errMsg = "이 방에 대한 <";
+        if(roomTitle.getText().toString().equals("") || roomTitle == null){
+            errorCheck = true;
+            errMsg = errMsg + " 제목 ";
+        }
+        if(roomContent.getText().toString().equals("") || roomContent == null){
+            errorCheck = true;
+            errMsg = errMsg + " 내용 ";
+        }
+        if(selectedLatitude == null && selectedLongitude == null){
+            errorCheck = true;
+            errMsg = errMsg + " 위치 ";
+        }
+        if(selectedPhotos == null || selectedPhotos.size() <= 0){
+            errorCheck = true;
+            errMsg = errMsg + " 사진 ";
+        }
+        if(errorCheck){
+            errMsg = errMsg + "> 정보를 입력 해주세요.";
+            showAlert("방에 대한 설명 부족", errMsg);
+        }
+        return errorCheck;
+    }
+
+    public void showAlert(String title, String message) {
+
+        // Set alert title
+        builder.setTitle(title);
+
+        // The message
+        builder.setMessage(message);
+        builder.setPositiveButton("확인", null);
+        // Create the alert dialog and display it
+        theAlertDialog = builder.create();
+        theAlertDialog.show();
+    }
 
     public void create_room(View view) {
-        createRoomButton.setClickable(false);
-        final String json = "{" +
-                "\"user\" : \""  + User.getInstance().getId() + "\", " +
-                "\"title\" : \""  + roomTitle.getText().toString() + "\", " +
-                "\"content\" : \""  + roomContent.getText().toString() + "\", " +
-                "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
-                "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
-                "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
-                "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
-                "}";
-
-        for (int i = 0; i < selectedPhotos.size(); i ++){
-//            String realPath = getRealPathFromString(selectedPhotos.get(i));
-            photosFileList.add(new File(selectedPhotos.get(i)));
+        if(errorHandlerRoomCreate()){
+            Log.e("방 만들기 Error", "Room Create Error");
         }
+        else {
+            createRoomButton.setClickable(false);
+            final String json = "{" +
+                    "\"user\" : \""  + User.getInstance().getId() + "\", " +
+                    "\"title\" : \""  + roomTitle.getText().toString() + "\", " +
+                    "\"content\" : \""  + roomContent.getText().toString() + "\", " +
+                    "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
+                    "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
+                    "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
+                    "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
+                    "}";
 
-        // 사진은 필수로 적용함 selectedPhotos
-        final Activity activity = this;
-        new Thread() {
-            public void run() {
-                if (selectedPhotos != null) {
-                    String responseStr = ServerManager.getInstance().roomCreate(Constants.SERVER_URL + "/room/create", json, photosFileList);
-                    if(responseStr == null){
-                        handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_ERROR, ""));
-                        return;
-                    }
-                    Log.d("createRoomResult", responseStr);
-                    try {
-                        JSONObject response = new JSONObject(responseStr);
-                        String result = response.getString("result");
-                        if(result.equals("fail")){
-                            handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_FAIL, ""));
-                        }
-                        else {
-//                            //Init
-//                            roomTitle.setText("");
-//                            roomContent.setText("");
-//                            selectedLatitude = null;
-//                            selectedLongitude = null;
-
-                            handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_SUCCESS, ""));
-                        }
-
-                    } catch (Throwable t) {
-                        Log.e("createUser", t.toString());
-                    }
-                }
-
+            for (int i = 0; i < selectedPhotos.size(); i ++){
+//            String realPath = getRealPathFromString(selectedPhotos.get(i));
+                photosFileList.add(new File(selectedPhotos.get(i)));
             }
-        }.start();
 
+            // 사진은 필수로 적용함 selectedPhotos
+            final Activity activity = this;
+            new Thread() {
+                public void run() {
+                    if (selectedPhotos != null) {
+                        String responseStr = ServerManager.getInstance().roomCreate(Constants.SERVER_URL + "/room/create", json, photosFileList);
+                        if(responseStr == null){
+                            handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_ERROR, ""));
+                            return;
+                        }
+                        Log.d("createRoomResult", responseStr);
+                        try {
+                            JSONObject response = new JSONObject(responseStr);
+                            String result = response.getString("result");
+                            if(result.equals("fail")){
+                                handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_FAIL, ""));
+                            }
+                            else {
+//                            //Init
+                                roomTitle.setText("");
+                                roomContent.setText("");
+                                selectedLatitude = null;
+                                selectedLongitude = null;
+
+                                handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_SUCCESS, ""));
+                            }
+
+                        } catch (Throwable t) {
+                            Log.e("createUser", t.toString());
+                        }
+                    }
+                      }
+            }.start();
+
+        }
     }
 
     public void input_map(View view) {
