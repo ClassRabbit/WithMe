@@ -93,4 +93,44 @@ function ensureExists(path, mask, cb) {
         } else cb(null); // successfully created folder
     });
 }
+
+router.post('/join', function(req, res, next) {
+  var newJoin = new Join();
+  newJoin.user = req.body.user;
+  newJoin.room = req.body.room;
+  newJoin.position = 'waiting';
+
+  newJoin.save(function(err, join){
+    if(err) {
+      console.log("조인 등록 실패");
+      return res.json({result: 'fail'});
+    }
+    console.log("조인 등록 성공");
+    return res.json({result: 'success'});
+  });
+});
+
+router.post('/ack', function(req, res, next) {
+  Join.findById(req.body.joinId, function(err, join){
+    if(err) {
+      console.log("조인 수정 실패");
+      return res.json({result: 'fail'});
+    }
+    if(join === null){
+      console.log("조인 없음");
+      return res.json({result: 'fail'});
+    }
+    join.position = 'constitutor';
+    join.save(function(err, join){
+      if(err) {
+        console.log("조인 수정 실패");
+        return res.json({result: 'fail'});
+      }
+      console.log("조인 수정 성공");
+      return res.json({result: 'success'});
+    });
+  });
+});
+
+
 module.exports = router;

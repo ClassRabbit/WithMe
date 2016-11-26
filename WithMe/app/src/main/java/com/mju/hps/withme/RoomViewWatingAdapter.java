@@ -1,34 +1,41 @@
 package com.mju.hps.withme;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mju.hps.withme.constants.Constants;
+import com.mju.hps.withme.model.User;
+import com.mju.hps.withme.server.ServerManager;
+
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
- * Created by MinChan on 2016-11-26.
+ * Created by MinChan on 2016-11-27.
  */
 
-public class RoomListAdapter extends BaseAdapter{
+public class RoomViewWatingAdapter extends BaseAdapter {
+
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
-    private ArrayList<RoomItem> roomList = new ArrayList<RoomItem>() ;
+    private ArrayList<WaitingItem> waitingList = new ArrayList<WaitingItem>() ;
 
     // RoomListAdapter 생성자
-    public RoomListAdapter() {
+    public RoomViewWatingAdapter() {
 
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
-        return roomList.size() ;
+        return waitingList.size() ;
     }
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
@@ -40,21 +47,40 @@ public class RoomListAdapter extends BaseAdapter{
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.room_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.room_view_waiting_list_item, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
         ImageView iconImageView = (ImageView) convertView.findViewById(R.id.imageView1) ;
         TextView titleTextView = (TextView) convertView.findViewById(R.id.textView1) ;
-        TextView descTextView = (TextView) convertView.findViewById(R.id.textView2) ;
+        Button AckButton = (Button)  convertView.findViewById(R.id.button1) ;
+        Button refuseButton = (Button)  convertView.findViewById(R.id.button2) ;
+
+
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        RoomItem roomItem = roomList.get(position);
+        final WaitingItem waitingItem = waitingList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
 //        iconImageView.setImageDrawable(roomItem.getIcon());
-        titleTextView.setText(roomItem.getTitle());
-        descTextView.setText(roomItem.getAddress());
+        titleTextView.setText(waitingItem.getName());
+        AckButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String json = "{" +
+                        "\"joinId\" : \"" + waitingItem.getId() + "\"" +
+                        "}";
+                new Thread() {
+                    public void run() {
+                        String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/ack", json);
+                        if(response == null){
+                            Log.e("login", "서버 에러");
+                            return;
+                        }
+                    }
+                }.start();
+            }
+        });
 
         return convertView;
     }
@@ -68,12 +94,12 @@ public class RoomListAdapter extends BaseAdapter{
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
     public Object getItem(int position) {
-        return roomList.get(position) ;
+        return waitingList.get(position) ;
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addRoom(String id, String title, int limit, String address) {
-        RoomItem item = new RoomItem(id, title, limit, address);
-        roomList.add(item);
+    public void addWaiting(String id, String name, String birth) {
+        WaitingItem item = new WaitingItem(id, name, birth);
+        waitingList.add(item);
     }
 }

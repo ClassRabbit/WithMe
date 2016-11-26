@@ -22,6 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,14 +44,15 @@ public class RoomViewActivity extends AppCompatActivity {
     private static final int MSG_ROOM_VIEW_SUCCESS = 4;
     private static final int MSG_ROOM_VIEW_NULL = 5;
 
-    private String roomId;
+    private static String roomId;
     private Handler handler;
     private UserData owner;
     private RoomData room;
     private boolean isJoin;
     private JSONObject myRoom;
-    private JSONArray joins;
+    private static JSONArray joins;
     private int constitutorCnt = 0;
+    private static RoomViewWatingAdapter waitingAdapter;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -75,7 +78,7 @@ public class RoomViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         roomId = (String)intent.getSerializableExtra("roomId");
         isJoin = (Boolean)intent.getSerializableExtra("isJoin");
-        Log.e("isJoin", "" + isJoin);
+        waitingAdapter = new RoomViewWatingAdapter();
 
         handler = new Handler() {
             @Override
@@ -286,6 +289,19 @@ public class RoomViewActivity extends AppCompatActivity {
                 View rootView;
                 if(getArguments().getString(ARG_JOIN_POSITION).equals("owner")){                            //방장일때
                     rootView = inflater.inflate(R.layout.fragment_room_view_3, container, false);
+                    ListView waitingListView = (ListView) rootView.findViewById((R.id.room_view_listview_waiting));
+                    try{
+                        for(int i=0;i<joins.length();i++){
+                            JSONObject join = joins.getJSONObject(i);
+                            if(join.getString("position").equals("waiting")){
+                                waitingAdapter.addWaiting(join.getString("id"), join.getString("id"), join.getString("id"));
+                            }
+                        }
+                    }
+                    catch(Exception e) {
+                        Log.e("room change", e.toString());
+                    }
+                    waitingListView.setAdapter(waitingAdapter);
                 }
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("constitutor")){               //이방의 구성자일때
                     rootView = inflater.inflate(R.layout.fragment_room_view_4, container, false);
@@ -295,6 +311,36 @@ public class RoomViewActivity extends AppCompatActivity {
                 }
                 else {                                                                                    //방문자
                     rootView = inflater.inflate(R.layout.fragment_room_view_6, container, false);
+                    Button joinButton = (Button)rootView.findViewById((R.id.room_view_button_join));
+                    joinButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            final String json = "{" +
+                                    "\"user\" : \"" + User.getInstance().getId() + "\", " +
+                                    "\"room\" : \"" + roomId + "\"" +
+                                    "}";
+                            new Thread() {
+                                public void run() {
+                                    String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/join", json);
+                                    if(response == null){
+                                        Log.e("login", "서버 에러");
+                                        return;
+                                    }
+                                    Log.e("loginResponse", response);
+                                    try{
+                                        JSONObject req = new JSONObject(response);
+                                        //
+                                        //      행동
+                                        //
+                                    }
+                                    catch (Exception e) {
+                                        Log.e("login", e.toString());
+                                    }
+                                }
+                            }.start();
+                        }
+                    });
+
                 }
                 return rootView;
             }
