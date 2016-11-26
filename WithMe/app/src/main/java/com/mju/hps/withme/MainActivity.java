@@ -38,9 +38,8 @@ public class MainActivity extends AppCompatActivity
     private Handler handler;
     private ListView listview;
     private JSONArray rooms;
-    private ArrayList<RoomItem> roomList;
     private Toolbar toolbar;
-    private ListviewAdapter adapter;
+    private RoomListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listview = (ListView)findViewById(R.id.room_list);
-        roomList = new ArrayList<>();
         setSupportActionBar(toolbar);
 
 
@@ -85,9 +83,10 @@ public class MainActivity extends AppCompatActivity
                         try{
                             for(int i=0;i<rooms.length();i++){
                                 JSONObject room = rooms.getJSONObject(i);
-                                RoomItem roomItem = new RoomItem(room.getString("id"), room.getString("title"), room.getInt("limit"), room.getString("address"));
-                                roomList.add(roomItem);
+                                adapter = new RoomListAdapter();
+                                adapter.addRoom(room.getString("id"), room.getString("title"), room.getInt("limit"), room.getString("address"));
                             }
+                            listview.setAdapter(adapter);
                         }
                         catch(Exception e) {
                             Log.e("room change", e.toString());
