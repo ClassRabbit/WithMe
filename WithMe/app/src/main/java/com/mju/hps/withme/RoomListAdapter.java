@@ -2,6 +2,7 @@ package com.mju.hps.withme;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +74,6 @@ public class RoomListAdapter extends BaseAdapter{
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
     public void addRoom(String id, String title, int limit, String address) {
         RoomItem item = new RoomItem(id, title, limit, address);
-
         roomList.add(item);
     }
 }

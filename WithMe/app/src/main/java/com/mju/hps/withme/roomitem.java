@@ -12,11 +12,11 @@ public class RoomItem {
 
 
     public RoomItem(String id, String title, int limit, String address) {
+        this.id = id;
         this.title = title;
+        this.limit = limit;
+        this.address = address;
     }
-
-
-
 
     public String getId() {
         return id;

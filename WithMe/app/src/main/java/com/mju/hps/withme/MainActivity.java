@@ -2,6 +2,7 @@ package com.mju.hps.withme;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.mju.hps.withme.constants.Constants;
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listview = (ListView)findViewById(R.id.room_list);
+        adapter = new RoomListAdapter();
         setSupportActionBar(toolbar);
 
 
@@ -83,7 +86,6 @@ public class MainActivity extends AppCompatActivity
                         try{
                             for(int i=0;i<rooms.length();i++){
                                 JSONObject room = rooms.getJSONObject(i);
-                                adapter = new RoomListAdapter();
                                 adapter.addRoom(room.getString("id"), room.getString("title"), room.getInt("limit"), room.getString("address"));
                             }
                             listview.setAdapter(adapter);
@@ -108,12 +110,14 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-//        roomitem room1 = new roomitem("Room1");
-//        roomitem room2 = new roomitem("Room2");
-//        roomitem room3 = new roomitem("Room3");
-//        data.add(room1);
-//        data.add(room2);
-//        data.add(room3);
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                // get item
+                RoomItem roomItem = (RoomItem) parent.getItemAtPosition(position) ;
+
+            }
+        });
 
     }
 
