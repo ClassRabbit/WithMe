@@ -50,8 +50,8 @@ public class RoomViewActivity extends AppCompatActivity {
 
     private static String roomId;
     public static Handler handler;
-    private UserData owner;
-    private RoomData room;
+    private static JSONObject owner;
+    private static JSONObject room;
     private boolean isJoin = false;
     private JSONObject myRoom;
     private static JSONArray joins;         //이 방에 조인내역
@@ -110,12 +110,11 @@ public class RoomViewActivity extends AppCompatActivity {
                     case MSG_ROOM_VIEW_SUCCESS:
                         waitingAdapter = new RoomViewWatingAdapter();
                         JSONArray data = (JSONArray)msg.obj;
-                        try{        //1번 요소는 방, 2번 요소는 유저, 3번요소는 이방에 join한 모든내역
-                            JSONObject roomJson = data.getJSONObject(0);
-                            JSONObject userJson = data.getJSONObject(1);
+                        try{        //1번 요소는 방, 2번 요소는 방장, 3번요소는 이방에 join한 모든내역, 4번요소는 이방에 조인한 유저목록
+                            room = data.getJSONObject(0);
+                            owner = data.getJSONObject(1);
                             joins = data.getJSONArray(2);
                             users = data.getJSONArray(3);
-                            int joinCnt = joins.length();               //이방에 참여한 사람의 길이
                             for(int i = 0; i<joins.length(); i++){
                                 if(User.getInstance().getId().equals(joins.getJSONObject(i).getString("user"))){
                                     myRoom = joins.getJSONObject(i);
@@ -258,12 +257,24 @@ public class RoomViewActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             if(getArguments().getInt(ARG_SECTION_NUMBER) == 1){
-                Log.i("onCreateView", "1");
+                Log.i("onCreateView", "1");                                                                 //방 정보일때
                 View rootView = inflater.inflate(R.layout.fragment_room_view_1, container, false);
+                //
+                //여기서 객체를 받고
+                TextView roomTitleInfo = (TextView)rootView.findViewById(R.id.room_title_info);
+                try{
+                    //트라이 안에서 값 파싱해서 넣기
+                    roomTitleInfo.setText(room.getString("title"));
+                }
+                catch (Exception e){
+                    Log.e("onCreateView", e.toString());
+                }
+
+                //
                 return rootView;
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER) == 2){
-                Log.i("onCreateView", "2");
+                Log.i("onCreateView", "2");                                                                 //유저 정보 페이지일때
                 View rootView = inflater.inflate(R.layout.fragment_room_view_2, container, false);
                 return rootView;
             }
