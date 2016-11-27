@@ -87,6 +87,66 @@ router.post('/image', function(req, res, next) {
      //put in here all the logic applied to your files.
   });
 });
+router.post('/edit/:id', function(req, res, next) {
+  console.log(req.body);
+  User.findById(req.params.id, function(err, user){
+    user.mail = req.body.mail;
+    user.password = req.body.password;
+    user.token = req.body.token;
+    user.name = req.body.name;
+    user.birth = req.body.birth;
+    user.phone = req.body.phone;
+    user.gender = req.body.gender;
+    user.save(function(err, user){
+      if(err) {
+        console.log("사용자 등록 실패");
+        console.log(err);
+        return res.json({result: 'fail'});
+      }
+      console.log("사용자 등록 성공");
+      return res.json({result: 'success'});
+    });
+  });
+});
+
+router.post('/edit/image/:id', function(req, res, next) {
+  console.log("/edit/image/");
+  var form = new multipart.Form();
+    form.parse(req, function(err, fields, files) {
+      var body = JSON.parse(fields.body);
+      User.findById(req.params.id, function(err, user){
+          if(err){
+              console.log("회원 정보 수정 실패");
+              return res.json({result: 'fail'});
+          }
+          user.img = files.image[0].originalFilename;
+          user.mail = body.mail;
+          user.password = body.password;
+          user.token = body.token;
+          user.name = body.name;
+          user.birth = body.birth;
+          user.phone = body.phone;
+          user.gender = body.gender;
+          user.save(function(err, user){
+            if(err) {
+              console.log("사용자 수정 실패");
+              return res.json({result: 'fail'});
+            }
+            console.log("사용자 수정 성공");
+            fs.readFile(files.image[0].path, function(err, data){
+                var filePath = "./public/images/user/" + files.image[0].originalFilename;
+                fs.writeFile(filePath, data, function(err){
+                  if(err){
+                    console.log(err);
+                  }
+                });
+            });
+            return res.json({result: 'success'});
+          });
+      });
+     //put in here all the logic applied to your files.
+  });
+});
 
 router.post('/login', function(req, res, next) {
   // console.log(req.body);

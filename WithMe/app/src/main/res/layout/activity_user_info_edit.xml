@@ -1,166 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_user_info_edit"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="20sp"
     tools:context="com.mju.hps.withme.UserInfoEditActivity">
 
-    <ImageView
-        android:layout_width="100sp"
-        android:src="@drawable/user_information"
-        android:id="@+id/user_profile"
-        android:layout_height="100sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14sp" />
-
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/user_profile"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22sp"
-        android:id="@+id/user_info_table">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1sp" />
+        android:layout_below="@+id/user_info_edit_profileImage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/user_info_edit_table">
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
+            <com.mju.hps.withme.RadiusImageView
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
+                android:src="@drawable/user_information"
+                android:id="@+id/user_info_edit_profileImage"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="20sp"
+                android:layout_centerHorizontal="true" />
+            </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="E-mail"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8dp"/>
+                android:layout_weight="1"
+                android:text="E-mail"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in E-mail address"
-                android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"
                 android:id="@+id/user_info_edit_email"/>
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Name"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
+                android:layout_weight="1"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in Name"
                 android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"
                 android:id="@+id/user_info_edit_name"/>
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Password"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="in Name"
+                android:gravity="left"
+                android:id="@+id/user_info_edit_password"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Birthday"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
+                android:layout_weight="1"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in Birthday"
-                android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"
-                android:id="@+id/user_info_edit_birth"/>
+                android:id="@+id/user_info_edit_birth"
+                android:onClick="birthClicked"/>
 
         </TableRow>
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
 
-            <TextView
+            <RadioGroup
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Gender"
+                android:weightSum="1"
+                android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
+                android:id="@+id/user_info_edit_gender"
+                android:layout_marginTop="11dp"
+                android:layout_alignParentStart="true">
 
-            <EditText
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:hint="in Gender"
-                android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"
-                android:id="@+id/user_info_edit_gender" />
+                <RadioButton
+                    android:text="Man"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/user_info_edit_gender_man" />
+
+                <RadioButton
+                    android:text="Woman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30sp"
+                    android:id="@+id/user_info_edit_gender_woman"/>
+
+            </RadioGroup>
 
         </TableRow>
 
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+             android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="PhoneNumber"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
+                android:text="Phone"
+                android:layout_weight="1"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:hint="in PhoneNumber"
-                android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"
                 android:id="@+id/user_info_edit_phone"/>
 
         </TableRow>
 
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp">
+
+
+            <Button
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/user_info_edit_button"
+                android:text="회원 정보 수정"
+                android:onClick="editUser"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20sp" />
+
+        </TableRow>
+
+
     </TableLayout>
-
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:gravity="center"
-        android:text="Edit Complete"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="106sp" />
-
-</RelativeLayout>
+</ScrollView>

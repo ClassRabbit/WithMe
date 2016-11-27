@@ -97,6 +97,26 @@ public class ServerManager {
         }
     }
 
+    public String userInfoEdit(String url, String json,  File file, String file_name) {
+        Log.i("userInfoEdit", "post(" + url + ", "  +  json + ")");
+        try {
+            RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("image", file_name + ".png", RequestBody.create(MediaType.parse("image/png"), file))
+                    .addFormDataPart("body",  json)
+                    .build();
+            okhttp3.Request request = new okhttp3.Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build();
+            Response response = client.newCall(request).execute();
+            return response.body().string();
+        }
+        catch(IOException e) {
+            Log.e("ServerManager.post", e.toString());
+            return null;
+        }
+    }
+
     private Bitmap profileImage;
 
     public void getUserProfileImage(String id, ImageView imageView){
