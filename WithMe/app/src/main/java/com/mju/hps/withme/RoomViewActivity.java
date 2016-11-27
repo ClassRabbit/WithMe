@@ -56,7 +56,7 @@ public class RoomViewActivity extends AppCompatActivity {
     private JSONObject myRoom;
     private static JSONArray joins;         //이 방에 조인내역
     private static JSONArray users;         //이 방에 조인한 유저들
-    private int constitutorCnt = 0;
+    private static int constitutorCnt = 0;         //방에 join한 유저 수
     private static RoomViewWatingAdapter waitingAdapter;
     private static View thirdView;
     private int tabLocation = 0;
@@ -116,6 +116,7 @@ public class RoomViewActivity extends AppCompatActivity {
                             owner = data.getJSONObject(1);
                             joins = data.getJSONArray(2);
                             users = data.getJSONArray(3);
+                            constitutorCnt = 0;
                             for(int i = 0; i<joins.length(); i++){
                                 if(User.getInstance().getId().equals(joins.getJSONObject(i).getString("user"))){
                                     myRoom = joins.getJSONObject(i);
@@ -275,9 +276,18 @@ public class RoomViewActivity extends AppCompatActivity {
                 //
                 //여기서 객체를 받고
                 TextView roomTitleInfo = (TextView)rootView.findViewById(R.id.room_title_info);
+                TextView roomContent = (TextView)rootView.findViewById(R.id.room_content_info);
+                TextView roomAddress = (TextView)rootView.findViewById(R.id.room_address_info);
+                TextView roomRecentPeople = (TextView)rootView.findViewById(R.id.room_recent_people);
+                TextView roomLimitPeople = (TextView)rootView.findViewById(R.id.room_people_all);
                 try{
                     //트라이 안에서 값 파싱해서 넣기
                     roomTitleInfo.setText(room.getString("title"));
+                    roomContent.setText(room.getString("content"));
+                    roomAddress.setText(room.getString("address"));
+                    Log.e("constitutorCnt", "" + constitutorCnt);
+                    roomRecentPeople.setText("" + constitutorCnt);
+                    roomLimitPeople.setText("" + (room.getInt("limit") + 1));
                 }
                 catch (Exception e){
                     Log.e("onCreateView", e.toString());
