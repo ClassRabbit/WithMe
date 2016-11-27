@@ -38,14 +38,14 @@ import org.json.JSONObject;
 
 public class RoomViewActivity extends AppCompatActivity {
 
-    private static final int MSG_ROOM_VIEW_CAN_JOIN = 1;
-    private static final int MSG_ROOM_VIEW_CANNOT_JOIN = 2;
-    private static final int MSG_ROOM_VIEW_ERROR = 3;
-    private static final int MSG_ROOM_VIEW_SUCCESS = 4;
-    private static final int MSG_ROOM_VIEW_NULL = 5;
+    public static final int MSG_ROOM_VIEW_ERROR = 1;
+    public static final int MSG_ROOM_VIEW_SUCCESS = 2;
+    public static final int MSG_ROOM_VIEW_WAITING_ACK = 3;
+    public static final int MSG_ROOM_VIEW_WAITING_REFUCE = 4;
+    public static final int MSG_ROOM_VIEW_NULL = 5;
 
     private static String roomId;
-    private Handler handler;
+    public static Handler handler;
     private UserData owner;
     private RoomData room;
     private boolean isJoin;
@@ -53,6 +53,7 @@ public class RoomViewActivity extends AppCompatActivity {
     private static JSONArray joins;
     private int constitutorCnt = 0;
     private static RoomViewWatingAdapter waitingAdapter;
+    private static View thirdView;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -88,14 +89,6 @@ public class RoomViewActivity extends AppCompatActivity {
                 FloatingActionButton fab;
                 myRoom = null;
                 switch (msg.what) {
-//                    case MSG_ROOM_VIEW_CAN_JOIN:     // 현재 가입한 방이 없음
-//                        Log.e("엥?", "엥엥?");
-//                        isJoin = false;
-//                        break;
-//                    case MSG_ROOM_VIEW_CANNOT_JOIN:     // 현재 가입한 방이 있음
-//                        Log.e("응?", "응응?");
-//                        isJoin = true;
-//                        break;
                     case MSG_ROOM_VIEW_ERROR:
                         str = (String)msg.obj;
                         Toast.makeText(RoomViewActivity.this, "서버에 연결하지 못했습니다.", Toast.LENGTH_SHORT).show();
@@ -108,11 +101,10 @@ public class RoomViewActivity extends AppCompatActivity {
                             joins = data.getJSONArray(2);
                             int joinCnt = joins.length();               //이방에 참여한 사람의 길이
                             for(int i = 0; i<joins.length(); i++){
-//                                Log.e("비교", User.getInstance().getId() + " : " + joins.getJSONObject(i).getString("id"));
                                 if(User.getInstance().getId().equals(joins.getJSONObject(i).getString("user"))){
                                     myRoom = joins.getJSONObject(i);
                                 }
-                                if(!joins.getJSONObject(i).getString("position").equals("waiting")){
+                                if(!joins.getJSONObject(i).getString("position").equals("waiting")){        // 아방에 방장이랑 참가자수 계산
                                     constitutorCnt++;
                                 }
                             }
@@ -123,25 +115,23 @@ public class RoomViewActivity extends AppCompatActivity {
                         catch(Exception e){
                             Log.e("RoomView", e.toString());
                         }
-                        if(isJoin == false){
-                            Log.e("1111", "isJoin == false");
+                        if(isJoin == false){                              //현재 방에 참가하지않아 이방에 참가할 수있는 사람의 경우(visitor)
                             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3, "visitor");
                         }
-                        else  if(isJoin == true && myRoom == null) {      //방에 속한 사람이며, 이방에 속하지 않을때
-                            Log.e("2222", "isJoin == true && myRoom == null");
+                        else  if(isJoin == true && myRoom == null) {      //방에 속한 사람이며, 이방에 속할 가능성 없음 따라서 탭 2개만 보여줌("")
                             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 2, "");
                         }
-                        else if(isJoin == true && myRoom != null){
+                        else if(isJoin == true && myRoom != null){       //방에 속한 사람이며, 이방에 속한 사람의 경우
                             String position = null;
                             try{
-                                position = myRoom.getString("position");
+                                position = myRoom.getString("position");    //주인이면 (owner), 구성자면 (constitutor), 신청대기자면 (waiting)
                             }
                             catch(Exception e){
                                 Log.e("position parse", e.toString());
                             }
-                            Log.e("3333", "isJoin == true && myRoom != null");
-                            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3, position);
+                            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3, position);     //속한 사람의 경우 3번째 텝 보여줌
                         }
+
                         mViewPager = (ViewPager) findViewById(R.id.container);
                         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -156,6 +146,10 @@ public class RoomViewActivity extends AppCompatActivity {
                                         .setAction("Action", null).show();
                             }
                         });
+                        break;
+                    case MSG_ROOM_VIEW_WAITING_ACK:
+                        ListView waitingListView = (ListView) thirdView.findViewById((R.id.room_view_listview_waiting));
+                        waitingListView.setAdapter(waitingAdapter);
                         break;
                 }
             }
@@ -178,16 +172,6 @@ public class RoomViewActivity extends AppCompatActivity {
                 Log.e("loginResponse", response);
                 try{
                     JSONObject res = new JSONObject(response);
-//                    //방 등록 했는지 안했는지
-//                    if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
-//                        Log.e("isJoin", "등록한 방 없슴");
-//                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CAN_JOIN, ""));
-//                    }
-//                    else {
-//                        Log.e("isJoin", "등록한 방 있슴");
-//                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CANNOT_JOIN, ""));
-//                    }
-
                     //[방 정보, 만든이 정보, 이방에 조인한 정보] 형태의 JsonArray 가져옴
                     JSONArray data = res.getJSONArray("data");
                     handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_SUCCESS, data));
@@ -273,6 +257,10 @@ public class RoomViewActivity extends AppCompatActivity {
             return fragment;
         }
 
+
+        //
+        // 실제 뷰 그리는 곳
+        //
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -289,6 +277,7 @@ public class RoomViewActivity extends AppCompatActivity {
                 View rootView;
                 if(getArguments().getString(ARG_JOIN_POSITION).equals("owner")){                            //방장일때
                     rootView = inflater.inflate(R.layout.fragment_room_view_3, container, false);
+                    thirdView = rootView;
                     ListView waitingListView = (ListView) rootView.findViewById((R.id.room_view_listview_waiting));
                     try{
                         for(int i=0;i<joins.length();i++){
@@ -330,7 +319,7 @@ public class RoomViewActivity extends AppCompatActivity {
                                     try{
                                         JSONObject req = new JSONObject(response);
                                         //
-                                        //      행동
+                                        //      성공알람 보내기
                                         //
                                     }
                                     catch (Exception e) {
@@ -385,11 +374,23 @@ public class RoomViewActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "방 정보";
                 case 1:
-                    return "SECTION 2";
+                    return "룸메이트 정보";
                 case 2:
-                    return "SECTION 3";
+                    if(positionStr.equals("owner")){
+                        return "관리";
+                    }
+                    else if(positionStr.equals("constitutor")) {
+                        return "'모집현황'";
+                    }
+                    else if(positionStr.equals("waiting")){
+                        return "모집현황";
+                    }
+                    else {
+                        return "신청하기";
+                    }
+
             }
             return null;
         }

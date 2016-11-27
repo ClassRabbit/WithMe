@@ -1,6 +1,7 @@
 package com.mju.hps.withme;
 
 import android.content.Context;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ public class RoomViewWatingAdapter extends BaseAdapter {
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final int pos = position;
         final Context context = parent.getContext();
 
@@ -73,10 +74,41 @@ public class RoomViewWatingAdapter extends BaseAdapter {
                 new Thread() {
                     public void run() {
                         String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/ack", json);
-                        if(response == null){
-                            Log.e("login", "서버 에러");
+                        if(RoomViewActivity.handler == null){
+                            Log.e("RVhandler", "null");
                             return;
                         }
+                        if(response == null){
+                            Log.e("login", "서버 에러");
+                            RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_ERROR, ""));
+                            return;
+                        }
+                        waitingList.remove(position);
+                        RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_WAITING_ACK, ""));
+                    }
+                }.start();
+            }
+        });
+
+        refuseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String json = "{" +
+                        "\"joinId\" : \"" + waitingItem.getId() + "\"" +
+                        "}";
+                new Thread() {
+                    public void run() {
+                        String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/refuce", json);
+                        if(RoomViewActivity.handler == null){
+                            Log.e("RVhandler", "null");
+                            return;
+                        }
+                        if(response == null){
+                            Log.e("login", "서버 에러");
+                            RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_ERROR, ""));
+                            return;
+                        }
+                        RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_WAITING_REFUCE, ""));
                     }
                 }.start();
             }
