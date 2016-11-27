@@ -27,6 +27,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.model.RoomData;
 import com.mju.hps.withme.model.User;
@@ -44,7 +45,8 @@ public class RoomViewActivity extends AppCompatActivity {
     public static final int MSG_ROOM_VIEW_SUCCESS = 4;
     public static final int MSG_ROOM_VIEW_WAITING_ACK = 5;
     public static final int MSG_ROOM_VIEW_WAITING_REFUCE = 6;
-    public static final int MSG_ROOM_VIEW_NULL = 7;
+    public static final int MSG_ROOM_VIEW_JOIN_SUCCESS = 7;
+//    public static final int MSG_ROOM_VIEW_NULL = 7;
 
     private static String roomId;
     public static Handler handler;
@@ -80,9 +82,9 @@ public class RoomViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_room_view);
 
         //정보 받기
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         roomId = (String)intent.getSerializableExtra("roomId");
-//        isJoin = (Boolean)intent.getSerializableExtra("isJoin");
+        tabLocation = (int)intent.getSerializableExtra("tabLocation");
 
 
         handler = new Handler() {
@@ -143,6 +145,7 @@ public class RoomViewActivity extends AppCompatActivity {
                             catch(Exception e){
                                 Log.e("position parse", e.toString());
                             }
+                            Log.i("position", position);
                             mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), 3, position);     //속한 사람의 경우 3번째 텝 보여줌
                         }
 
@@ -162,6 +165,13 @@ public class RoomViewActivity extends AppCompatActivity {
                         tabLocation = 2;
                         reloadView();
                         break;
+                    case MSG_ROOM_VIEW_JOIN_SUCCESS:
+                        Intent intent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
+                        intent.putExtra("roomId", roomId);
+                        intent.putExtra("tabLocation", 2);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(intent);
                 }
             }
         };
@@ -211,28 +221,6 @@ public class RoomViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_room_view, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -256,6 +244,7 @@ public class RoomViewActivity extends AppCompatActivity {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            Log.i("newInstance", joinPosition);
             args.putString(ARG_JOIN_POSITION, joinPosition);
             fragment.setArguments(args);
             return fragment;
@@ -268,16 +257,18 @@ public class RoomViewActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            Log.e("onCreateView", "" + getArguments().getInt(ARG_SECTION_NUMBER));
             if(getArguments().getInt(ARG_SECTION_NUMBER) == 1){
+                Log.i("onCreateView", "1");
                 View rootView = inflater.inflate(R.layout.fragment_room_view_1, container, false);
                 return rootView;
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER) == 2){
+                Log.i("onCreateView", "2");
                 View rootView = inflater.inflate(R.layout.fragment_room_view_2, container, false);
                 return rootView;
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER) == 3){
+                Log.i("onCreateView", "3");
                 View rootView;
                 if(getArguments().getString(ARG_JOIN_POSITION).equals("owner")){                            //방장일때
                     rootView = inflater.inflate(R.layout.fragment_room_view_3, container, false);
@@ -302,12 +293,15 @@ public class RoomViewActivity extends AppCompatActivity {
                     waitingListView.setAdapter(waitingAdapter);
                 }
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("constitutor")){               //이방의 구성자일때
+                    Log.i("onCreateView", "4");
                     rootView = inflater.inflate(R.layout.fragment_room_view_4, container, false);
                 }
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("waiting")) {                  //대기중일때
+                    Log.i("onCreateView", "5");
                     rootView = inflater.inflate(R.layout.fragment_room_view_5, container, false);
                 }
                 else {                                                                                    //방문자
+                    Log.i("onCreateView", "6");
                     rootView = inflater.inflate(R.layout.fragment_room_view_6, container, false);
                     Button joinButton = (Button)rootView.findViewById((R.id.room_view_button_join));
                     joinButton.setOnClickListener(new View.OnClickListener() {
@@ -326,10 +320,12 @@ public class RoomViewActivity extends AppCompatActivity {
                                     }
                                     Log.e("loginResponse", response);
                                     try{
-                                        JSONObject req = new JSONObject(response);
-                                        //
-                                        //      성공알람 보내기
-                                        //
+                                        JSONObject res = new JSONObject(response);
+                                        if(res.getString("result").equals("fail")){      //등록한 방이 없슴
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
+                                            return;
+                                        }
+                                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_JOIN_SUCCESS, ""));
                                     }
                                     catch (Exception e) {
                                         Log.e("login", e.toString());
@@ -370,6 +366,7 @@ public class RoomViewActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+            Log.i("SectionsPagerAdapter", positionStr);
             return PlaceholderFragment.newInstance(position + 1, positionStr);
         }
 
