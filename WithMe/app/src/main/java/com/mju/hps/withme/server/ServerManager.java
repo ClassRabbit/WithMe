@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.mju.hps.withme.R;
 import com.mju.hps.withme.constants.Constants;
 
 import java.io.File;
@@ -146,7 +147,7 @@ public class ServerManager {
             mThread.join();
             imageView.setImageBitmap(profileImage);
         } catch (InterruptedException e) {
-
+            imageView.setImageResource(R.drawable.user_information);
         }
     }
 
