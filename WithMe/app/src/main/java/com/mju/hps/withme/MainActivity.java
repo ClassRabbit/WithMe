@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.mju.hps.withme.constants.Constants;
+import com.mju.hps.withme.database.DatabaseLab;
 import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.server.ServerManager;
 
@@ -216,7 +217,12 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, ChatActivity.class);
             startActivity(intent);
         } else if(id == R.id.log_out) {
-
+            // DB비우고
+            DatabaseLab.getInstance().logoutUser();
+            //로그인뷰로 이동
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

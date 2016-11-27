@@ -98,6 +98,21 @@ public class DatabaseLab {
         database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
     }
 
+    public void logoutUser(){
+        User.getInstance().setId("");
+        User.getInstance().setMail("");
+        User.getInstance().setPassword("");
+        User.getInstance().setToken("");
+        User.getInstance().setName("");
+        User.getInstance().setBirth("");
+        User.getInstance().setPhone("");
+        User.getInstance().setGender("");
+        ContentValues values = getContentValues(User.getInstance());
+        //서버에 token 비우는 작업 필요할지도...
+        Log.i("logoutUser", "database Login");
+        database.update(UserTable.NAME, values, "flag = ?", new String[]{"1"});
+    }
+
 //    public void joinRoom(String roomId){
 //        ContentValues values = new ContentValues();
 //        values.put(RoomTable.Cols.ID, roomId);
