@@ -1,15 +1,22 @@
 var express = require('express');
 var router = express.Router();
-var FCM = require('fcm-push');
+var Join = require('../models/Join');
+var Room = require('../models/Room');
+var User = require('../models/User');
+var Chat = require('../models/Chat');
+var FCM = require('fcm-node');
 
 var serverkey = 'AIzaSyBoQ8zUeNyIZ0yCMDx-5BVh55W-HwpbRO4';
 var fcm = new FCM(serverkey);
 
 
 var Message = function(){
-  this.to = '';
-  this.collapse_key = '';
+  // this.to = '';
+  this.registration_ids = [];
+  // this.collapse_key = '';
   this.data = {};
+  this.property = 'high';
+  this.content_available = true;
   this.notification = {};
 };
 
@@ -55,22 +62,68 @@ router.post('/', function (req, res){
 
 router.post('/chat', function (req, res){
 	console.log(req.body);
-  var message = new Message();
-  message.to = req.body.from;
-  message.data = {
-    data1: req.body.from,
-    data2: req.body.time,
-    data3: req.body.text
-  };
-
-  fcm.send(message, function(err,response){
+  Join.findOne({user: req.body.user}, function(err, join){
     if(err) {
       console.log(err);
-      console.log("Something has gone wrong !");
-    } else {
-      console.log("Successfully sent with resposne :",response);
+      return;
     }
+    Join.find({room: join.room}, function(err, joins){
+      if(err){
+        console.log(err);
+        return;
+      }
+      var query = [];
+      for(var i in joins){
+        query.push(joins[i].user);
+      }
+      User.find({_id:{ $in: query }}, function(err, users){
+        if(err){
+          console.log(err);
+          return;
+        }
+        var registration_ids = [];
+        for(var j in users){
+          if(users[j].token !== ""){
+            registration_ids.push(users[j].token);
+          }
+        }
+        console.log('length is ' + registration_ids.length);
+        var message = new Message();
+        // message.to = to;
+        message.registration_ids = registration_ids;
+        message.data = {
+          data1: req.body.user,
+          data2: req.body.name,
+          data3: req.body.time,
+          data4: req.body.text
+        };
+        fcm.send(message, function(err,response){
+          if(err) {
+            console.log(err);
+            console.log("Something has gone wrong !");
+          } else {
+            console.log("Successfully sent with resposne :",response);
+          }
+        });
+      });
+    });
   });
+  // var message = new Message();
+  // message.to = req.body.from;
+  // message.data = {
+  //   data1: req.body.from,
+  //   data2: req.body.time,
+  //   data3: req.body.text
+  // };
+
+  // fcm.send(message, function(err,response){
+  //   if(err) {
+  //     console.log(err);
+  //     console.log("Something has gone wrong !");
+  //   } else {
+  //     console.log("Successfully sent with resposne :",response);
+  //   }
+  // });
   res.json({userId:'testId', password:'testPassWord'});
 });
 

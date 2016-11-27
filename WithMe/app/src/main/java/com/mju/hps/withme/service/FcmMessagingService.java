@@ -33,14 +33,15 @@ public class FcmMessagingService extends FirebaseMessagingService {
         Log.i("MessagingService", "onMessageReceived");
 //        String from = message.getFrom();
         Map<String, String> data = message.getData();
-        String from = data.get("data1");
-        String time = data.get("data2");
-        String msg = data.get("data3");
+        String id = data.get("data1");
+        String name = data.get("data2");
+        String time = data.get("data3");
+        String text = data.get("data4");
 //        chatMessage.setId(122);//dummy
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setMessage(msg);
+        chatMessage.setMessage(name + " : " +text);
         chatMessage.setDate(time);
-        if(from.equals(User.getInstance().getToken())){
+        if(id.equals(User.getInstance().getId())){
             chatMessage.setMe(true);
         }
 //        Log.e("MessagingService", from + ", " + time + ", " + msg);

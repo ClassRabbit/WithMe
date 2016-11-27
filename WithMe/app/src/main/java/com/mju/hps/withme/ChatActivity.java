@@ -42,7 +42,6 @@ public class ChatActivity extends ActionBarActivity {
     private ArrayList<ChatMessage> chatHistory;
 
     static public Handler handler;
-    private String roomId = "testRoom1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,8 +109,8 @@ public class ChatActivity extends ActionBarActivity {
             public void onClick(View v) {
                 String messageText = messageET.getText().toString();
                 final String json = "{" +
-                            "\"roomId\" : \"" + roomId + "\", " +
-                            "\"from\" : \"" + User.getInstance().getToken() + "\"," +
+                            "\"user\" : \"" + User.getInstance().getId() + "\", " +
+                            "\"name\" : \"" + User.getInstance().getName() + "\", " +
                             "\"time\" : \"" + DateFormat.getDateTimeInstance().format(new Date()) + "\"," +
                             "\"text\" : \"" + messageText + "\"" +
                         "}";
@@ -154,18 +153,18 @@ public class ChatActivity extends ActionBarActivity {
 
         chatHistory = new ArrayList<ChatMessage>();
 
-        ChatMessage msg = new ChatMessage();
-        msg.setId(1);
-        msg.setMe(false);
-        msg.setMessage("Test Chat1");
-        msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-        chatHistory.add(msg);
-        ChatMessage msg1 = new ChatMessage();
-        msg1.setId(2);
-        msg1.setMe(false);
-        msg1.setMessage("Tesh Chat2 long text input");
-        msg1.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-        chatHistory.add(msg1);
+//        ChatMessage msg = new ChatMessage();
+//        msg.setId(1);
+//        msg.setMe(false);
+//        msg.setMessage("Test Chat1");
+//        msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+//        chatHistory.add(msg);
+//        ChatMessage msg1 = new ChatMessage();
+//        msg1.setId(2);
+//        msg1.setMe(false);
+//        msg1.setMessage("Tesh Chat2 long text input");
+//        msg1.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+//        chatHistory.add(msg1);
 
         adapter = new ChatAdapter(ChatActivity.this, new ArrayList<ChatMessage>());
         messagesContainer.setAdapter(adapter);

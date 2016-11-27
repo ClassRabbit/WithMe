@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity
     private static final int MSG_MAIN_CAN_JOIN = 1;
     private static final int MSG_MAIN_CANNOT_JOIN = 2;
     private static final int MSG_MAIN_ERROR = 3;
+    private static final int MSG_MAIN_LOGOUT_SUCCESS = 4;
+    private static final int MSG_MAIN_LOGOUT_FAIL = 5;
+    private static final int MSG_MAIN_LOGOUT_NULL = 6;
     private static final int MSG_MAIN_ROOMS = 100;
 
     private FloatingActionButton fab;
@@ -68,21 +71,31 @@ public class MainActivity extends AppCompatActivity
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                String str;
                 switch (msg.what) {
                     case MSG_MAIN_CAN_JOIN:     // 현재 가입한 방이 없음
-                        str = (String)msg.obj;
                         isJoin = false;
                         fab.setVisibility(View.VISIBLE);
                         break;
                     case MSG_MAIN_CANNOT_JOIN:     // 현재 가입한 방이 있음
-                        str = (String)msg.obj;
                         isJoin = true;
                         fab.setVisibility(View.GONE);
                         break;
                     case MSG_MAIN_ERROR:     // 서버 에러
-                        str = (String)msg.obj;
-                        Toast.makeText(MainActivity.this, "서버에 연결하지 못했습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "서버에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MSG_MAIN_LOGOUT_SUCCESS:
+//                        // DB비우고
+//                        DatabaseLab.getInstance().logoutUser();
+//                        //로그인뷰로 이동
+//                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                        startActivity(intent);
+//                        MainActivity.this.finish();
+                        break;
+                    case MSG_MAIN_LOGOUT_FAIL:
+                        Toast.makeText(MainActivity.this, "로그아웃에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MSG_MAIN_LOGOUT_NULL:
+                        Toast.makeText(MainActivity.this, "현재 아이디는 삭제된 아이디입니다.", Toast.LENGTH_SHORT).show();
                         break;
                     case MSG_MAIN_ROOMS:
                         rooms = (JSONArray)msg.obj;
@@ -214,15 +227,62 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.room_status) {
 
         } else if (id == R.id.chatting) {
-            Intent intent = new Intent(this, ChatActivity.class);
-            startActivity(intent);
+            if(!isJoin){
+                Toast.makeText(MainActivity.this, "방에 참여되셔야 이용 가능합니다.", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Intent intent = new Intent(this, ChatActivity.class);
+                startActivity(intent);
+            }
+
         } else if(id == R.id.log_out) {
+            final String json = "{" +
+                    "\"id\" : \"" + User.getInstance().getId() + "\"" +
+                    "}";
+            Log.e("id", User.getInstance().getId());
+            final Activity activity = this;
+            new Thread() {
+                public void run() {
+                    String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/user/logout", json);
+//                    if(response == null){
+//                        Log.e("login", "서버 에러");
+//                        handler.sendMessage(Message.obtain(handler, MSG_MAIN_ERROR, ""));
+//                        return;
+//                    }
+//                    Log.e("loginResponse", response);
+//                    try{
+//                        JSONObject obj = new JSONObject(response);
+//                        if(obj.getString("result").equals("success")){
+//                            Log.i("login", "로그아웃 성공");
+//                            handler.sendMessage(Message.obtain(handler, MSG_MAIN_LOGOUT_SUCCESS, ""));
+//                            Intent resultIntent=new Intent(activity, MainActivity.class);
+//                            activity.startActivity(resultIntent);
+//                        }
+//                        else if(obj.getString("result").equals("fail")) {
+//                            Log.e("login", "로그아웃 실패");
+//                            handler.sendMessage(Message.obtain(handler, MSG_MAIN_LOGOUT_FAIL, ""));
+//                        }
+//                        else if(obj.getString("result").equals("error")) {
+//                            Log.e("login", "로그아웃 서버 에러");
+//                            handler.sendMessage(Message.obtain(handler, MSG_MAIN_ERROR, ""));
+//                        }
+//                        else {
+//                            Log.e("login", "NULL 에러");
+//                            handler.sendMessage(Message.obtain(handler, MSG_MAIN_LOGOUT_NULL, ""));
+//                        }
+//                    }
+//                    catch (Exception e) {
+//                        Log.e("login", e.toString());
+//                    }
+                }
+            }.start();
             // DB비우고
             DatabaseLab.getInstance().logoutUser();
             //로그인뷰로 이동
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
-            finish();
+            MainActivity.this.finish();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
