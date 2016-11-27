@@ -92,10 +92,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        TextView textView = (TextView)findViewById(R.id.textText);
-        WithMeJni jni = new WithMeJni();
-        textView.setText("" + jni.isSamePassword("test", "test"));
-
     }
 
     public void login(View view) {

@@ -19,17 +19,17 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_margin="10sp"
-        >
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="제목"
-            android:id="@+id/room_context"
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="제목"
+                android:id="@+id/room_context"
+                />
 
-    </TableRow>
+        </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -91,12 +91,9 @@
                 android:text="룸메이트는 최대 몇명?"
                 android:textSize="20sp"
                 />
-        </TableRow>
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10sp" >
+
             <Spinner
+                android:layout_marginLeft="5sp"
                 android:layout_weight="1"
                 android:id="@+id/number_of_roommate"
                 android:layout_width="wrap_content"
@@ -113,24 +110,17 @@
             >
 
             <Button
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
-                android:text="위치를 선택해주세요."
+                android:layout_weight="0.5"
+                android:text="위치 선택"
                 android:onClick="input_map"
                 android:background="@color/colorBackgroundStandard" />
 
-        </TableRow>
-
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="10sp"
-            >
             <TextView
+                android:layout_marginLeft="10sp"
                 android:padding="5sp"
-
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -157,12 +147,12 @@
 
 
         <android.support.v7.widget.RecyclerView
-                android:id="@+id/photos_recycler_view"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10sp"
-                android:layout_alignParentEnd="true" />
+            android:id="@+id/photos_recycler_view"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            android:layout_alignParentEnd="true" />
 
 
         <TableRow
