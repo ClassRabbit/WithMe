@@ -119,9 +119,8 @@ public class ServerManager {
     }
 
     private Bitmap profileImage;
-
+    private Boolean profileImageUploadCheck = false;
     public void getUserProfileImage(String id, ImageView imageView){
-
         final String baseShoppingURL = Constants.SERVER_URL + "/images/user/" + id +".png";
         Log.e("ImageURL", baseShoppingURL);
         Thread mThread = new Thread() {
@@ -136,8 +135,10 @@ public class ServerManager {
                     conn.connect();
                     InputStream is = conn.getInputStream();
                     profileImage = BitmapFactory.decodeStream(is);
+                    profileImageUploadCheck = true;
                 }
                 catch(IOException ex) {
+                    profileImageUploadCheck = false;
                     Log.e("사진 읽어오기 실패", ex.toString());
                 }
             }
@@ -145,9 +146,14 @@ public class ServerManager {
         mThread.start(); // 웹에서 이미지를 가져오는 작업 스레드 실행.
         try {
             mThread.join();
-            imageView.setImageBitmap(profileImage);
+            if(profileImageUploadCheck){
+                imageView.setImageBitmap(profileImage);
+            }
+            else {
+                imageView.setImageResource(R.drawable.user_information);
+            }
         } catch (InterruptedException e) {
-            imageView.setImageResource(R.drawable.user_information);
+
         }
     }
 
