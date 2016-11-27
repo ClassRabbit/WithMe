@@ -39,16 +39,18 @@ import org.json.JSONObject;
 public class RoomViewActivity extends AppCompatActivity {
 
     public static final int MSG_ROOM_VIEW_ERROR = 1;
-    public static final int MSG_ROOM_VIEW_SUCCESS = 2;
-    public static final int MSG_ROOM_VIEW_WAITING_ACK = 3;
-    public static final int MSG_ROOM_VIEW_WAITING_REFUCE = 4;
-    public static final int MSG_ROOM_VIEW_NULL = 5;
+    public static final int MSG_ROOM_VIEW_CAN_JOIN = 2;
+    public static final int MSG_ROOM_VIEW_CANNOT_JOIN = 3;
+    public static final int MSG_ROOM_VIEW_SUCCESS = 4;
+    public static final int MSG_ROOM_VIEW_WAITING_ACK = 5;
+    public static final int MSG_ROOM_VIEW_WAITING_REFUCE = 6;
+    public static final int MSG_ROOM_VIEW_NULL = 7;
 
     private static String roomId;
     public static Handler handler;
     private UserData owner;
     private RoomData room;
-    private boolean isJoin;
+    private boolean isJoin = false;
     private JSONObject myRoom;
     private static JSONArray joins;
     private int constitutorCnt = 0;
@@ -78,8 +80,8 @@ public class RoomViewActivity extends AppCompatActivity {
         //정보 받기
         Intent intent = getIntent();
         roomId = (String)intent.getSerializableExtra("roomId");
-        isJoin = (Boolean)intent.getSerializableExtra("isJoin");
-        waitingAdapter = new RoomViewWatingAdapter();
+//        isJoin = (Boolean)intent.getSerializableExtra("isJoin");
+
 
         handler = new Handler() {
             @Override
@@ -93,7 +95,16 @@ public class RoomViewActivity extends AppCompatActivity {
                         str = (String)msg.obj;
                         Toast.makeText(RoomViewActivity.this, "서버에 연결하지 못했습니다.", Toast.LENGTH_SHORT).show();
                         break;
+                    case MSG_ROOM_VIEW_CAN_JOIN:     // 현재 가입한 방이 없음
+                        Log.e("isJoin", "false");
+                        isJoin = false;
+                        break;
+                    case MSG_ROOM_VIEW_CANNOT_JOIN:     // 현재 가입한 방이 있음
+                        Log.e("isJoin", "true");
+                        isJoin = true;
+                        break;
                     case MSG_ROOM_VIEW_SUCCESS:
+                        waitingAdapter = new RoomViewWatingAdapter();
                         JSONArray data = (JSONArray)msg.obj;
                         try{        //1번 요소는 방, 2번 요소는 유저, 3번요소는 이방에 join한 모든내역
                             JSONObject roomJson = data.getJSONObject(0);
@@ -138,53 +149,20 @@ public class RoomViewActivity extends AppCompatActivity {
                         tabLayout = (TabLayout) findViewById(R.id.tabs);
                         tabLayout.setupWithViewPager(mViewPager);
 
-                        fab = (FloatingActionButton) findViewById(R.id.fab);
-                        fab.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
-                            }
-                        });
                         break;
                     case MSG_ROOM_VIEW_WAITING_ACK:
-                        ListView waitingListView = (ListView) thirdView.findViewById((R.id.room_view_listview_waiting));
-                        waitingListView.setAdapter(waitingAdapter);
+                        reloadView();
+                        break;
+                    case MSG_ROOM_VIEW_WAITING_REFUCE:
+                        reloadView();
                         break;
                 }
             }
         };
 
 
-        final String json = "{" +
-                "\"user\" : \"" + User.getInstance().getId() + "\", " +
-                "\"roomId\" : \"" +  roomId + "\"" +
-                "}";
-        final Activity activity = this;
-        new Thread() {
-            public void run() {
-                String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/main/view", json);
-                if(response == null){
-                    Log.e("login", "서버 에러");
-                    handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
-                    return;
-                }
-                Log.e("loginResponse", response);
-                try{
-                    JSONObject res = new JSONObject(response);
-                    //[방 정보, 만든이 정보, 이방에 조인한 정보] 형태의 JsonArray 가져옴
-                    JSONArray data = res.getJSONArray("data");
-                    handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_SUCCESS, data));
-                }
-                catch (Exception e) {
-                    Log.e("login", e.toString());
-                }
+        reloadView();
 
-            }
-        }.start();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 //        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -207,28 +185,68 @@ public class RoomViewActivity extends AppCompatActivity {
 
     }
 
+    public void reloadView(){
+        final String json = "{" +
+                "\"user\" : \"" + User.getInstance().getId() + "\", " +
+                "\"roomId\" : \"" +  roomId + "\"" +
+                "}";
+        new Thread() {
+            public void run() {
+                String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/view", json);
+                if(response == null){
+                    Log.e("login", "서버 에러");
+                    handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
+                    return;
+                }
+                Log.e("loginResponse", response);
+                try{
+                    JSONObject res = new JSONObject(response);
+                    //방 등록 했는지 안했는지
+                    if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
+                        Log.e("isJoin", "등록한 방 없슴");
+                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CAN_JOIN, ""));
+                    }
+                    else {
+                        Log.e("isJoin", "등록한 방 있슴");
+                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CANNOT_JOIN, ""));
+                    }
+                    //[방 정보, 만든이 정보, 이방에 조인한 정보] 형태의 JsonArray 가져옴
+                    JSONArray data = res.getJSONArray("data");
+                    handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_SUCCESS, data));
+                }
+                catch (Exception e) {
+                    Log.e("login", e.toString());
+                }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_room_view, menu);
-        return true;
+            }
+        }.start();
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_room_view, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     /**
      * A placeholder fragment containing a simple view.

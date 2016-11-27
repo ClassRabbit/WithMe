@@ -94,6 +94,61 @@ function ensureExists(path, mask, cb) {
     });
 }
 
+router.post('/view', function (req, res){
+  console.log(req.body);
+
+  Join.findOne({user: req.body.user}, function(err, join){
+    if(err){
+      return res.json({result: 'error'});
+    }
+    Room.findById(req.body.roomId, function(err, room){
+      if(err){
+        return res.json({result: 'error'});
+      }
+      if(room === null){
+        return res.json({result: 'null'});
+      }
+      User.findById(room.user, function(err, user){
+        if(err){
+          return res.json({result: 'error'});
+        }
+        if(user === null) {
+          //user가 없을때 지만 이런일이 안생기게 막음
+          return;
+        }
+        Join.find({room: room.id}, function(err, joins){
+          if(err){
+            return res.json({result: 'error'});
+          }
+          if(joins === null) {
+            //joins가 없을때 지만 이런일이 안생기게 막음
+            return;
+          }
+          var data = [];
+          data.push(room);
+          data.push(user);
+          data.push(joins);
+          // for(var i in joins){
+          //   console.log(joins[i].user + " , " + req.body.user);
+          //   if(joins[i].user == req.body.user){
+          //     console.log("push");
+          //     data.push(joins[i]);
+          //     break;
+          //   }
+          // }
+          // return res.json({data: data});
+          if(join === null){
+            return res.json({isJoin: false, data: data});
+          }
+          else {
+            return res.json({isJoin: true, data: data});
+          }
+        });
+      });
+    });
+  });
+});
+
 router.post('/join', function(req, res, next) {
   var newJoin = new Join();
   newJoin.user = req.body.user;
@@ -129,6 +184,18 @@ router.post('/ack', function(req, res, next) {
       console.log("조인 수정 성공");
       return res.json({result: 'success'});
     });
+  });
+});
+
+router.post('/refuce', function(req, res, next) {
+  console.log("삭제 : " + req.body.joinId);
+  Join.findOneAndRemove({_id:req.body.joinId}, function(err){
+    if(err) {
+      console.log("조인 삭제 실패");
+      return res.json({result: 'fail'});
+    }
+    console.log("조인 삭제 성공");
+    return res.json({result: 'success'});
   });
 });
 

@@ -29,59 +29,6 @@ router.post('/', function (req, res){
   });
 });
 
-router.post('/view', function (req, res){
-  console.log(req.body);
-  Room.findById(req.body.roomId, function(err, room){
-    if(err){
-      return res.json({result: 'error'});
-    }
-    if(room === null){
-      return res.json({result: 'null'});
-    }
-    User.findById(room.user, function(err, user){
-      if(err){
-        return res.json({result: 'error'});
-      }
-      if(user === null) {
-        //user가 없을때 지만 이런일이 안생기게 막음
-        return;
-      }
-      Join.find({room: room.id}, function(err, joins){
-        if(err){
-          return res.json({result: 'error'});
-        }
-        if(joins === null) {
-          //joins가 없을때 지만 이런일이 안생기게 막음
-          return;
-        }
-        var data = [];
-        data.push(room);
-        data.push(user);
-        data.push(joins);
-        // for(var i in joins){
-        //   console.log(joins[i].user + " , " + req.body.user);
-        //   if(joins[i].user == req.body.user){
-        //     console.log("push");
-        //     data.push(joins[i]);
-        //     break;
-        //   }
-        // }
-        return res.json({data: data});
-        // if(join === null){
-        //   return res.json({isJoin: false, data: data});
-        // }
-        // else {
-        //   return res.json({isJoin: true, data: data});
-        // }
-      });
-    });
-  });
-  // Join.findOne({user: req.body.user}, function(err, join){
-  //   if(err){
-  //     return res.json({result: 'error'});
-  //   }
-  //
-  // });
-});
+
 
 module.exports = router;

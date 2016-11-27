@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity
                 RoomItem roomItem = (RoomItem) parent.getItemAtPosition(position);
                 Intent intent =new Intent(MainActivity.this, RoomViewActivity.class);
                 intent.putExtra("roomId", roomItem.getId());
-                intent.putExtra("isJoin", isJoin);
+//                intent.putExtra("isJoin", isJoin);
                 MainActivity.this.startActivity(intent);
             }
         });
