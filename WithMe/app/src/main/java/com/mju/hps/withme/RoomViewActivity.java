@@ -60,6 +60,7 @@ public class RoomViewActivity extends AppCompatActivity {
     private static RoomViewWatingAdapter waitingAdapter;
     private static View thirdView;
     private int tabLocation = 0;
+    private Intent refreshIntent;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -157,20 +158,32 @@ public class RoomViewActivity extends AppCompatActivity {
 
                         break;
                     case MSG_ROOM_VIEW_WAITING_ACK:
-                        tabLocation = 2;
-                        reloadView();
+//                        tabLocation = 2;
+//                        reloadView();
+                        refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
+                        refreshIntent.putExtra("roomId", roomId);
+                        refreshIntent.putExtra("tabLocation", 2);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(refreshIntent);
                         break;
                     case MSG_ROOM_VIEW_WAITING_REFUCE:
-                        tabLocation = 2;
-                        reloadView();
+//                        tabLocation = 2;
+//                        reloadView();
+                        refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
+                        refreshIntent.putExtra("roomId", roomId);
+                        refreshIntent.putExtra("tabLocation", 2);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(refreshIntent);
                         break;
                     case MSG_ROOM_VIEW_JOIN_SUCCESS:
-                        Intent intent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
-                        intent.putExtra("roomId", roomId);
-                        intent.putExtra("tabLocation", 2);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(intent);
+                        refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
+                        refreshIntent.putExtra("roomId", roomId);
+                        refreshIntent.putExtra("tabLocation", 2);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(refreshIntent);
                 }
             }
         };
