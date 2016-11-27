@@ -124,25 +124,34 @@ router.post('/view', function (req, res){
             //joins가 없을때 지만 이런일이 안생기게 막음
             return;
           }
-          var data = [];
-          data.push(room);
-          data.push(user);
-          data.push(joins);
-          // for(var i in joins){
-          //   console.log(joins[i].user + " , " + req.body.user);
-          //   if(joins[i].user == req.body.user){
-          //     console.log("push");
-          //     data.push(joins[i]);
-          //     break;
-          //   }
-          // }
+          var query = [];
+          for(var i in joins){
+            query.push(joins[i].user);
+          }
+          console.log('joins count : ' + joins.length);
+          User.find({_id:{ $in: query }}, function(err, users){
+            if(err){
+              return res.json({result: 'error'});
+            }
+            var data = [];
+            data.push(room);
+            data.push(user);
+            data.push(joins);
+            data.push(users);
+            if(join === null){
+              return res.json({isJoin: false, data: data});
+            }
+            else {
+              return res.json({isJoin: true, data: data});
+            }
+          });
           // return res.json({data: data});
-          if(join === null){
-            return res.json({isJoin: false, data: data});
-          }
-          else {
-            return res.json({isJoin: true, data: data});
-          }
+          // if(join === null){
+          //   return res.json({isJoin: false, data: data});
+          // }
+          // else {
+          //   return res.json({isJoin: true, data: data});
+          // }
         });
       });
     });

@@ -64,7 +64,7 @@ public class RoomViewWatingAdapter extends BaseAdapter {
 
         // 아이템 내 각 위젯에 데이터 반영
 //        iconImageView.setImageDrawable(roomItem.getIcon());
-        titleTextView.setText(waitingItem.getName());
+        titleTextView.setText(waitingItem.getName() + " (" + waitingItem.getBirth() + ")");
         AckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

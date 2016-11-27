@@ -52,10 +52,12 @@ public class RoomViewActivity extends AppCompatActivity {
     private RoomData room;
     private boolean isJoin = false;
     private JSONObject myRoom;
-    private static JSONArray joins;
+    private static JSONArray joins;         //이 방에 조인내역
+    private static JSONArray users;         //이 방에 조인한 유저들
     private int constitutorCnt = 0;
     private static RoomViewWatingAdapter waitingAdapter;
     private static View thirdView;
+    private int tabLocation = 0;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -110,6 +112,7 @@ public class RoomViewActivity extends AppCompatActivity {
                             JSONObject roomJson = data.getJSONObject(0);
                             JSONObject userJson = data.getJSONObject(1);
                             joins = data.getJSONArray(2);
+                            users = data.getJSONArray(3);
                             int joinCnt = joins.length();               //이방에 참여한 사람의 길이
                             for(int i = 0; i<joins.length(); i++){
                                 if(User.getInstance().getId().equals(joins.getJSONObject(i).getString("user"))){
@@ -145,15 +148,18 @@ public class RoomViewActivity extends AppCompatActivity {
 
                         mViewPager = (ViewPager) findViewById(R.id.container);
                         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+                        mViewPager.setCurrentItem(tabLocation);
+                        tabLocation = 0;
                         tabLayout = (TabLayout) findViewById(R.id.tabs);
                         tabLayout.setupWithViewPager(mViewPager);
 
                         break;
                     case MSG_ROOM_VIEW_WAITING_ACK:
+                        tabLocation = 2;
                         reloadView();
                         break;
                     case MSG_ROOM_VIEW_WAITING_REFUCE:
+                        tabLocation = 2;
                         reloadView();
                         break;
                 }
@@ -162,26 +168,6 @@ public class RoomViewActivity extends AppCompatActivity {
 
 
         reloadView();
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-//        mViewPager = (ViewPager) findViewById(R.id.container);
-//        mViewPager.setAdapter(mSectionsPagerAdapter);
-//
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-//        tabLayout.setupWithViewPager(mViewPager);
-//
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
     }
 
@@ -301,7 +287,12 @@ public class RoomViewActivity extends AppCompatActivity {
                         for(int i=0;i<joins.length();i++){
                             JSONObject join = joins.getJSONObject(i);
                             if(join.getString("position").equals("waiting")){
-                                waitingAdapter.addWaiting(join.getString("id"), join.getString("id"), join.getString("id"));
+                                for(int j=0;j<users.length();j++){
+                                    JSONObject user = users.getJSONObject(j);
+                                    if(join.getString("user").equals(user.getString("id"))){
+                                        waitingAdapter.addWaiting(join.getString("id"), user.getString("name"), user.getString("birth"));
+                                    }
+                                }
                             }
                         }
                     }
