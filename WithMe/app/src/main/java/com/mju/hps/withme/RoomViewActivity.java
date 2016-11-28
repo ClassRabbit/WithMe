@@ -253,7 +253,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
 
     @Override
     protected void onStop() {
-        DemoSlider.stopAutoCycle();
+//        DemoSlider.stopAutoCycle();
         super.onStop();
     }
 

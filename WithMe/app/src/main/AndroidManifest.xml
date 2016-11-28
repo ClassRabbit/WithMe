@@ -14,6 +14,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <uses-permission android:name="android.permission.NFC"/>
+    <uses-feature android:name="android.hardware.nfc"/>
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -117,6 +120,12 @@
             android:name=".RoomViewActivity"
             android:label="@string/title_activity_room_view"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".NfcActivity" />
+        <provider
+            android:name=".database.DatabaseProvider"
+            android:authorities="com.mju.hps.withme"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

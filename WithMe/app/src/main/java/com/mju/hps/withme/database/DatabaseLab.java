@@ -252,4 +252,10 @@ public class DatabaseLab {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
+
+
+    public SQLiteDatabase getDatabase() {
+        return database;
+    }
+
 }
