@@ -161,7 +161,8 @@ router.post('/chat', function (req, res){
         };
         message.notification ={
           title: req.body.name,
-          body: req.body.text
+          body: req.body.text,
+          sound: "default"
         }
         fcm.send(message, function(err,response){
           if(err) {

@@ -138,10 +138,12 @@ public class RoomCreateActivity extends AppCompatActivity {
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                String str;
                 switch (msg.what) {
                     case MSG_CREATE_ROOM_SUCCESS:     // 성공
-                        str = (String)msg.obj;
+                        roomTitle.setText("");
+                        roomContent.setText("");
+                        selectedLatitude = 0.0;
+                        selectedLongitude = 0.0;
                         Toast.makeText(RoomCreateActivity.this, "방 만들기에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                         Intent resultIntent=new Intent(RoomCreateActivity.this, MainActivity.class);
                         resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -150,11 +152,9 @@ public class RoomCreateActivity extends AppCompatActivity {
                         finish();
                         break;
                     case MSG_CREATE_ROOM_FAIL:     // 실패
-                        str = (String)msg.obj;
                         Toast.makeText(RoomCreateActivity.this, "방 만들기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         break;
                     case MSG_CREATE_ROOM_ERROR:     // 에러
-                        str = (String)msg.obj;
                         Toast.makeText(RoomCreateActivity.this, "서버에러 입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         break;
                 }
