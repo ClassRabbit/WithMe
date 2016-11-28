@@ -46,7 +46,7 @@ public class RoomViewActivity extends AppCompatActivity {
     public static final int MSG_ROOM_VIEW_WAITING_ACK = 5;
     public static final int MSG_ROOM_VIEW_WAITING_REFUCE = 6;
     public static final int MSG_ROOM_VIEW_JOIN_SUCCESS = 7;
-//    public static final int MSG_ROOM_VIEW_NULL = 7;
+    //    public static final int MSG_ROOM_VIEW_NULL = 7;
 
     private static String roomId;
     public static Handler handler;
@@ -58,9 +58,11 @@ public class RoomViewActivity extends AppCompatActivity {
     private static JSONArray users;         //이 방에 조인한 유저들
     private static int constitutorCnt = 0;         //방에 join한 유저 수
     private static RoomViewWatingAdapter waitingAdapter;
+    private static RoommateListAdapter roommateAdapter;
     private static View thirdView;
     private int tabLocation = 0;
     private Intent refreshIntent;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -126,7 +128,7 @@ public class RoomViewActivity extends AppCompatActivity {
                                 }
                             }
                             // 아래와 같은 형식으로 참고해서 관리하면 될듯
-//                            owner = new UserData(roomJson.getString("title"), roomJson.getString("content"), roomJson.getInt("limit"), roomJson.getJSONArray())
+                            //                            owner = new UserData(roomJson.getString("title"), roomJson.getString("content"), roomJson.getInt("limit"), roomJson.getJSONArray())
 
                         }
                         catch(Exception e){
@@ -159,8 +161,8 @@ public class RoomViewActivity extends AppCompatActivity {
 
                         break;
                     case MSG_ROOM_VIEW_WAITING_ACK:
-//                        tabLocation = 2;
-//                        reloadView();
+                        //                        tabLocation = 2;
+                        //                        reloadView();
                         refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
                         refreshIntent.putExtra("roomId", roomId);
                         refreshIntent.putExtra("tabLocation", 2);
@@ -169,8 +171,8 @@ public class RoomViewActivity extends AppCompatActivity {
                         startActivity(refreshIntent);
                         break;
                     case MSG_ROOM_VIEW_WAITING_REFUCE:
-//                        tabLocation = 2;
-//                        reloadView();
+                        //                        tabLocation = 2;
+                        //                        reloadView();
                         refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
                         refreshIntent.putExtra("roomId", roomId);
                         refreshIntent.putExtra("tabLocation", 2);
@@ -299,6 +301,25 @@ public class RoomViewActivity extends AppCompatActivity {
             else if(getArguments().getInt(ARG_SECTION_NUMBER) == 2){
                 Log.i("onCreateView", "2");                                                                 //유저 정보 페이지일때
                 View rootView = inflater.inflate(R.layout.fragment_room_view_2, container, false);
+                //ListView listview1 = (ListView)rootView.findViewById(R.id.room_master); //방장
+                ListView listview2 = (ListView)rootView.findViewById(R.id.roommate); //룸메이트
+
+                try{
+                    for(int i=0; i<joins.length();i++) {
+                        JSONObject join = joins.getJSONObject(i);
+                        if(join.getString("position").equals("constitutor")){
+                            for(int j=0;j<users.length();j++){
+                                JSONObject user = users.getJSONObject(j);
+                                if(join.getString("user").equals(user.getString("id"))){
+                                    roommateAdapter.addRoommate(join.getString("id"), user.getString("name"), user.getString("birth"));
+                                }
+                            }
+                        }
+                    }
+                } catch(Exception e) {
+                    Log.e("roommate list", e.toString());
+                }
+                listview2.setAdapter(roommateAdapter);
                 return rootView;
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER) == 3){
