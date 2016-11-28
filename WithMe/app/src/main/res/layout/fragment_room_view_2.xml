@@ -3,9 +3,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="2"
+    //룸메이트 정보
+
+    <!--<ListView-->
+    <!--android:id="@+id/room_master"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+    <!--</ListView>-->
+
+    <ListView
+        android:id="@+id/roommate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+        android:layout_height="wrap_content" >
+        //android:layout_below="@+id/room_master">
+
+    </ListView>
+
 </LinearLayout>
