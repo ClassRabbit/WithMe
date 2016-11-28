@@ -163,7 +163,7 @@ router.post('/chat', function (req, res){
           title: req.body.name,
           body: req.body.text,
           sound: "default"
-        }
+        };
         fcm.send(message, function(err,response){
           if(err) {
             console.log(err);

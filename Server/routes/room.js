@@ -30,7 +30,8 @@ router.post('/create', function(req, res, next) {
       newRoom.longitude = body.longitude;
       newRoom.address = body.address;
       newRoom.limit = body.limit;
-
+      newRoom.numberOfImages = files.image.length;
+      
       newRoom.save(function(err, room){
         if(err) {
           console.log("방 등록 실패");

@@ -1,99 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:background="@drawable/textview_border"
-            android:id="@+id/room_title_info"
-            android:layout_below="@+id/photos_recycler_view_info"/>
-
-        <TextView
-            android:id="@+id/room_content"
-            android:text="방 정보"
-            android:textSize="20sp"
-            android:layout_margin="10sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/room_title_info" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:layout_below="@+id/room_content"
-            android:background="@drawable/textview_border"
-            android:id="@+id/room_content_info" />
-
-        <TextView
-            android:id="@+id/room_address"
-            android:text="방 주소"
-            android:textSize="20sp"
-            android:layout_margin="10sp"
-            android:layout_below="@+id/room_content_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp"
-            android:layout_below="@+id/room_address"
-            android:background="@drawable/textview_border"
-            android:id="@+id/room_address_info" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/room_people_num"
-            android:text="방 인원 수"
-            android:textSize="20sp"
-            android:layout_margin="10sp"
-            android:layout_below="@id/room_address_info"/>
-
-        <TextView
-            android:layout_width="30sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/room_recent_people"
-            android:layout_below="@+id/room_people_num"
-            android:layout_marginLeft="10sp"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/room_divide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" / "
-            android:textSize="20sp"
-            android:layout_below="@+id/room_people_num"
-            android:layout_toRightOf="@+id/room_recent_people"/>
-
-        <TextView
-            android:layout_width="30sp"
-            android:layout_height="wrap_content"
-            android:id="@+id/room_people_all"
-            android:textSize="20sp"
-            android:layout_below="@+id/room_people_num"
-            android:layout_toRightOf="@+id/room_divide"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/photos_recycler_view_info"
-            android:layout_weight="1"
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="10sp"
-            android:layout_marginRight="10sp"
-            android:layout_marginTop="98dp" />
+            android:layout_margin="10sp"
+            >
 
-        //방 인원 limit +1 해줘야함
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="10sp"
+                android:layout_marginRight="-40sp"
+                android:layout_height="250sp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                custom:pager_animation="Default"
+                custom:auto_cycle="true"
+                custom:indicator_visibility="visible"
+                custom:pager_animation_span="2000"
+                />
+            <com.daimajia.slider.library.Indicators.PagerIndicator
+                android:id="@+id/custom_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                custom:selected_color="#0095BF"
+                custom:unselected_color="#55333333"
+                custom:shape="oval"
+                custom:selected_padding_left="5dp"
+                custom:selected_padding_right="5dp"
+                custom:unselected_padding_left="5dp"
+                custom:unselected_padding_right="5dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                custom:selected_width="6dp"
+                custom:selected_height="6dp"
+                custom:unselected_width="6dp"
+                custom:unselected_height="6dp"
+                android:layout_marginBottom="20dp"
+                />
+            <com.daimajia.slider.library.Indicators.PagerIndicator
+                android:id="@+id/custom_indicator2"
+                style="@style/AndroidImageSlider_Corner_Oval_Orange"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"
+                />
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
 
-    </RelativeLayout>
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/room_title"
+                android:text="방 제목"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/textview_border"
+                android:id="@+id/room_title_info"/>
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/room_content"
+                android:text="방 정보"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/textview_border"
+                android:id="@+id/room_content_info" />
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+
+            <TextView
+                android:id="@+id/room_address"
+                android:layout_weight="1"
+                android:text="방 주소"
+                android:textSize="20sp"
+                android:layout_below="@+id/room_content_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/room_address"
+                android:background="@drawable/textview_border"
+                android:id="@+id/room_address_info" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+            <!--google map-->
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/room_people_num"
+                android:text="방 인원 수"
+                android:textSize="20sp"/>
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10sp"
+            >
+            <TextView
+                android:layout_width="20sp"
+                android:layout_height="wrap_content"
+                android:id="@+id/room_recent_people"
+                android:textSize="20sp" />
+            <TextView
+                android:id="@+id/room_divide"
+                android:layout_width="20sp"
+                android:layout_height="wrap_content"
+                android:text=" / "
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:layout_toRightOf="@+id/room_recent_people"/>
+
+            <TextView
+                android:layout_width="20sp"
+                android:layout_height="wrap_content"
+                android:id="@+id/room_people_all"
+                android:textSize="20sp"
+                android:layout_toRightOf="@+id/room_divide"/>
+
+            <!--//방 인원 limit +1 해줘야함-->
+        </TableRow>
+
+    </TableLayout>
 </ScrollView>

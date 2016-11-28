@@ -27,6 +27,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.google.android.gms.games.multiplayer.realtime.Room;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.model.RoomData;
@@ -37,7 +42,9 @@ import com.mju.hps.withme.server.ServerManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class RoomViewActivity extends AppCompatActivity {
+import java.util.HashMap;
+
+public class RoomViewActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
 
     public static final int MSG_ROOM_VIEW_ERROR = 1;
     public static final int MSG_ROOM_VIEW_CAN_JOIN = 2;
@@ -79,10 +86,16 @@ public class RoomViewActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    //Slide Show
+    SliderLayout DemoSlider;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_view);
+
+        //slide show
+        DemoSlider = (SliderLayout)findViewById(R.id.slider);
 
         //정보 받기
         final Intent intent = getIntent();
@@ -194,6 +207,8 @@ public class RoomViewActivity extends AppCompatActivity {
 
         reloadView();
 
+
+
     }
 
     public void reloadView(){
@@ -236,6 +251,11 @@ public class RoomViewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
+    @Override
+    protected void onStop() {
+        DemoSlider.stopAutoCycle();
+        super.onStop();
+    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -272,10 +292,16 @@ public class RoomViewActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
+
             if(getArguments().getInt(ARG_SECTION_NUMBER) == 1){
                 Log.i("onCreateView", "1");                                                                 //방 정보일때
                 View rootView = inflater.inflate(R.layout.fragment_room_view_1, container, false);
-                //
+
+                // Slideshow
+                int numberOfImages = 3; // default 3
+                String title = "";
+
                 //여기서 객체를 받고
                 TextView roomTitleInfo = (TextView)rootView.findViewById(R.id.room_title_info);
                 TextView roomContent = (TextView)rootView.findViewById(R.id.room_content_info);
@@ -290,11 +316,39 @@ public class RoomViewActivity extends AppCompatActivity {
                     Log.e("constitutorCnt", "" + constitutorCnt);
                     roomRecentPeople.setText("" + constitutorCnt);
                     roomLimitPeople.setText("" + (room.getInt("limit") + 1));
+                    title = room.getString("title");
+
+                    numberOfImages = Integer.parseInt(room.getString("numberOfImages"));
                 }
                 catch (Exception e){
                     Log.e("onCreateView", e.toString());
                 }
+//Slider init
+                SliderLayout mDemoSlider = (SliderLayout)rootView.findViewById(R.id.slider);
 
+                for(int i = 0; i < numberOfImages; i++){
+                    Log.e(String.valueOf(i+1), Constants.SERVER_URL + "/images/room/" + roomId + "/" + i + ".png");
+                    TextSliderView textSliderView = new TextSliderView(getContext());
+                    // initialize a SliderLayout
+                    textSliderView
+                            .description(title + " - " + String.valueOf(i+1))
+                            .image(Constants.SERVER_URL + "/images/room/" + roomId + "/" + i + ".png")
+                            .setScaleType(BaseSliderView.ScaleType.Fit);
+//                            .setOnSliderClickListener(new );
+
+                    //add your extra information
+                    Bundle bundle = new Bundle();
+                    textSliderView.bundle(bundle);
+                    textSliderView.getBundle()
+                            .putString("extra", title + " - " + String.valueOf(i+1));
+
+                    mDemoSlider.addSlider(textSliderView);
+                }
+                mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
+                mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                mDemoSlider.setCustomAnimation(new DescriptionAnimation());
+                mDemoSlider.setDuration(4000);
+//                mDemoSlider.addOnPageChangeListener(this);
                 //
                 return rootView;
             }
@@ -456,4 +510,31 @@ public class RoomViewActivity extends AppCompatActivity {
             return null;
         }
     }
+
+
+
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+        Toast.makeText(this,slider.getBundle().get("extra") + "",Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d("Slider Demo", "Page Changed: " + position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {}
 }
