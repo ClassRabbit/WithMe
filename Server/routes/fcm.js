@@ -10,7 +10,7 @@ var serverkey = 'AIzaSyBoQ8zUeNyIZ0yCMDx-5BVh55W-HwpbRO4';
 var fcm = new FCM(serverkey);
 
 
-var Message = function(){
+var MulticastMessage = function(){
   // this.to = '';
   this.registration_ids = [];
   // this.collapse_key = '';
@@ -60,6 +60,62 @@ router.post('/', function (req, res){
   res.json({userId:'testId', password:'testPassWord'});
 });
 
+router.post('/all', function (req, res){
+  console.log(req.body);
+  Join.findOne({user: req.body.user}, function(err, join){
+    if(err) {
+      console.log(err);
+      return;
+    }
+    Chat.find({room: join.room}, function(err, chats){
+      if(err){
+        console.log(err);
+        return;
+      }
+      return res.json({chats: chats});
+    });
+    // Join.find({room: join.room}, function(err, joins){
+    //   if(err){
+    //     console.log(err);
+    //     return;
+    //   }
+    //   var query = [];
+    //   for(var i in joins){
+    //     query.push(joins[i].user);
+    //   }
+    //   User.find({_id:{ $in: query }}, function(err, users){
+    //     if(err){
+    //       console.log(err);
+    //       return;
+    //     }
+    //     console.log('users cnt : ' + users.length);
+    //     Chat.find({room: join.room}, function(err, chats){
+    //       if(err){
+    //         console.log(err);
+    //         return;
+    //       }
+    //       console.log(users.length + " : " + chats.length);
+    //       for(var j in chats){
+    //         for(var z in users){
+    //           console.log('user : ' + users[z].id);
+    //           console.log('chat : ' + chats[j].user);
+    //           if(users[z].id == chats[j].user){
+    //             console.log('??');
+    //             chats[j].name = users[z].name;
+    //             console.log(chats[j].name);
+    //           }
+    //         }
+    //       }
+    //
+    //       // console.log(join.joinAt);
+    //       // console.log(chats[0].chatAt);
+    //       res.json({chats : chats});
+    //     });
+    //   });
+    // });
+  });
+});
+
 router.post('/chat', function (req, res){
 	console.log(req.body);
   Join.findOne({user: req.body.user}, function(err, join){
@@ -81,14 +137,20 @@ router.post('/chat', function (req, res){
           console.log(err);
           return;
         }
+        // var senderName;
         var registration_ids = [];
         for(var j in users){
           if(users[j].token !== ""){
             registration_ids.push(users[j].token);
+            console.log(users[j].mail + " : " + users[j].token);
           }
+          // if(req.body.user === users[j].id){
+          //   senderName = users[j].name;
+          //   console.log('이름저장함');
+          // }
         }
         console.log('length is ' + registration_ids.length);
-        var message = new Message();
+        var message = new MulticastMessage();
         // message.to = to;
         message.registration_ids = registration_ids;
         message.data = {
@@ -97,34 +159,36 @@ router.post('/chat', function (req, res){
           data3: req.body.time,
           data4: req.body.text
         };
+        message.notification ={
+          title: req.body.name,
+          body: req.body.text
+        }
         fcm.send(message, function(err,response){
           if(err) {
             console.log(err);
             console.log("Something has gone wrong !");
-          } else {
-            console.log("Successfully sent with resposne :",response);
+            return;
           }
+          else {
+            console.log("Successfully sent with resposne :  ",response);
+          }
+          newChat = new Chat();
+          newChat.user = req.body.user;
+          newChat.name = req.body.name;
+          newChat.room = join.room;
+          newChat.text = req.body.text;
+          newChat.chatAt = req.body.time;
+          newChat.save(function(err, chat){
+            if(err){
+              console.log('chat fail ' + err);
+              return;
+            }
+            console.log('chat success');
+          });
         });
       });
     });
   });
-  // var message = new Message();
-  // message.to = req.body.from;
-  // message.data = {
-  //   data1: req.body.from,
-  //   data2: req.body.time,
-  //   data3: req.body.text
-  // };
-
-  // fcm.send(message, function(err,response){
-  //   if(err) {
-  //     console.log(err);
-  //     console.log("Something has gone wrong !");
-  //   } else {
-  //     console.log("Successfully sent with resposne :",response);
-  //   }
-  // });
-  res.json({userId:'testId', password:'testPassWord'});
 });
 
 module.exports = router;

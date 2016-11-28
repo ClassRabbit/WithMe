@@ -23,6 +23,7 @@ import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.server.ServerManager;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -34,12 +35,14 @@ public class ChatActivity extends ActionBarActivity {
     public static final int MSG_CHAT_SUCCESS = 1;
     public static final int MSG_CHAT_FAIL = 2;
     public static final int MSG_CHAT_ERROR = 3;
+    public static final int MSG_CHAT_GET_SUCCESS = 4;
 
     private EditText messageET;
     private ListView messagesContainer;
     private Button sendBtn;
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> chatHistory;
+    private JSONArray chats;
 
     static public Handler handler;
 
@@ -59,16 +62,69 @@ public class ChatActivity extends ActionBarActivity {
                         displayMessage(chatMessage);
                         break;
                     case MSG_CHAT_FAIL:     // 실패
-                        Log.e("chatHandler", "2");
+                        Log.i("chatHandler", "Fail");
                         break;
                     case MSG_CHAT_ERROR:     // 에러
-                        Log.e("chatHandler", "3");
+                        Log.i("chatHandler", "Error");
+                        break;
+                    case MSG_CHAT_GET_SUCCESS:
+                        Log.i("chatHandler", "GetSuccess");
+                        chats = (JSONArray)msg.obj;
+                        Log.i("chats.length", "" + chats.length());
+                        try{
+                            for(int i=0;i<chats.length();i++){
+                                JSONObject chat = chats.getJSONObject(i);
+                                chatMessage = new ChatMessage();
+                                chatMessage.setMessage(chat.getString("name") + " : " + chat.getString("text"));
+                                chatMessage.setDate(chat.getString("chatAt"));
+                                if(chat.getString("user").equals(User.getInstance().getId())){
+                                    chatMessage.setMe(true);
+                                }
+                                displayMessage(chatMessage);
+                            }
+                        }
+                        catch(Exception e){
+                            Log.e("chatGet", e.toString());
+                        }
                         break;
                 }
-//                loginButton.setClickable(true);
             }
         };
+
+
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("ChatActivity", "onStart 실행");
+        final String json = "{" +
+                "\"user\" : \"" + User.getInstance().getId() + "\"" +
+                "}";
+        final Activity activity = this;
+        new Thread() {
+            public void run() {
+                String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/fcm/all", json);
+                if(response == null){
+                    Log.e("login", "서버 에러");
+                    handler.sendMessage(Message.obtain(handler, MSG_CHAT_ERROR, ""));
+                    return;
+                }
+                Log.e("loginResponse", response);
+                try{
+                    JSONObject res = new JSONObject(response);
+                    JSONArray chats = res.getJSONArray("chats");
+                    handler.sendMessage(Message.obtain(handler, ChatActivity.MSG_CHAT_GET_SUCCESS, chats));
+                }
+                catch (Exception e) {
+                    Log.e("login", e.toString());
+                }
+
+            }
+        }.start();
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -107,6 +163,9 @@ public class ChatActivity extends ActionBarActivity {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(messageET.getText().equals("")){
+                    return;
+                }
                 String messageText = messageET.getText().toString();
                 final String json = "{" +
                             "\"user\" : \"" + User.getInstance().getId() + "\", " +
@@ -123,16 +182,7 @@ public class ChatActivity extends ActionBarActivity {
                         }
                     }
                 }.start();
-
-//                ChatMessage chatMessage = new ChatMessage();
-//                chatMessage.setId(122);//dummy
-//                chatMessage.setMessage(messageText);
-//                chatMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-//                chatMessage.setMe(true);
-//
                 messageET.setText("");
-//
-//                displayMessage(chatMessage);
             }
         });
 
@@ -152,19 +202,6 @@ public class ChatActivity extends ActionBarActivity {
     private void loadDummyHistory(){
 
         chatHistory = new ArrayList<ChatMessage>();
-
-//        ChatMessage msg = new ChatMessage();
-//        msg.setId(1);
-//        msg.setMe(false);
-//        msg.setMessage("Test Chat1");
-//        msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-//        chatHistory.add(msg);
-//        ChatMessage msg1 = new ChatMessage();
-//        msg1.setId(2);
-//        msg1.setMe(false);
-//        msg1.setMessage("Tesh Chat2 long text input");
-//        msg1.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-//        chatHistory.add(msg1);
 
         adapter = new ChatAdapter(ChatActivity.this, new ArrayList<ChatMessage>());
         messagesContainer.setAdapter(adapter);
