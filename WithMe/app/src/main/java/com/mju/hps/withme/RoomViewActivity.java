@@ -56,8 +56,8 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     public static final int MSG_ROOM_VIEW_JOIN_FULL = 8;
     public static final int MSG_ROOM_VIEW_SECESSION_SUCCESS = 9;
     public static final int MSG_ROOM_VIEW_JOINCANCLE_SUCCESS = 10;
-
-    //    public static final int MSG_ROOM_VIEW_NULL = 7;
+    public static final int MSG_ROOM_VIEW_DESTROY_SUCCESS = 11;
+    public static final int MSG_ROOM_VIEW_NULL = 12;
 
     private static String roomId;
     public static Handler handler;
@@ -398,6 +398,48 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         Log.e("room change", e.toString());
                     }
                     waitingListView.setAdapter(waitingAdapter);
+
+                    //방 파괴 버튼
+                    final Button destroyButton = (Button)rootView.findViewById((R.id.room_view_button_destroy));
+                    destroyButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            destroyButton.setClickable(false);
+                            String roomId = null;
+                            try{
+                                roomId = room.getString("id");
+                            }
+                            catch(Exception e){
+                                Log.e("onCreateView3", e.toString());
+                                return;
+                            }
+                            final String json = "{" +
+                                    "\"room\" : \"" + roomId + "\"" +
+                                    "}";
+
+                            new Thread() {
+                                public void run() {
+                                    String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/destroy", json);
+                                    if(response == null){
+                                        Log.e("login", "서버 에러");
+                                        return;
+                                    }
+                                    Log.e("secession", response);
+                                    try{
+                                        JSONObject res = new JSONObject(response);
+                                        if(res.getString("result").equals("fail")){
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
+                                            return;
+                                        }
+                                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_DESTROY_SUCCESS, ""));
+                                    }
+                                    catch (Exception e) {
+                                        Log.e("login", e.toString());
+                                    }
+                                }
+                            }.start();
+                        }
+                    });
                 }
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("constitutor")){               //이방의 구성자일때
                     Log.i("onCreateView", "4");
@@ -501,6 +543,10 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                     Log.e("loginResponse", response);
                                     try{
                                         JSONObject res = new JSONObject(response);
+                                        if(res.getString("result").equals("full")){
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_JOIN_FULL, ""));
+                                            return;
+                                        }
                                         if(res.getString("result").equals("fail")){      //등록한 방이 없슴
                                             handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
                                             return;

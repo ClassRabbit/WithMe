@@ -7,27 +7,23 @@
         android:text="Room fix"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button4"
-        android:layout_alignBaseline="@+id/textView3Sample"
-        android:layout_alignBottom="@+id/textView3Sample"
-        android:layout_toEndOf="@+id/textView3Sample"
+        android:id="@+id/room_view_button_fix"
         android:layout_marginStart="20dp" />
-
-    <TextView
-        android:text="Owner View"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="42dp"
-        android:id="@+id/textView3Sample"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="61dp" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="11dp"
-        android:layout_below="@+id/button4"
+        android:layout_below="@+id/room_view_button_fix"
         android:id="@+id/room_view_listview_waiting"
         android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="38dp"
+        android:id="@+id/room_view_button_destroy" />
 </RelativeLayout>

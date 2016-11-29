@@ -100,18 +100,18 @@ router.post('/view', function (req, res){
 
   Join.findOne({user: req.body.user}, function(err, join){
     if(err){
-      return res.json({result: 'error'});
+      return res.json({result: 'fail'});
     }
     Room.findById(req.body.roomId, function(err, room){
       if(err){
-        return res.json({result: 'error'});
+        return res.json({result: 'fail'});
       }
       if(room === null){
-        return res.json({result: 'null'});
+        return res.json({result: 'null'});  //처리
       }
       User.findById(room.user, function(err, user){
         if(err){
-          return res.json({result: 'error'});
+          return res.json({result: 'fail'});
         }
         if(user === null) {
           //user가 없을때 지만 이런일이 안생기게 막음
@@ -119,7 +119,7 @@ router.post('/view', function (req, res){
         }
         Join.find({room: room.id}, function(err, joins){
           if(err){
-            return res.json({result: 'error'});
+            return res.json({result: 'fail'});
           }
           if(joins === null) {
             //joins가 없을때 지만 이런일이 안생기게 막음
@@ -132,7 +132,7 @@ router.post('/view', function (req, res){
           console.log('joins count : ' + joins.length);
           User.find({_id:{ $in: query }}, function(err, users){
             if(err){
-              return res.json({result: 'error'});
+              return res.json({result: 'fail'});
             }
             var data = [];
             data.push(room);
@@ -163,16 +163,16 @@ router.post('/join', function(req, res, next) {
   Join.find({room: req.body.room},function(err, joins){
     if(err){
       console.log("조인 검색 실패");
-      return res.json({result: 'error'});
+      return res.json({result: 'fail'});
     }
     Room.findById(req.body.room, function(err, room){
       if(err){
         console.log("방 검색 실패");
-        return res.json({result: 'error'});
+        return res.json({result: 'fail'});
       }
       if(room === null){
         console.log("방이 없음");
-        return res.json({result: 'error'});
+        return res.json({result: 'fail'});
       }
       var limit = room.limit + 1;   //방 구하는 사람인원 + 방 개설자
       if(limit <= joins.length){  //제한수랑 조인수가 이미 동일하면 신청 불가
