@@ -252,13 +252,13 @@ router.post('/joinCancle', function(req, res, next) {
 });
 
 router.post('/destroy', function(req, res, next) {
-  Join.find({room:room}).remove().exec(function(err){
+  Join.find({room: req.body.room}).remove().exec(function(err){
     if(err) {
       console.log("방삭제 - 조인들 삭제 실패");
       return res.json({result: 'fail'});
     }
     console.log("방삭제 - 조인들 삭제 성공");
-    Room.findOneAndRemove({_id:room}, function(err){
+    Room.findOneAndRemove({_id:req.body.room}, function(err){
       if(err) {
         console.log("방삭제 실패");
         return res.json({result: 'fail'});

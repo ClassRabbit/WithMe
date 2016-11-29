@@ -114,6 +114,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                 TabLayout tabLayout;
                 FloatingActionButton fab;
                 myRoom = null;
+                Intent intent;
                 switch (msg.what) {
                     case MSG_ROOM_VIEW_ERROR:
                         str = (String)msg.obj;
@@ -199,7 +200,16 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         startActivity(refreshIntent);
                         break;
                     case MSG_ROOM_VIEW_NULL:
-                        Toast.makeText(RoomViewActivity.this, "존재하지 않는 방입니.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RoomViewActivity.this, "존재하지 않는 방입니다.", Toast.LENGTH_SHORT).show();
+                        intent =new Intent(RoomViewActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        RoomViewActivity.this.startActivity(intent);
+                        break;
+                    case MSG_ROOM_VIEW_DESTROY_SUCCESS:
+                        Toast.makeText(RoomViewActivity.this, "방을 삭제하였습니다.", Toast.LENGTH_SHORT).show();
+                        intent =new Intent(RoomViewActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        RoomViewActivity.this.startActivity(intent);
                         break;
                 }
             }
@@ -445,7 +455,10 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                             handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
                                             return;
                                         }
-                                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_DESTROY_SUCCESS, ""));
+                                        else {
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_DESTROY_SUCCESS, ""));
+                                        }
+
                                     }
                                     catch (Exception e) {
                                         Log.e("onCreateView3", e.toString());
