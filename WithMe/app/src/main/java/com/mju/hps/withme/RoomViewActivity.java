@@ -53,8 +53,10 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     public static final int MSG_ROOM_VIEW_WAITING_ACK = 5;
     public static final int MSG_ROOM_VIEW_WAITING_REFUCE = 6;
     public static final int MSG_ROOM_VIEW_JOIN_SUCCESS = 7;
-    public static final int MSG_ROOM_VIEW_SECESSION_SUCCESS = 8;
-    public static final int MSG_ROOM_VIEW_JOINCANCLE_SUCCESS = 9;
+    public static final int MSG_ROOM_VIEW_JOIN_FULL = 8;
+    public static final int MSG_ROOM_VIEW_SECESSION_SUCCESS = 9;
+    public static final int MSG_ROOM_VIEW_JOINCANCLE_SUCCESS = 10;
+
     //    public static final int MSG_ROOM_VIEW_NULL = 7;
 
     private static String roomId;
@@ -143,7 +145,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                 }
                             }
                             // 아래와 같은 형식으로 참고해서 관리하면 될듯
-                            //                            owner = new UserData(roomJson.getString("title"), roomJson.getString("content"), roomJson.getInt("limit"), roomJson.getJSONArray())
+                            // owner = new UserData(roomJson.getString("title"), roomJson.getString("content"), roomJson.getInt("limit"), roomJson.getJSONArray())
 
                         }
                         catch(Exception e){
@@ -174,6 +176,15 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         tabLayout = (TabLayout) findViewById(R.id.tabs);
                         tabLayout.setupWithViewPager(mViewPager);
 
+                        break;
+                    case MSG_ROOM_VIEW_JOIN_FULL:
+                        refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
+                        refreshIntent.putExtra("roomId", roomId);
+                        refreshIntent.putExtra("tabLocation", 2);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        Toast.makeText(RoomViewActivity.this, "이미 방에 참여인원이 꽉찼습니다.", Toast.LENGTH_SHORT).show();
+                        startActivity(refreshIntent);
                         break;
                     case MSG_ROOM_VIEW_WAITING_ACK:
                     case MSG_ROOM_VIEW_WAITING_REFUCE:
@@ -462,6 +473,16 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                     Log.i("onCreateView", "6");
                     rootView = inflater.inflate(R.layout.fragment_room_view_6, container, false);
                     final Button joinButton = (Button)rootView.findViewById((R.id.room_view_button_join));
+                    try{
+                        if((room.getInt("limit")+1) <= joins.length()){
+//                            joinButton.setText("신청불가");
+//                            joinButton.setVisibility(View.GONE);
+                            joinButton.setEnabled(false);
+                        }
+                    }
+                    catch(Exception e){
+                        Log.e("onCreateView6", e.toString());
+                    }
                     joinButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

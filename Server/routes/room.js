@@ -160,18 +160,39 @@ router.post('/view', function (req, res){
 });
 
 router.post('/join', function(req, res, next) {
-  var newJoin = new Join();
-  newJoin.user = req.body.user;
-  newJoin.room = req.body.room;
-  newJoin.position = 'waiting';
-
-  newJoin.save(function(err, join){
-    if(err) {
-      console.log("조인 등록 실패");
-      return res.json({result: 'fail'});
+  Join.find({room: req.body.room},function(err, joins){
+    if(err){
+      console.log("조인 검색 실패");
+      return res.json({result: 'error'});
     }
-    console.log("조인 등록 성공");
-    return res.json({result: 'success'});
+    Room.findById(req.body.room, function(err, room){
+      if(err){
+        console.log("방 검색 실패");
+        return res.json({result: 'error'});
+      }
+      if(room === null){
+        console.log("방이 없음");
+        return res.json({result: 'error'});
+      }
+      var limit = room.limit + 1;   //방 구하는 사람인원 + 방 개설자
+      if(limit <= joins.length){  //제한수랑 조인수가 이미 동일하면 신청 불가
+        console.log("방 인원이 꽉참");
+        return res.json({result: 'full'});
+      }
+      var newJoin = new Join();
+      newJoin.user = req.body.user;
+      newJoin.room = req.body.room;
+      newJoin.position = 'waiting';
+
+      newJoin.save(function(err, join){
+        if(err) {
+          console.log("조인 등록 실패");
+          return res.json({result: 'fail'});
+        }
+        console.log("조인 등록 성공");
+        return res.json({result: 'success'});
+      });
+    });
   });
 });
 
