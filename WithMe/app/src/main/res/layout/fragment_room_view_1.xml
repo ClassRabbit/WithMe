@@ -11,7 +11,8 @@
         android:layout_marginLeft="20sp"
         android:layout_marginRight="20sp"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
 
         <TableRow
             android:layout_width="match_parent"
@@ -158,7 +159,9 @@
             android:layout_height="match_parent"
             android:layout_margin="10sp"
             >
-            <!--google map-->
+            <com.google.android.gms.maps.MapView android:id="@+id/room_view_mapView"
+                android:layout_width="250sp"
+                android:layout_height="250sp"/>
 
         </TableRow>
 

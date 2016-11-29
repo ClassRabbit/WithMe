@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -32,7 +33,17 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.games.multiplayer.realtime.Room;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.model.RoomData;
 import com.mju.hps.withme.model.User;
@@ -44,7 +55,9 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-public class RoomViewActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener{
+import static com.mju.hps.withme.R.id.map;
+
+public class RoomViewActivity extends AppCompatActivity implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
 
     public static final int MSG_ROOM_VIEW_ERROR = 1;
     public static final int MSG_ROOM_VIEW_CAN_JOIN = 2;
@@ -75,6 +88,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     private Intent refreshIntent;
 
 
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -93,6 +107,8 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     //Slide Show
     static SliderLayout demoSlider;
 
+//    private MapFragment mapFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +116,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
 
 //        //slide show
 //        DemoSlider = (SliderLayout)findViewById(R.id.slider);
+//        mapFragment.getMapAsync(this);
 
         //정보 받기
         final Intent intent = getIntent();
@@ -324,6 +341,26 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                 int numberOfImages = 3; // default 3
                 String title = "";
 
+
+                // google map
+                MapView mapView; GoogleMap mMap;
+                mapView = (MapView) rootView.findViewById(R.id.room_view_mapView);
+                mapView.onCreate(savedInstanceState);
+//                mapView.onCreate(savedInstanceState);
+                // Gets to GoogleMap from the MapView and does initialization stuff
+                try {
+                    MapsInitializer.initialize(this.getActivity());
+
+                } catch (Exception e) {
+                    Log.e("Map Error", e.toString());
+                }
+
+                mMap = mapView.getMap();
+                mMap.getUiSettings();
+
+                Double Lat = 0.0;
+                Double Lng = 0.0;
+                String address = "";
                 //여기서 객체를 받고
                 TextView roomTitleInfo = (TextView)rootView.findViewById(R.id.room_title_info);
                 TextView roomContent = (TextView)rootView.findViewById(R.id.room_content_info);
@@ -341,6 +378,10 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                     title = room.getString("title");
 
                     numberOfImages = Integer.parseInt(room.getString("numberOfImages"));
+
+                    Lat = Double.parseDouble(room.getString("latitude"));
+                    Lng = Double.parseDouble(room.getString("longitude"));
+                    address = room.getString("address");
                 }
                 catch (Exception e){
                     Log.e("onCreateView", e.toString());
@@ -371,7 +412,19 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                 demoSlider.setCustomAnimation(new DescriptionAnimation());
                 demoSlider.setDuration(4000);
 //                mDemoSlider.addOnPageChangeListener(this);
-                //
+
+                //google map
+                Log.e("Lat", Lat.toString());
+                Log.e("Lng", Lng.toString());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(new LatLng(Lat, Lng), 12);
+                mMap.animateCamera(cameraUpdate);
+
+                MarkerOptions marker = new MarkerOptions();
+                marker.position(new LatLng(Lat, Lng));// 위도  경도
+                marker.title(title);// 제목 미리보기
+                marker.snippet(address);
+                mMap.addMarker(marker).showInfoWindow();
+
                 return rootView;
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER) == 2){
