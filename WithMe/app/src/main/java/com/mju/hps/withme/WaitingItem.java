@@ -1,7 +1,7 @@
 package com.mju.hps.withme;
 
 /**
- * Created by MinChan on 2016-11-27.
+ * Created by KMC on 2016. 11. 30..
  */
 
 public class WaitingItem {

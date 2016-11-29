@@ -13,10 +13,9 @@
     <!--</ListView>-->
 
     <ListView
-        android:id="@+id/roommate"
+        android:id="@+id/room_view_listview_constitutor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
-        //android:layout_below="@+id/room_master">
 
     </ListView>
 
