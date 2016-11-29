@@ -53,6 +53,8 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     public static final int MSG_ROOM_VIEW_WAITING_ACK = 5;
     public static final int MSG_ROOM_VIEW_WAITING_REFUCE = 6;
     public static final int MSG_ROOM_VIEW_JOIN_SUCCESS = 7;
+    public static final int MSG_ROOM_VIEW_SECESSION_SUCCESS = 8;
+    public static final int MSG_ROOM_VIEW_JOINCANCLE_SUCCESS = 9;
     //    public static final int MSG_ROOM_VIEW_NULL = 7;
 
     private static String roomId;
@@ -87,15 +89,15 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     private ViewPager mViewPager;
 
     //Slide Show
-    SliderLayout DemoSlider;
+    static SliderLayout demoSlider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_view);
 
-        //slide show
-        DemoSlider = (SliderLayout)findViewById(R.id.slider);
+//        //slide show
+//        DemoSlider = (SliderLayout)findViewById(R.id.slider);
 
         //정보 받기
         final Intent intent = getIntent();
@@ -113,7 +115,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                 switch (msg.what) {
                     case MSG_ROOM_VIEW_ERROR:
                         str = (String)msg.obj;
-                        Toast.makeText(RoomViewActivity.this, "서버에 연결하지 못했습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RoomViewActivity.this, "서버에 연결되지 않았습니다.", Toast.LENGTH_SHORT).show();
                         break;
                     case MSG_ROOM_VIEW_CAN_JOIN:     // 현재 가입한 방이 없음
                         Log.e("isJoin", "false");
@@ -174,18 +176,10 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
 
                         break;
                     case MSG_ROOM_VIEW_WAITING_ACK:
-                        //                        tabLocation = 2;
-                        //                        reloadView();
-                        refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
-                        refreshIntent.putExtra("roomId", roomId);
-                        refreshIntent.putExtra("tabLocation", 2);
-                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(refreshIntent);
-                        break;
                     case MSG_ROOM_VIEW_WAITING_REFUCE:
-                        //                        tabLocation = 2;
-                        //                        reloadView();
+                    case MSG_ROOM_VIEW_JOIN_SUCCESS:
+                    case MSG_ROOM_VIEW_SECESSION_SUCCESS:
+                    case MSG_ROOM_VIEW_JOINCANCLE_SUCCESS:
                         refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
                         refreshIntent.putExtra("roomId", roomId);
                         refreshIntent.putExtra("tabLocation", 2);
@@ -193,13 +187,6 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(refreshIntent);
                         break;
-                    case MSG_ROOM_VIEW_JOIN_SUCCESS:
-                        refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
-                        refreshIntent.putExtra("roomId", roomId);
-                        refreshIntent.putExtra("tabLocation", 2);
-                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        startActivity(refreshIntent);
                 }
             }
         };
@@ -253,7 +240,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
 
     @Override
     protected void onStop() {
-//        DemoSlider.stopAutoCycle();
+        demoSlider.stopAutoCycle();
         super.onStop();
     }
 
@@ -324,7 +311,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                     Log.e("onCreateView", e.toString());
                 }
 //Slider init
-                SliderLayout mDemoSlider = (SliderLayout)rootView.findViewById(R.id.slider);
+                demoSlider = (SliderLayout)rootView.findViewById(R.id.slider);
 
                 for(int i = 0; i < numberOfImages; i++){
                     Log.e(String.valueOf(i+1), Constants.SERVER_URL + "/images/room/" + roomId + "/" + i + ".png");
@@ -342,12 +329,12 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                     textSliderView.getBundle()
                             .putString("extra", title + " - " + String.valueOf(i+1));
 
-                    mDemoSlider.addSlider(textSliderView);
+                    demoSlider.addSlider(textSliderView);
                 }
-                mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
-                mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-                mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-                mDemoSlider.setDuration(4000);
+                demoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
+                demoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+                demoSlider.setCustomAnimation(new DescriptionAnimation());
+                demoSlider.setDuration(4000);
 //                mDemoSlider.addOnPageChangeListener(this);
                 //
                 return rootView;
@@ -404,18 +391,81 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("constitutor")){               //이방의 구성자일때
                     Log.i("onCreateView", "4");
                     rootView = inflater.inflate(R.layout.fragment_room_view_4, container, false);
+                    final Button secessionButton = (Button)rootView.findViewById((R.id.room_view_button_secession));
+                    secessionButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            secessionButton.setClickable(false);
+                            final String json = "{" +
+                                    "\"user\" : \"" + User.getInstance().getId() + "\"" +
+                                    "}";
+                            new Thread() {
+                                public void run() {
+                                    String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/secession", json);
+                                    if(response == null){
+                                        Log.e("login", "서버 에러");
+                                        return;
+                                    }
+                                    Log.e("secession", response);
+                                    try{
+                                        JSONObject res = new JSONObject(response);
+                                        if(res.getString("result").equals("fail")){
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
+                                            return;
+                                        }
+                                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_SECESSION_SUCCESS, ""));
+                                    }
+                                    catch (Exception e) {
+                                        Log.e("login", e.toString());
+                                    }
+                                }
+                            }.start();
+                        }
+                    });
                 }
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("waiting")) {                  //대기중일때
                     Log.i("onCreateView", "5");
                     rootView = inflater.inflate(R.layout.fragment_room_view_5, container, false);
+                    final Button joinCancleButton = (Button)rootView.findViewById((R.id.room_view_button_joinCancle));
+                    joinCancleButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            joinCancleButton.setClickable(false);
+                            final String json = "{" +
+                                    "\"user\" : \"" + User.getInstance().getId() + "\"" +
+                                    "}";
+                            new Thread() {
+                                public void run() {
+                                    String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/joinCancle", json);
+                                    if(response == null){
+                                        Log.e("login", "서버 에러");
+                                        return;
+                                    }
+                                    Log.e("joincancle", response);
+                                    try{
+                                        JSONObject res = new JSONObject(response);
+                                        if(res.getString("result").equals("fail")){
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
+                                            return;
+                                        }
+                                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_JOINCANCLE_SUCCESS, ""));
+                                    }
+                                    catch (Exception e) {
+                                        Log.e("login", e.toString());
+                                    }
+                                }
+                            }.start();
+                        }
+                    });
                 }
                 else {                                                                                    //방문자
                     Log.i("onCreateView", "6");
                     rootView = inflater.inflate(R.layout.fragment_room_view_6, container, false);
-                    Button joinButton = (Button)rootView.findViewById((R.id.room_view_button_join));
+                    final Button joinButton = (Button)rootView.findViewById((R.id.room_view_button_join));
                     joinButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            joinButton.setClickable(false);
                             final String json = "{" +
                                     "\"user\" : \"" + User.getInstance().getId() + "\", " +
                                     "\"room\" : \"" + roomId + "\"" +

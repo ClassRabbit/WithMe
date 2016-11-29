@@ -31,7 +31,7 @@ router.post('/create', function(req, res, next) {
       newRoom.address = body.address;
       newRoom.limit = body.limit;
       newRoom.numberOfImages = files.image.length;
-      
+
       newRoom.save(function(err, room){
         if(err) {
           console.log("방 등록 실패");
@@ -200,6 +200,30 @@ router.post('/ack', function(req, res, next) {
 router.post('/refuce', function(req, res, next) {
   console.log("삭제 : " + req.body.joinId);
   Join.findOneAndRemove({_id:req.body.joinId}, function(err){
+    if(err) {
+      console.log("조인 거절 실패");
+      return res.json({result: 'fail'});
+    }
+    console.log("조인 거절 성공");
+    return res.json({result: 'success'});
+  });
+});
+
+router.post('/secession', function(req, res, next) {
+  console.log("삭제 : " + req.body.user);
+  Join.findOneAndRemove({user:req.body.user}, function(err){
+    if(err) {
+      console.log("조인 삭제 실패");
+      return res.json({result: 'fail'});
+    }
+    console.log("조인 삭제 성공");
+    return res.json({result: 'success'});
+  });
+});
+
+router.post('/joinCancle', function(req, res, next) {
+  console.log("삭제 : " + req.body.user);
+  Join.findOneAndRemove({user:req.body.user}, function(err){
     if(err) {
       console.log("조인 삭제 실패");
       return res.json({result: 'fail'});
