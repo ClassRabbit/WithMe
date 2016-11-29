@@ -123,7 +123,7 @@ router.post('/view', function (req, res){
           }
           if(joins === null) {
             //joins가 없을때 지만 이런일이 안생기게 막음
-            return;
+            return res.json({result: 'fail'});
           }
           var query = [];
           for(var i in joins){
@@ -140,10 +140,10 @@ router.post('/view', function (req, res){
             data.push(joins);
             data.push(users);
             if(join === null){
-              return res.json({isJoin: false, data: data});
+              return res.json({result: 'success', isJoin: false, data: data});
             }
             else {
-              return res.json({isJoin: true, data: data});
+              return res.json({result: 'success', isJoin: true, data: data});
             }
           });
           // return res.json({data: data});
@@ -172,7 +172,7 @@ router.post('/join', function(req, res, next) {
       }
       if(room === null){
         console.log("방이 없음");
-        return res.json({result: 'fail'});
+        return res.json({result: 'null'});
       }
       var limit = room.limit + 1;   //방 구하는 사람인원 + 방 개설자
       if(limit <= joins.length){  //제한수랑 조인수가 이미 동일하면 신청 불가
@@ -219,7 +219,6 @@ router.post('/ack', function(req, res, next) {
 });
 
 router.post('/refuce', function(req, res, next) {
-  console.log("삭제 : " + req.body.joinId);
   Join.findOneAndRemove({_id:req.body.joinId}, function(err){
     if(err) {
       console.log("조인 거절 실패");
@@ -231,7 +230,6 @@ router.post('/refuce', function(req, res, next) {
 });
 
 router.post('/secession', function(req, res, next) {
-  console.log("삭제 : " + req.body.user);
   Join.findOneAndRemove({user:req.body.user}, function(err){
     if(err) {
       console.log("조인 삭제 실패");
@@ -243,7 +241,6 @@ router.post('/secession', function(req, res, next) {
 });
 
 router.post('/joinCancle', function(req, res, next) {
-  console.log("삭제 : " + req.body.user);
   Join.findOneAndRemove({user:req.body.user}, function(err){
     if(err) {
       console.log("조인 삭제 실패");
@@ -254,5 +251,23 @@ router.post('/joinCancle', function(req, res, next) {
   });
 });
 
+router.post('/destroy', function(req, res, next) {
+  Join.find({room:room}).remove().exec(function(err){
+    if(err) {
+      console.log("방삭제 - 조인들 삭제 실패");
+      return res.json({result: 'fail'});
+    }
+    console.log("방삭제 - 조인들 삭제 성공");
+    Room.findOneAndRemove({_id:room}, function(err){
+      if(err) {
+        console.log("방삭제 실패");
+        return res.json({result: 'fail'});
+      }
+      console.log("방삭제 성공");
+      return res.json({result: 'success'});
+    });
+
+  });
+});
 
 module.exports = router;

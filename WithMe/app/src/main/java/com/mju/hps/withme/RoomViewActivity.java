@@ -198,6 +198,9 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(refreshIntent);
                         break;
+                    case MSG_ROOM_VIEW_NULL:
+                        Toast.makeText(RoomViewActivity.this, "존재하지 않는 방입니.", Toast.LENGTH_SHORT).show();
+                        break;
                 }
             }
         };
@@ -218,28 +221,39 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
             public void run() {
                 String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/view", json);
                 if(response == null){
-                    Log.e("login", "서버 에러");
+                    Log.e("reloadView", "서버 에러");
                     handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
                     return;
                 }
-                Log.e("loginResponse", response);
+                Log.e("reloadViewResponse", response);
                 try{
                     JSONObject res = new JSONObject(response);
                     //방 등록 했는지 안했는지
-                    if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
-                        Log.e("isJoin", "등록한 방 없슴");
-                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CAN_JOIN, ""));
+
+                    if(res.getString("result").equals("fail")){
+                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
+
                     }
-                    else {
-                        Log.e("isJoin", "등록한 방 있슴");
-                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CANNOT_JOIN, ""));
+                    else if(res.getString("result").equals("null")){
+                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_NULL, ""));
                     }
-                    //[방 정보, 만든이 정보, 이방에 조인한 정보] 형태의 JsonArray 가져옴
-                    JSONArray data = res.getJSONArray("data");
-                    handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_SUCCESS, data));
+                    else{
+                        if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
+                            Log.e("isJoin", "등록한 방 없슴");
+                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CAN_JOIN, ""));
+                        }
+                        else {
+                            Log.e("isJoin", "등록한 방 있슴");
+                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_CANNOT_JOIN, ""));
+                        }
+                        //[방 정보, 만든이 정보, 이방에 조인한 정보] 형태의 JsonArray 가져옴
+                        JSONArray data = res.getJSONArray("data");
+                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_SUCCESS, data));
+                    }
+
                 }
                 catch (Exception e) {
-                    Log.e("login", e.toString());
+                    Log.e("reloadView", e.toString());
                 }
 
             }
@@ -421,7 +435,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                 public void run() {
                                     String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/destroy", json);
                                     if(response == null){
-                                        Log.e("login", "서버 에러");
+                                        Log.e("onCreateView3", "서버 에러");
                                         return;
                                     }
                                     Log.e("secession", response);
@@ -434,7 +448,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                         handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_DESTROY_SUCCESS, ""));
                                     }
                                     catch (Exception e) {
-                                        Log.e("login", e.toString());
+                                        Log.e("onCreateView3", e.toString());
                                     }
                                 }
                             }.start();
@@ -456,7 +470,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                 public void run() {
                                     String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/secession", json);
                                     if(response == null){
-                                        Log.e("login", "서버 에러");
+                                        Log.e("onCreateView4", "서버 에러");
                                         return;
                                     }
                                     Log.e("secession", response);
@@ -469,7 +483,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                         handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_SECESSION_SUCCESS, ""));
                                     }
                                     catch (Exception e) {
-                                        Log.e("login", e.toString());
+                                        Log.e("onCreateView4", e.toString());
                                     }
                                 }
                             }.start();
@@ -491,7 +505,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                 public void run() {
                                     String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/joinCancle", json);
                                     if(response == null){
-                                        Log.e("login", "서버 에러");
+                                        Log.e("onCreateView5", "서버 에러");
                                         return;
                                     }
                                     Log.e("joincancle", response);
@@ -504,7 +518,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                         handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_JOINCANCLE_SUCCESS, ""));
                                     }
                                     catch (Exception e) {
-                                        Log.e("login", e.toString());
+                                        Log.e("onCreateView5", e.toString());
                                     }
                                 }
                             }.start();
@@ -537,24 +551,31 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                 public void run() {
                                     String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/room/join", json);
                                     if(response == null){
-                                        Log.e("login", "서버 에러");
+                                        Log.e("onCreateView6", "서버 에러");
                                         return;
                                     }
-                                    Log.e("loginResponse", response);
+                                    Log.e("onCreateView6", response);
                                     try{
                                         JSONObject res = new JSONObject(response);
                                         if(res.getString("result").equals("full")){
                                             handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_JOIN_FULL, ""));
                                             return;
                                         }
-                                        if(res.getString("result").equals("fail")){      //등록한 방이 없슴
+                                        else if(res.getString("result").equals("null")){      //등록한 방이 없슴
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_NULL, ""));
+                                            return;
+                                        }
+                                        else if(res.getString("result").equals("fail")){
                                             handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_ERROR, ""));
                                             return;
                                         }
-                                        handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_JOIN_SUCCESS, ""));
+                                        else {
+                                            handler.sendMessage(Message.obtain(handler, MSG_ROOM_VIEW_JOIN_SUCCESS, ""));
+                                        }
+
                                     }
                                     catch (Exception e) {
-                                        Log.e("login", e.toString());
+                                        Log.e("onCreateView6", e.toString());
                                     }
                                 }
                             }.start();

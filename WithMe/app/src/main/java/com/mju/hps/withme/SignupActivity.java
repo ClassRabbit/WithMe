@@ -111,6 +111,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         profileImage = (ImageView) findViewById(R.id.signup_input_profileImage);
         profileImage.setOnClickListener(this);
 
+        birth.setFocusable(false);
+
         setupUI(findViewById(R.id.activity_signup));
 
     }

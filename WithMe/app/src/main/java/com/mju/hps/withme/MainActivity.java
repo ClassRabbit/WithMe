@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private RoomListAdapter adapter;
     private boolean isJoin;
+    private JSONObject myRoom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,26 +155,32 @@ public class MainActivity extends AppCompatActivity
             public void run() {
                 String response = ServerManager.getInstance().post(Constants.SERVER_URL + "/main", json);
                 if(response == null){
-                    Log.e("login", "서버 에러");
+                    Log.e("onStart", "서버 에러");
                     handler.sendMessage(Message.obtain(handler, MSG_MAIN_ERROR, ""));
                     return;
                 }
-                Log.e("loginResponse", response);
+                Log.e("MainLoad", response);
                 try{
                     JSONObject res = new JSONObject(response);
                     //방 등록 했는지 안했는지
-                    if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
-                        Log.e("isJoin", "등록한 방 없슴");
-                        handler.sendMessage(Message.obtain(handler, MSG_MAIN_CAN_JOIN, ""));
+                    if(res.getString("result").equals("fail")){
+                        Log.e("onStart", "서버 에러");
+                        handler.sendMessage(Message.obtain(handler, MSG_MAIN_ERROR, ""));
                     }
                     else {
-                        Log.e("isJoin", "등록한 방 있슴");
-                        handler.sendMessage(Message.obtain(handler, MSG_MAIN_CANNOT_JOIN, ""));
+                        if(res.getBoolean("isJoin") == false){      //등록한 방이 없슴
+                            Log.e("isJoin", "등록한 방 없슴");
+                            handler.sendMessage(Message.obtain(handler, MSG_MAIN_CAN_JOIN, ""));
+                        }
+                        else {
+                            Log.e("isJoin", "등록한 방 있슴");
+                            myRoom = res.getJSONObject("myRoom");
+                            handler.sendMessage(Message.obtain(handler, MSG_MAIN_CANNOT_JOIN, ""));
+                        }
+                        //방 리스트 가져오기
+                        JSONArray rooms = res.getJSONArray("rooms");
+                        handler.sendMessage(Message.obtain(handler, MSG_MAIN_ROOMS, rooms));
                     }
-
-                    //방 리스트 가져오기
-                    JSONArray rooms = res.getJSONArray("rooms");
-                    handler.sendMessage(Message.obtain(handler, MSG_MAIN_ROOMS, rooms));
                 }
                 catch (Exception e) {
                     Log.e("login", e.toString());
