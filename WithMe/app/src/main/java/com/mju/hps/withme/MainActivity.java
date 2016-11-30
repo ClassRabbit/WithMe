@@ -231,6 +231,8 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.user_info) {
             Intent intent = new Intent(this, UserInfoActivity.class);
             startActivity(intent);
+        } else if(id == R.id.user_home) {
+            
         } else if (id == R.id.room_status) {
             if(!isJoin){
                 Toast.makeText(MainActivity.this, "방에 참여되셔야 이용 가능합니다.", Toast.LENGTH_SHORT).show();
