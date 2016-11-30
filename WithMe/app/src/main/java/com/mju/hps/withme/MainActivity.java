@@ -232,16 +232,33 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, UserInfoActivity.class);
             startActivity(intent);
         } else if(id == R.id.user_home) {
-
-        } else if (id == R.id.room_status) {
             if(!isJoin){
                 Toast.makeText(MainActivity.this, "방에 참여되셔야 이용 가능합니다.", Toast.LENGTH_SHORT).show();
             }
             else {
-                Intent intent = new Intent(this, NfcActivity.class);
+                Intent intent = new Intent(this, RoomViewActivity.class);
+                String myRoomId = null;
+                try{
+                    myRoomId = myRoom.getString("id");
+                }
+                catch (Exception e){
+                    Log.e("myRoom", e.toString());
+                }
+                intent.putExtra("roomId", myRoomId);
+                intent.putExtra("tabLocation", 0);
                 startActivity(intent);
             }
-        } else if (id == R.id.chatting) {
+        }
+//        else if (id == R.id.room_status) {
+//            if(!isJoin){
+//                Toast.makeText(MainActivity.this, "방에 참여되셔야 이용 가능합니다.", Toast.LENGTH_SHORT).show();
+//            }
+//            else {
+//                Intent intent = new Intent(this, NfcActivity.class);
+//                startActivity(intent);
+//            }
+//        }
+        else if (id == R.id.chatting) {
             if(!isJoin){
                 Toast.makeText(MainActivity.this, "방에 참여되셔야 이용 가능합니다.", Toast.LENGTH_SHORT).show();
             }

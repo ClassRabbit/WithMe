@@ -3,17 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/user_home"
-            android:icon="@drawable/home_icon"
-            android:title="Home" />
-        <item
             android:id="@+id/user_info"
             android:icon="@drawable/user_information"
             android:title="User Info" />
         <item
-            android:id="@+id/room_status"
-            android:icon="@drawable/roomstatus"
-            android:title="Find Room" />
+            android:id="@+id/user_home"
+            android:icon="@drawable/home_icon"
+            android:title="Home" />
+        <!--<item-->
+            <!--android:id="@+id/room_status"-->
+            <!--android:icon="@drawable/roomstatus"-->
+            <!--android:title="Find Room" />-->
         <item
             android:id="@+id/chatting"
             android:icon="@drawable/chat_icon"
