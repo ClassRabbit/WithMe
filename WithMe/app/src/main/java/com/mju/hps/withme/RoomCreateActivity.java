@@ -74,6 +74,9 @@ public class RoomCreateActivity extends AppCompatActivity {
     private Button createRoomButton;
     public Handler handler;
 
+
+    private boolean isFix = false;
+
     private TextView selectedLocationTextView;
     private Double selectedLatitude;
     private Double selectedLongitude;
@@ -130,6 +133,11 @@ public class RoomCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_create);
+
+        //정보 받기
+        final Intent intent = getIntent();
+
+
         createRoomButton = (Button)findViewById(R.id.room_create_create_button);
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);//GPS 이용가능 여부
@@ -254,6 +262,38 @@ public class RoomCreateActivity extends AppCompatActivity {
         }
 
 
+
+
+        isFix = (boolean)intent.getSerializableExtra("isFix");
+        Log.e("isFix", "" + isFix);
+
+        if(isFix){
+            JSONObject beforeRoom = (JSONObject) intent.getSerializableExtra("beforeRoom");
+//            final String json = "{" +
+//                    "\"user\" : \""  + User.getInstance().getId() + "\", " +
+//                    "\"title\" : \""  + roomTitle.getText().toString() + "\", " +
+//                    "\"content\" : \""  + roomContent.getText().toString() + "\", " +
+//                    "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
+//                    "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
+//                    "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
+//                    "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
+//                    "}";
+            try{
+                roomTitle.setText((String) intent.getSerializableExtra("title"));
+                roomContent.setText((String) intent.getSerializableExtra("content"));
+                selectedLatitude = (Double) intent.getSerializableExtra("latitude");
+                selectedLongitude = (Double) intent.getSerializableExtra("longitude");
+                selectedLocationTextView.setText((String) intent.getSerializableExtra("address"));
+                limitSpinner.setSelection((int) intent.getSerializableExtra("limit"));
+                createRoomButton.setText("수정하기");
+            }
+            catch(Exception e){
+                Log.e("beforeRoom", e.toString());
+            }
+
+        }
+
+
     }
 
     @Override
@@ -280,20 +320,22 @@ public class RoomCreateActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if(!isFix){
+            String title = roomTitle.getText().toString();
+            String content = roomContent.getText().toString();
+            SharedPreferences prefs = getSharedPreferences("RoomInfo", MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("title", title);
+            editor.putString("content", content);
 
-        String title = roomTitle.getText().toString();
-        String content = roomContent.getText().toString();
-        SharedPreferences prefs = getSharedPreferences("RoomInfo", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("title", title);
-        editor.putString("content", content);
+            if(selectedLatitude != null && selectedLongitude != null){
+                editor.putString("lat", selectedLatitude.toString());
+                editor.putString("lng", selectedLongitude.toString());
+            }
 
-        if(selectedLatitude != null && selectedLongitude != null){
-            editor.putString("lat", selectedLatitude.toString());
-            editor.putString("lng", selectedLongitude.toString());
+            editor.commit();
         }
 
-        editor.commit();
     }
 
     private boolean errorHandlerRoomCreate(){

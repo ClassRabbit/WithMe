@@ -91,6 +91,10 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
             bundle.putDouble("lat",selectedLat);
             bundle.putDouble("lng",selectedLng);
             sendIntent.putExtras(bundle);
+//            sendIntent.putExtra("isF")
+            //
+            // 여기서부터 시작
+            //
             startActivity(sendIntent);
         } // end onClick
     }

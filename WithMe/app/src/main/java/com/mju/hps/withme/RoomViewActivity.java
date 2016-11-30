@@ -1,6 +1,7 @@
 package com.mju.hps.withme;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -86,7 +87,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     private static View thirdView;
     private int tabLocation = 0;
     private Intent refreshIntent;
-
+    private static Context context;
 
 
     /**
@@ -241,6 +242,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     }
 
     public void reloadView(){
+        context = this.getBaseContext();
         final String json = "{" +
                 "\"user\" : \"" + User.getInstance().getId() + "\", " +
                 "\"roomId\" : \"" +  roomId + "\"" +
@@ -475,6 +477,30 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         Log.e("room change", e.toString());
                     }
                     waitingListView.setAdapter(waitingAdapter);
+
+                    //방 수정 버튼
+                    final Button fixButton = (Button)rootView.findViewById((R.id.room_view_button_fix));
+                    fixButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            fixButton.setClickable(false);
+
+                            Intent intent = new Intent(context, RoomCreateActivity.class);
+                            intent.putExtra("isFix", true);
+                            try{
+                                intent.putExtra("title", room.getString("title"));
+                                intent.putExtra("content", room.getString("content"));
+                                intent.putExtra("latitude", room.getDouble("latitude"));
+                                intent.putExtra("longitude", room.getDouble("longitude"));
+                                intent.putExtra("address", room.getString("address"));
+                                intent.putExtra("limit", room.getInt("limit"));
+                            }
+                            catch(Exception e){
+                                Log.e("fixRoom", e.toString());
+                            }
+                            startActivity(intent);
+                        }
+                    });
 
                     //방 파괴 버튼
                     final Button destroyButton = (Button)rootView.findViewById((R.id.room_view_button_destroy));
