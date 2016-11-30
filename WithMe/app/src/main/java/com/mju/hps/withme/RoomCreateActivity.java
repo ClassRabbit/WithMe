@@ -68,6 +68,9 @@ public class RoomCreateActivity extends AppCompatActivity {
     private static final int MSG_CREATE_ROOM_SUCCESS = 1;
     private static final int MSG_CREATE_ROOM_FAIL = 2;
     private static final int MSG_CREATE_ROOM_ERROR = 3;
+    private static final int MSG_FIX_ROOM_SUCCESS = 4;
+    private static final int MSG_FIX_ROOM_FAIL = 5;
+    private static final int MSG_FIX_ROOM_ERROR = 6;
 
     private EditText roomTitle, roomContent;
     private Location currentLocation;
@@ -75,7 +78,9 @@ public class RoomCreateActivity extends AppCompatActivity {
     public Handler handler;
 
 
-    private boolean isFix = false;
+    private boolean isFix;
+    private boolean isMap;
+    private String roomId;
 
     private TextView selectedLocationTextView;
     private Double selectedLatitude;
@@ -134,8 +139,6 @@ public class RoomCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_create);
 
-        //정보 받기
-        final Intent intent = getIntent();
 
 
         createRoomButton = (Button)findViewById(R.id.room_create_create_button);
@@ -163,6 +166,22 @@ public class RoomCreateActivity extends AppCompatActivity {
                         Toast.makeText(RoomCreateActivity.this, "방 만들기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                         break;
                     case MSG_CREATE_ROOM_ERROR:     // 에러
+                        Toast.makeText(RoomCreateActivity.this, "서버에러 입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MSG_FIX_ROOM_SUCCESS:
+                        Toast.makeText(RoomCreateActivity.this, "방 수정에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                        Intent resultIntent2=new Intent(RoomCreateActivity.this, RoomViewActivity.class);
+                        resultIntent2.putExtra("roomId", roomId);
+                        resultIntent2.putExtra("tabLocation", 0);
+                        resultIntent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        resultIntent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        RoomCreateActivity.this.startActivity(resultIntent2);
+                        finish();
+                        break;
+                    case MSG_FIX_ROOM_FAIL:
+                        Toast.makeText(RoomCreateActivity.this, "방 만들기에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MSG_FIX_ROOM_ERROR:
                         Toast.makeText(RoomCreateActivity.this, "서버에러 입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -224,6 +243,8 @@ public class RoomCreateActivity extends AppCompatActivity {
         roomTitle.setText(title);
         roomContent.setText(content);
 
+
+
         //Photos 관련
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.photos_recycler_view);
         photoAdapter = new RoomCreatePhotoAdapter(this, selectedPhotos);
@@ -248,7 +269,7 @@ public class RoomCreateActivity extends AppCompatActivity {
             Bundle bundle = getLocation.getExtras();
 
             if( bundle != null){
-
+                Log.e("Location", "덮어씌움");
                 selectedLatitude = bundle.getDouble("lat");
                 selectedLongitude =  bundle.getDouble("lng");
 
@@ -261,37 +282,39 @@ public class RoomCreateActivity extends AppCompatActivity {
             }
         }
 
+        //정보 받기
+        final Intent intent = getIntent();
 
-
-
-        isFix = (boolean)intent.getSerializableExtra("isFix");
+        //
+        //
+        //
+        roomId = "";
+        isFix = intent.getBooleanExtra("isFix", false);
         Log.e("isFix", "" + isFix);
 
         if(isFix){
-            JSONObject beforeRoom = (JSONObject) intent.getSerializableExtra("beforeRoom");
-//            final String json = "{" +
-//                    "\"user\" : \""  + User.getInstance().getId() + "\", " +
-//                    "\"title\" : \""  + roomTitle.getText().toString() + "\", " +
-//                    "\"content\" : \""  + roomContent.getText().toString() + "\", " +
-//                    "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
-//                    "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
-//                    "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
-//                    "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
-//                    "}";
             try{
+                createRoomButton.setText("수정하기");
+                roomId = (String) intent.getSerializableExtra("roomId");
                 roomTitle.setText((String) intent.getSerializableExtra("title"));
                 roomContent.setText((String) intent.getSerializableExtra("content"));
-                selectedLatitude = (Double) intent.getSerializableExtra("latitude");
-                selectedLongitude = (Double) intent.getSerializableExtra("longitude");
-                selectedLocationTextView.setText((String) intent.getSerializableExtra("address"));
-                limitSpinner.setSelection((int) intent.getSerializableExtra("limit"));
-                createRoomButton.setText("수정하기");
+                isMap = intent.getBooleanExtra("isMap", false);
+                limitSpinner.setSelection(((int) intent.getSerializableExtra("limit"))-1);
+                if(!isMap){
+                    Log.e("isMap", "맵이 아니군!! 넣자!!!!");
+                    selectedLatitude = (Double) intent.getSerializableExtra("latitude");
+                    selectedLongitude = (Double) intent.getSerializableExtra("longitude");
+                    selectedLocationTextView.setText((String) intent.getSerializableExtra("address"));
+                }
+
             }
             catch(Exception e){
                 Log.e("beforeRoom", e.toString());
             }
-
         }
+        //
+        //
+        //
 
 
     }
@@ -299,6 +322,7 @@ public class RoomCreateActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         //Google Map 관련
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return ;
@@ -321,6 +345,7 @@ public class RoomCreateActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         if(!isFix){
+            Log.e("onStop", "isFix가 아니군 저장!");
             String title = roomTitle.getText().toString();
             String content = roomContent.getText().toString();
             SharedPreferences prefs = getSharedPreferences("RoomInfo", MODE_PRIVATE);
@@ -335,6 +360,7 @@ public class RoomCreateActivity extends AppCompatActivity {
 
             editor.commit();
         }
+
 
     }
 
@@ -391,54 +417,104 @@ public class RoomCreateActivity extends AppCompatActivity {
             Log.e("방 만들기 Error", "Room Create Error");
         }
         else {
-            createRoomButton.setClickable(false);
-            final String json = "{" +
-                    "\"user\" : \""  + User.getInstance().getId() + "\", " +
-                    "\"title\" : \""  + roomTitle.getText().toString() + "\", " +
-                    "\"content\" : \""  + roomContent.getText().toString() + "\", " +
-                    "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
-                    "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
-                    "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
-                    "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
-                    "}";
+            if(roomId.equals("")){
+                createRoomButton.setClickable(false);
+                final String json = "{" +
+                        "\"user\" : \""  + User.getInstance().getId() + "\", " +
+                        "\"title\" : \""  + roomTitle.getText().toString() + "\", " +
+                        "\"content\" : \""  + roomContent.getText().toString() + "\", " +
+                        "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
+                        "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
+                        "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
+                        "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
+                        "}";
 
-            for (int i = 0; i < selectedPhotos.size(); i ++){
+                for (int i = 0; i < selectedPhotos.size(); i ++){
 //            String realPath = getRealPathFromString(selectedPhotos.get(i));
-                photosFileList.add(new File(selectedPhotos.get(i)));
-            }
+                    photosFileList.add(new File(selectedPhotos.get(i)));
+                }
 
-            // 사진은 필수로 적용함 selectedPhotos
-            final Activity activity = this;
-            new Thread() {
-                public void run() {
-                    if (selectedPhotos != null) {
-                        String responseStr = ServerManager.getInstance().roomCreate(Constants.SERVER_URL + "/room/create", json, photosFileList);
-                        if(responseStr == null){
-                            handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_ERROR, ""));
-                            return;
-                        }
-                        Log.d("createRoomResult", responseStr);
-                        try {
-                            JSONObject response = new JSONObject(responseStr);
-                            String result = response.getString("result");
-                            if(result.equals("fail")){
-                                handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_FAIL, ""));
+                // 사진은 필수로 적용함 selectedPhotos
+                final Activity activity = this;
+                new Thread() {
+                    public void run() {
+                        if (selectedPhotos != null) {
+                            String responseStr = ServerManager.getInstance().roomCreate(Constants.SERVER_URL + "/room/create", json, photosFileList);
+                            if(responseStr == null){
+                                handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_ERROR, ""));
+                                return;
                             }
-                            else {
+                            Log.d("createRoomResult", responseStr);
+                            try {
+                                JSONObject response = new JSONObject(responseStr);
+                                String result = response.getString("result");
+                                if(result.equals("fail")){
+                                    handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_FAIL, ""));
+                                }
+                                else {
 //                            //Init
 
 
-                                handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_SUCCESS, ""));
-                                roomInfoInit();
-                            }
+                                    handler.sendMessage(Message.obtain(handler, MSG_CREATE_ROOM_SUCCESS, ""));
+                                    roomInfoInit();
+                                }
 
-                        } catch (Throwable t) {
-                            Log.e("createUser", t.toString());
+                            } catch (Throwable t) {
+                                Log.e("createUser", t.toString());
+                            }
                         }
                     }
-                      }
-            }.start();
+                }.start();
+            }
+            else {
+                createRoomButton.setClickable(false);
+                final String json = "{" +
+                        "\"roomId\" : \""  + roomId + "\", " +
+                        "\"user\" : \""  + User.getInstance().getId() + "\", " +
+                        "\"title\" : \""  + roomTitle.getText().toString() + "\", " +
+                        "\"content\" : \""  + roomContent.getText().toString() + "\", " +
+                        "\"latitude\" : \""  + selectedLatitude.toString() + "\", " +
+                        "\"longitude\" : \""  + selectedLongitude.toString() + "\", " +
+                        "\"address\" : \""  + selectedLocationTextView.getText().toString() + "\", " +
+                        "\"limit\" : \""  + limitSpinner.getSelectedItem().toString()+ "\"" +
+                        "}";
 
+                for (int i = 0; i < selectedPhotos.size(); i ++){
+                    photosFileList.add(new File(selectedPhotos.get(i)));
+                }
+
+                // 사진은 필수로 적용함 selectedPhotos
+                final Activity activity = this;
+                new Thread() {
+                    public void run() {
+                        if (selectedPhotos != null) {
+                            String responseStr = ServerManager.getInstance().roomCreate(Constants.SERVER_URL + "/room/fix", json, photosFileList);
+                            if(responseStr == null){
+                                handler.sendMessage(Message.obtain(handler, MSG_FIX_ROOM_ERROR, ""));
+                                return;
+                            }
+                            Log.d("createRoomResult", responseStr);
+                            try {
+                                JSONObject response = new JSONObject(responseStr);
+                                String result = response.getString("result");
+                                if(result.equals("fail")){
+                                    handler.sendMessage(Message.obtain(handler, MSG_FIX_ROOM_FAIL, ""));
+                                }
+                                else {
+//                            //Init
+
+
+                                    handler.sendMessage(Message.obtain(handler, MSG_FIX_ROOM_SUCCESS, ""));
+                                    roomInfoInit();
+                                }
+
+                            } catch (Throwable t) {
+                                Log.e("createUser", t.toString());
+                            }
+                        }
+                    }
+                }.start();
+            }
         }
     }
 
@@ -448,6 +524,16 @@ public class RoomCreateActivity extends AppCompatActivity {
         Bundle args = new Bundle();
         args.putParcelable("myLocation", myLocation);
         googleIntent.putExtra("bundle", args);
+        googleIntent.putExtra("isFix", isFix);
+        if(isFix){
+            googleIntent.putExtra("roomId", roomId);
+            googleIntent.putExtra("title", roomTitle.getText().toString());
+            googleIntent.putExtra("content", roomContent.getText().toString());
+            googleIntent.putExtra("latitude", selectedLatitude);
+            googleIntent.putExtra("longitude", selectedLongitude);
+            googleIntent.putExtra("address", selectedLocationTextView.getText().toString());
+            googleIntent.putExtra("limit", limitSpinner.getSelectedItem().toString());
+        }
         startActivity(googleIntent);
     }
 

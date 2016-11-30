@@ -172,7 +172,15 @@ function ensureExists(path, mask, cb) {
     fs.mkdir(path, mask, function(err) {
         if (err) {
             if (err.code == 'EEXIST'){
-              cb(null); // ignore the error if the folder already exists
+              fs.rmdir(path, mask, function(err){
+                if(err){
+                  cb(err);
+                }
+                else {
+                  ensureExists(path, mask, cb);
+                }
+              });
+              // cb(null); // ignore the error if the folder already exists
             }
             else cb(err); // something else went wrong
         } else cb(null); // successfully created folder

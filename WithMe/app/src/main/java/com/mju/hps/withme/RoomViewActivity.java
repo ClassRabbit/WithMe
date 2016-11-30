@@ -483,11 +483,13 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                     fixButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            fixButton.setClickable(false);
+//                            fixButton.setClickable(false);
 
                             Intent intent = new Intent(context, RoomCreateActivity.class);
                             intent.putExtra("isFix", true);
+                            intent.putExtra("isMap", false);
                             try{
+                                intent.putExtra("roomId", room.getString("id"));
                                 intent.putExtra("title", room.getString("title"));
                                 intent.putExtra("content", room.getString("content"));
                                 intent.putExtra("latitude", room.getDouble("latitude"));

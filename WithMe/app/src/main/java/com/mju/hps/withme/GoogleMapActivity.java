@@ -36,6 +36,7 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
     private GoogleMap mMap;
     private ImageView pin;
     private TextView pinInfo;
+    private boolean isFIx;
 
     private ArrayList<String> addressList = new ArrayList();
     private AutoCompleteTextView input;
@@ -45,6 +46,14 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
     private static final int REQUEST_CODE_LOCATION = 2;
     private LatLng myLocation;
 
+    private String roomId;
+    private String title ;
+    private String content;
+    private Double latitude;
+    private Double longitude;
+    private String address;
+    private String limit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +61,16 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
 
         Bundle bundle = getIntent().getParcelableExtra("bundle");
         myLocation = bundle.getParcelable("myLocation");
+        isFIx = getIntent().getBooleanExtra("isFix", false);
+        if(isFIx) {
+            roomId = (String) getIntent().getSerializableExtra("roomId");
+            title = (String) getIntent().getSerializableExtra("title");
+            content = (String) getIntent().getSerializableExtra("content");
+            latitude = (Double) getIntent().getSerializableExtra("latitude");
+            longitude = (Double) getIntent().getSerializableExtra("longitude");
+            address = (String) getIntent().getSerializableExtra("address");
+            limit = (String) getIntent().getSerializableExtra("limit");
+        }
 
         mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
@@ -91,11 +110,25 @@ public class GoogleMapActivity extends FragmentActivity implements OnMapReadyCal
             bundle.putDouble("lat",selectedLat);
             bundle.putDouble("lng",selectedLng);
             sendIntent.putExtras(bundle);
+            if(isFIx){
+                sendIntent.putExtra("isFix", true);
+                sendIntent.putExtra("isMap", true);
+                sendIntent.putExtra("roomId", roomId);
+                sendIntent.putExtra("title", title);
+                sendIntent.putExtra("content", content);
+                sendIntent.putExtra("latitude", latitude);
+                sendIntent.putExtra("longitude",longitude);
+                sendIntent.putExtra("address", address);
+                sendIntent.putExtra("limit", limit);
+            }
+            sendIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
 //            sendIntent.putExtra("isF")
             //
             // 여기서부터 시작
             //
             startActivity(sendIntent);
+            finish();
         } // end onClick
     }
 
