@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.mju.hps.withme.constants.Constants;
@@ -43,6 +46,12 @@ import static com.mju.hps.withme.constants.Constants.PICK_FROM_ALBUM;
 import static com.mju.hps.withme.constants.Constants.PICK_FROM_CAMERA;
 
 public class UserInfoEditActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final int MSG_EDIT_SUCCESS = 1;
+    private static final int MSG_EDIT_FAIL = 2;
+    private static final int MSG_EDIT_ERROR = 3;
+
+
     private EditText email, name, password, birth, phone;
 
     ImageView profileImage;
@@ -57,9 +66,34 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private android.support.v7.app.AlertDialog.Builder builder;
     private android.support.v7.app.AlertDialog theAlertDialog;
 
+    private Handler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String str;
+                switch (msg.what) {
+                    case MSG_EDIT_ERROR:
+                        infoEditBtn.setClickable(true);
+                        Toast.makeText(UserInfoEditActivity.this, "서버에러 입니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MSG_EDIT_FAIL:
+                        infoEditBtn.setClickable(true);
+                        Toast.makeText(UserInfoEditActivity.this, "회원정보 수정에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case MSG_EDIT_SUCCESS:
+                        Toast.makeText(UserInfoEditActivity.this, "회원정보 수정에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                        break;
+                }
+
+            }
+        };
+
         setContentView(R.layout.activity_user_info_edit);
 
         email = (EditText)findViewById(R.id.user_info_edit_email);
@@ -78,6 +112,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         profileImage.setOnClickListener(this);
 
         builder = new android.support.v7.app.AlertDialog.Builder(this);
+        birth.setFocusable(false);
 
         ServerManager.getInstance().getUserProfileImage(User.getInstance().getMail(), profileImage);
 
@@ -117,33 +152,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    //
-    // 키보드 숨김 함수
-    //
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-    }
 
-    public void setupUI(View view) {
-        //Set up touch listener for non-text box views to hide keyboard.
-        if(!(view instanceof EditText)) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(UserInfoEditActivity.this);
-                    return false;
-                }
-            });
-        }
-
-        //If a layout container, iterate over children and seed recursion.
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                View innerView = ((ViewGroup) view).getChildAt(i);
-                setupUI(innerView);
-            }
-        }
-    }
 
     private boolean errorHandlerSignUp(){
         //error 체크 변수 처음엔 false 에러 X.
@@ -246,7 +255,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     if(photo == null){
                         String responseStr = ServerManager.getInstance().post(Constants.SERVER_URL + "/user/edit/"+ User.getInstance().getId(), json);
                         if(responseStr == null){
-                            activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserError"));
+                            handler.sendMessage(Message.obtain(handler, MSG_EDIT_ERROR, ""));
                             return;
                         }
                         Log.d("editUserResult", responseStr);
@@ -254,10 +263,22 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                             JSONObject response = new JSONObject(responseStr);
                             String result = response.getString("result");
                             if(result.equals("fail")){
-                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
+                                handler.sendMessage(Message.obtain(handler, MSG_EDIT_FAIL, ""));
                             }
                             else {
-                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
+                                JSONObject user = new JSONObject(response.getString("user"));
+                                User.getInstance().setId(user.getString("id"));
+                                User.getInstance().setMail(user.getString("mail"));
+                                User.getInstance().setPassword(user.getString("password"));
+                                User.getInstance().setToken(user.getString("token"));
+                                User.getInstance().setName(user.getString("name"));
+                                User.getInstance().setBirth(user.getString("birth"));
+                                User.getInstance().setPhone(user.getString("phone"));
+                                User.getInstance().setGender(user.getString("gender"));
+                                DatabaseLab.getInstance().loginUser();
+                                handler.sendMessage(Message.obtain(handler, MSG_EDIT_SUCCESS, ""));
+                                Intent resultIntent=new Intent(activity, UserInfoActivity.class);
+                                activity.startActivity(resultIntent);
                             }
                         } catch (Throwable t) {
                             Log.e("createUser", t.toString());
@@ -266,17 +287,32 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                     else {
                         Log.e("RealPath", imageRealPath);
                         String responseStr = ServerManager.getInstance().userInfoEdit(Constants.SERVER_URL + "/user/edit/image/" + User.getInstance().getId(), json, new File(imageRealPath), email.getText().toString());
+                        if(responseStr == null){
+                            handler.sendMessage(Message.obtain(handler, MSG_EDIT_ERROR, ""));
+                            return;
+                        }
                         Log.d("createUserResult", responseStr);
                         try {
                             JSONObject response = new JSONObject(responseStr);
                             String result = response.getString("result");
                             if(result.equals("fail")){
-                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
+                                handler.sendMessage(Message.obtain(handler, MSG_EDIT_FAIL, ""));
                             }
                             else {
-                                activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserSuccess"));
+                                JSONObject user = new JSONObject(response.getString("user"));
+                                User.getInstance().setId(user.getString("id"));
+                                User.getInstance().setMail(user.getString("mail"));
+                                User.getInstance().setPassword(user.getString("password"));
+                                User.getInstance().setToken(user.getString("token"));
+                                User.getInstance().setName(user.getString("name"));
+                                User.getInstance().setBirth(user.getString("birth"));
+                                User.getInstance().setPhone(user.getString("phone"));
+                                User.getInstance().setGender(user.getString("gender"));
+                                DatabaseLab.getInstance().loginUser();
+                                handler.sendMessage(Message.obtain(handler, MSG_EDIT_SUCCESS, ""));
+                                Intent resultIntent=new Intent(activity, UserInfoActivity.class);
+                                activity.startActivity(resultIntent);
                             }
-
                         } catch (Throwable t) {
                             Log.e("createUser", t.toString());
                         }
@@ -425,4 +461,33 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         return Uri.parse(path);
     }
 
+
+
+    //
+    // 키보드 숨김 함수
+    //
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public void setupUI(View view) {
+        //Set up touch listener for non-text box views to hide keyboard.
+        if(!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(UserInfoEditActivity.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
 }

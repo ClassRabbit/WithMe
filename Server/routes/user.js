@@ -104,7 +104,7 @@ router.post('/edit/:id', function(req, res, next) {
         return res.json({result: 'fail'});
       }
       console.log("사용자 등록 성공");
-      return res.json({result: 'success'});
+      return res.json({result: 'success', user: user});
     });
   });
 });
@@ -141,7 +141,7 @@ router.post('/edit/image/:id', function(req, res, next) {
                   }
                 });
             });
-            return res.json({result: 'success'});
+            return res.json({result: 'success', user: user});
           });
       });
      //put in here all the logic applied to your files.

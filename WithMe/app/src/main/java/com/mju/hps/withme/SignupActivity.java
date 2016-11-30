@@ -14,6 +14,8 @@ import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,6 +62,11 @@ import static com.mju.hps.withme.constants.Constants.PICK_FROM_ALBUM;
 import static com.mju.hps.withme.constants.Constants.PICK_FROM_CAMERA;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final int MSG_SIGNUP_SUCCESS = 1;
+    private static final int MSG_SIGNUP_FAIL = 2;
+    private static final int MSG_SIGNUP_ERROR = 3;
+
     EditText mail;
     EditText password;
     EditText passwordConfirm;
@@ -74,6 +81,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private String imageRealPath;
     private Button signUpBtn;
+
+    Handler handler;
 
     //error handler
     private android.support.v7.app.AlertDialog.Builder builder;
@@ -112,6 +121,20 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         profileImage.setOnClickListener(this);
 
         birth.setFocusable(false);
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String str;
+                switch (msg.what) {
+                    case MSG_SIGNUP_ERROR:
+                    case MSG_SIGNUP_FAIL:
+                        signUpBtn.setClickable(true);
+                        break;
+                }
+
+            }
+        };
 
         setupUI(findViewById(R.id.activity_signup));
 
@@ -216,6 +239,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     if(photo == null){
                         String responseStr = ServerManager.getInstance().post(Constants.SERVER_URL + "/user", json);
                         if(responseStr == null){
+                            handler.sendMessage(Message.obtain(handler, MSG_SIGNUP_ERROR, ""));
                             activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserError"));
                             return;
                         }
@@ -224,6 +248,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             JSONObject response = new JSONObject(responseStr);
                             String result = response.getString("result");
                             if(result.equals("fail")){
+                                handler.sendMessage(Message.obtain(handler, MSG_SIGNUP_FAIL, ""));
                                 activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
                             }
                             else {
@@ -238,11 +263,17 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     else {
                         Log.e("RealPath", imageRealPath);
                         String responseStr = ServerManager.getInstance().userSignup(Constants.SERVER_URL + "/user/image", json, new File(imageRealPath), mail.getText().toString());
+                        if(responseStr == null){
+                            handler.sendMessage(Message.obtain(handler, MSG_SIGNUP_ERROR, ""));
+                            activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserError"));
+                            return;
+                        }
                         Log.d("createUserResult", responseStr);
                         try {
                             JSONObject response = new JSONObject(responseStr);
                             String result = response.getString("result");
                             if(result.equals("fail")){
+                                handler.sendMessage(Message.obtain(handler, MSG_SIGNUP_FAIL, ""));
                                 activity.sendBroadcast(new Intent("com.mju.hps.withme.reciver.createUserFail"));
                             }
                             else {
