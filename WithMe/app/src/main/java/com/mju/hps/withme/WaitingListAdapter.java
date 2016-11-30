@@ -1,6 +1,8 @@
 package com.mju.hps.withme;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,24 +14,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mju.hps.withme.constants.Constants;
-import com.mju.hps.withme.model.User;
 import com.mju.hps.withme.server.ServerManager;
 
-import java.text.DateFormat;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.StringTokenizer;
 
 /**
- * Created by MinChan on 2016-11-27.
+ * Created by MinChan on 2016-12-01.
  */
 
-public class RoomViewWatingAdapter extends BaseAdapter {
-
+public class WaitingListAdapter extends BaseAdapter{
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<WaitingItem> waitingList = new ArrayList<WaitingItem>() ;
 
     // RoomListAdapter 생성자
-    public RoomViewWatingAdapter() {
+    public WaitingListAdapter() {
 
     }
 
@@ -48,14 +52,14 @@ public class RoomViewWatingAdapter extends BaseAdapter {
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.room_view_waiting_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.item_waiting, parent, false);
         }
 
         // 화면에 표시될 View(Layout이 inflate된)으로부터 위젯에 대한 참조 획득
-        ImageView iconImageView = (ImageView) convertView.findViewById(R.id.imageView1) ;
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.textView1) ;
-        Button AckButton = (Button)  convertView.findViewById(R.id.button1) ;
-        Button refuseButton = (Button)  convertView.findViewById(R.id.button2) ;
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.item_waiting_image_view) ;
+        TextView textView = (TextView) convertView.findViewById(R.id.item_waiting_text_view) ;
+        Button AckButton = (Button)  convertView.findViewById(R.id.item_waiting_button_ack) ;
+        Button refuseButton = (Button)  convertView.findViewById(R.id.item_waiting_button_refuce) ;
 
 
 
@@ -63,8 +67,18 @@ public class RoomViewWatingAdapter extends BaseAdapter {
         final WaitingItem waitingItem = waitingList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-//        iconImageView.setImageDrawable(roomItem.getIcon());
-        titleTextView.setText(waitingItem.getName() + " (" + waitingItem.getBirth() + ")");
+        Calendar calendar = Calendar.getInstance();
+        int nowYear = calendar.get(java.util.Calendar.YEAR);
+        String birth = waitingItem.getBirth();
+        StringTokenizer token = new StringTokenizer(birth, ".");
+        int birthYear = Integer.parseInt(token.nextToken());
+        int old = nowYear - birthYear;
+        if(old < 0) {
+            old = 0;
+        }String gender = (waitingItem.getGender().equals("Man")) ? "남" : "여";
+
+        getProfileImage(waitingItem.getMail(), imageView);
+        textView.setText(waitingItem.getName() + " (" + waitingItem.getPhone()  + ")\n"  + old + "세 " + gender);
         AckButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +131,48 @@ public class RoomViewWatingAdapter extends BaseAdapter {
         return convertView;
     }
 
+
+    private Bitmap profileImage;
+    private Boolean profileImageUploadCheck = false;
+    public void getProfileImage(String mail, ImageView imageView){
+        final String baseShoppingURL = Constants.SERVER_URL + "/images/user/" + mail +".png";
+        Log.e("ImageURL", baseShoppingURL);
+        Thread mThread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(baseShoppingURL); // URL 주소를 이용해서 URL 객체 생성
+                    //  아래 코드는 웹에서 이미지를 가져온 뒤
+                    //  이미지 뷰에 지정할 Bitmap을 생성하는   
+                    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+                    InputStream is = conn.getInputStream();
+                    profileImage = BitmapFactory.decodeStream(is);
+                    profileImageUploadCheck = true;
+                }
+                catch(IOException ex) {
+                    profileImageUploadCheck = false;
+                    Log.e("사진 읽어오기 실패", ex.toString());
+                }
+            }
+        };
+        mThread.start(); // 웹에서 이미지를 가져오는 작업 스레드 실행.
+        try {
+            mThread.join();
+            if(profileImageUploadCheck){
+                imageView.setImageBitmap(profileImage);
+            }
+            else {
+                imageView.setImageResource(R.drawable.user_information);
+            }
+        } catch (InterruptedException e) {
+
+        }
+    }
+
+
+
     // 지정한 위치(position)에 있는 데이터와 관계된 아이템(row)의 ID를 리턴. : 필수 구현
     @Override
     public long getItemId(int position) {
@@ -130,8 +186,8 @@ public class RoomViewWatingAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addWaiting(String id, String name, String birth) {
-        WaitingItem item = new WaitingItem(id, name, birth);
+    public void addWaiting(String id, String mail, String name, String birth, String gender, String phone) {
+        WaitingItem item = new WaitingItem(id, mail, name, birth, gender, phone);
         waitingList.add(item);
     }
 }

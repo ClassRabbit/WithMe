@@ -6,13 +6,14 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:id="@+id/item_waiting_image_view"
         android:layout_weight="1" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:text="New Text"
-        android:id="@+id/textView1"
+        android:id="@+id/item_waiting_text_view"
         android:gravity="center_vertical"
         android:layout_weight="2" />
 
@@ -45,14 +46,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/button1"
+        android:id="@+id/item_waiting_button_ack"
         android:background="@drawable/click_ok"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/button2"
+        android:id="@+id/item_waiting_button_refuce"
         android:background="@drawable/click_no"
         android:layout_weight="1" />
 

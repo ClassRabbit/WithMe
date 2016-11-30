@@ -82,7 +82,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     private static JSONArray joins;         //이 방에 조인내역
     private static JSONArray users;         //이 방에 조인한 유저들
     private static int constitutorCnt = 0;         //방에 join한 유저 수
-    private static RoomViewWatingAdapter waitingAdapter;
+    private static WaitingListAdapter waitingAdapter;
     private static ConstitutorListAdapter constitutorAdapter;
     private static View thirdView;
     private int tabLocation = 0;
@@ -147,7 +147,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         isJoin = true;
                         break;
                     case MSG_ROOM_VIEW_SUCCESS:
-                        waitingAdapter = new RoomViewWatingAdapter();
+                        waitingAdapter = new WaitingListAdapter();
                         constitutorAdapter = new ConstitutorListAdapter();
                         JSONArray data = (JSONArray)msg.obj;
                         try{        //1번 요소는 방, 2번 요소는 방장, 3번요소는 이방에 join한 모든내역, 4번요소는 이방에 조인한 유저목록
@@ -460,6 +460,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                     rootView = inflater.inflate(R.layout.fragment_room_view_3, container, false);
                     thirdView = rootView;
                     ListView waitingListView = (ListView) rootView.findViewById((R.id.room_view_listview_waiting));
+                    waitingAdapter = new WaitingListAdapter();
                     try{
                         for(int i=0;i<joins.length();i++){
                             JSONObject join = joins.getJSONObject(i);
@@ -467,7 +468,8 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                                 for(int j=0;j<users.length();j++){
                                     JSONObject user = users.getJSONObject(j);
                                     if(join.getString("user").equals(user.getString("id"))){
-                                        waitingAdapter.addWaiting(join.getString("id"), user.getString("name"), user.getString("birth"));
+                                        waitingAdapter.addWaiting(join.getString("id"), user.getString("mail"), user.getString("name"),
+                                                user.getString("birth"), user.getString("gender"), user.getString("phone"));
                                     }
                                 }
                             }
