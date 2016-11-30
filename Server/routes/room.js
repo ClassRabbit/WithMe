@@ -205,18 +205,47 @@ router.post('/join', function(req, res, next) {
         console.log("방 인원이 꽉참");
         return res.json({result: 'full'});
       }
-      var newJoin = new Join();
-      newJoin.user = req.body.user;
-      newJoin.room = req.body.room;
-      newJoin.position = 'waiting';
-
-      newJoin.save(function(err, join){
-        if(err) {
-          console.log("조인 등록 실패");
+      User.findById(room.user, function(err, owner){
+        if(err){
+          console.log("방장 검색 실패");
           return res.json({result: 'fail'});
         }
-        console.log("조인 등록 성공");
-        return res.json({result: 'success'});
+        var newJoin = new Join();
+        newJoin.user = req.body.user;
+        newJoin.room = req.body.room;
+        newJoin.position = 'waiting';
+
+        newJoin.save(function(err, join){
+          if(err) {
+            console.log("조인 등록 실패");
+            return res.json({result: 'fail'});
+          }
+          console.log("조인 등록 성공");
+          res.json({result: 'success'});
+          var message = new SingleMessage();
+          message.to = owner.token;
+          message.data = {
+            data0: 'room',
+            data1: '방에 신청이 들어왔습니다!',
+            data2: '신청을 확인하세요!'
+          };
+          message.notification ={
+            title: '방에 신청이 들어왔습니다!',
+            body: '신청을 확인하세요!',
+            sound: "default"
+          };
+          fcm.send(message, function(err,response){
+            if(err) {
+              console.log(err);
+              console.log("Something has gone wrong !");
+              return;
+            }
+            else {
+              console.log("Successfully sent with resposne :  ",response);
+              return;
+            }
+          });
+        });
       });
     });
   });
@@ -274,14 +303,6 @@ router.post('/ack', function(req, res, next) {
 });
 
 router.post('/refuce', function(req, res, next) {
-  // Join.findOneAndRemove({_id:req.body.joinId}, function(err){
-  //   if(err) {
-  //     console.log("조인 거절 실패");
-  //     return res.json({result: 'fail'});
-  //   }
-  //   console.log("조인 거절 성공");
-  //   return res.json({result: 'success'});
-  // });
   Join.findById(req.body.joinId, function(err, join){
     console.log(req.body);
     if(err) {
