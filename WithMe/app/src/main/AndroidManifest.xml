@@ -119,7 +119,15 @@
         <activity
             android:name=".RoomViewActivity"
             android:label="@string/title_activity_room_view"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+
+                <data android:mimeType="application/com.mju.hps.withme" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".NfcActivity" />
         <provider
             android:name=".database.DatabaseProvider"

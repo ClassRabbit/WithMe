@@ -1,5 +1,6 @@
 package com.mju.hps.withme;
 
+import android.content.Intent;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -16,11 +17,16 @@ public class NfcActivity extends AppCompatActivity implements NfcAdapter.CreateN
 
     private NfcAdapter nfcAdapter;
     private NdefMessage message;
+    private String roomId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfc);
+
+        Intent intent = getIntent();
+        roomId = (String)intent.getSerializableExtra("roomId");
+
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
@@ -57,10 +63,10 @@ public class NfcActivity extends AppCompatActivity implements NfcAdapter.CreateN
     public NdefMessage createNdefMessage(NfcEvent nfcEvent) {
         Log.i("i", "createNdefMessage");
         // 입력된 문자열을 취득한다
-        String text = "testText";
+        String text = roomId;
         // Ndef 메시지를 생성한다
         NdefMessage msg = new NdefMessage(new NdefRecord[] {
-                createMimeRecord("application/com.example.minchan.nfc_test2", text.getBytes())
+                createMimeRecord("application/com.mju.hps.withme", text.getBytes())
         });
         // 생성한 Ndef 메시지를 반환한다
         // ※반환한 Ndef 메시지를 NFC 어댑터가 송신한다(Push)

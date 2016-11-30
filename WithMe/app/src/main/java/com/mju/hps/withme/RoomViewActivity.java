@@ -3,8 +3,11 @@ package com.mju.hps.withme;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NfcAdapter;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -121,8 +124,23 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
 
         //정보 받기
         final Intent intent = getIntent();
-        roomId = (String)intent.getSerializableExtra("roomId");
-        tabLocation = (int)intent.getSerializableExtra("tabLocation");
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            // 받은 인텐트에서 Ndef 메시지를 취득한다
+            Parcelable[] rawMsgs = intent
+                    .getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+
+            // Android Beam에서는 한 번에 한 개의 메시지만 송수신 가능
+            NdefMessage msg = (NdefMessage) rawMsgs[0];
+
+            // 첫 번째 레코드에 MIME데이터가 포함된다
+            roomId = new String(msg.getRecords()[0].getPayload());
+            tabLocation = 0;
+        }
+        else {
+            roomId = (String)intent.getSerializableExtra("roomId");
+            tabLocation = (int)intent.getSerializableExtra("tabLocation");
+        }
+
 
 
         handler = new Handler() {
@@ -479,6 +497,26 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         Log.e("room change", e.toString());
                     }
                     waitingListView.setAdapter(waitingAdapter);
+
+                    //NFC 버튼
+                    final Button nfcButton = (Button)rootView.findViewById((R.id.room_view_button_nfc));
+                    nfcButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+//                            fixButton.setClickable(false);
+
+                            Intent intent = new Intent(context, NfcActivity.class);
+                            String roomId = null;
+                            try{
+                                roomId = room.getString("id");
+                            }
+                            catch (Exception e){
+                                Log.e("nfc", e.toString());
+                            }
+                            intent.putExtra("roomId", roomId);
+                            startActivity(intent);
+                        }
+                    });
 
                     //방 수정 버튼
                     final Button fixButton = (Button)rootView.findViewById((R.id.room_view_button_fix));
