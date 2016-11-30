@@ -291,7 +291,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public void onBirthClicked (View v){
-        new DatePickerDialog(this, dateSetListener, 2016, 12, 25).show();
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+
+        new DatePickerDialog(this, dateSetListener,
+                calendar.get(java.util.Calendar.YEAR),
+                calendar.get(java.util.Calendar.MONTH),
+                calendar.get(java.util.Calendar.DATE)).show();
     }
 
     private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
@@ -299,7 +304,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
-            birth.setText("" + year + "." + monthOfYear+1 +"." + dayOfMonth);
+            birth.setText("" + year + "." + (monthOfYear+1) +"." + dayOfMonth);
         }
     };
 
