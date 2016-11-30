@@ -45,17 +45,15 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="OK"
         android:id="@+id/button1"
-        android:background="#66CCFF"
+        android:background="@drawable/click_ok"
         android:layout_weight="1" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="NO"
         android:id="@+id/button2"
-        android:background="#FF3366"
+        android:background="@drawable/click_no"
         android:layout_weight="1" />
 
 </LinearLayout>

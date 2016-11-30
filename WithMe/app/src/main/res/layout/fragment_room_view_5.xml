@@ -10,8 +10,8 @@
         android:id="@+id/textView" />
 
     <Button
-        android:text="joinCancle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/cancel_button"
         android:id="@+id/room_view_button_joinCancle" />
 </LinearLayout>

@@ -3,16 +3,18 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content" >
 
     <TableLayout
+        android:paddingBottom="80dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20sp"
         android:layout_marginRight="20sp"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:baselineAligned="false">
 
         <TableRow
             android:layout_width="match_parent"
@@ -178,31 +180,31 @@
                 android:text="방 인원 수"
                 android:textSize="20sp"/>
         </TableRow>
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10sp"
-            >
+            android:layout_margin="10sp">
+
             <TextView
-                android:layout_width="20sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/room_recent_people"
                 android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/room_divide"
-                android:layout_width="20sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=" / "
                 android:layout_gravity="center"
-                android:textSize="20sp"
-                android:layout_toRightOf="@+id/room_recent_people"/>
+                android:textSize="20sp"/>
 
             <TextView
-                android:layout_width="20sp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/room_people_all"
-                android:textSize="20sp"
-                android:layout_toRightOf="@+id/room_divide"/>
+                android:textSize="20sp"/>
 
             <!--//방 인원 limit +1 해줘야함-->
         </TableRow>

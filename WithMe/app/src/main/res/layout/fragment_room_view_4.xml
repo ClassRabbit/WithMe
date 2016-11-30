@@ -10,8 +10,9 @@
         android:id="@+id/textView" />
 
     <Button
-        android:text="취소"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/cancel_button"
         android:id="@+id/room_view_button_secession" />
 </LinearLayout>

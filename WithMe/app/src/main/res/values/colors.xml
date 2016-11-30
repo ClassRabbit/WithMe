@@ -5,7 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackgroundStandard">#f8e6a5</color>
     <color name="colorButtonDonotChoice">#d4ad61</color>
-    <color name="colorButtonChoice">#9b7948</color>
+    <color name="colorButtonChoice">#345a9a</color>
     <color name="colorButtonRealChoice">#403330</color>
     <color name="colorWhite">#ffffff</color>
 </resources>

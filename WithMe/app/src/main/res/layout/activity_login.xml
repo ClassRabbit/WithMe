@@ -14,11 +14,8 @@
         <Button
             android:layout_width="150sp"
             android:layout_height="55sp"
-            android:text="Sign up"
             android:id="@+id/login_button_signup"
-            android:background="@drawable/button_border"
-            android:textColor="#ffffff"
-            android:textAllCaps="false"
+            android:background="@drawable/signup_button"
             android:layout_alignTop="@+id/login_button_login"
             android:layout_alignEnd="@+id/login_input_password"
             android:onClick="sign_up"
@@ -55,11 +52,8 @@
         <Button
             android:layout_width="150sp"
             android:layout_height="55sp"
-            android:text="Log in"
             android:id="@+id/login_button_login"
-            android:textAllCaps="false"
-            android:textColor="#ffffff"
-            android:background="@drawable/button_border"
+            android:background="@drawable/login_button"
             android:layout_marginTop="19sp"
             android:layout_below="@+id/login_input_password"
             android:layout_toStartOf="@+id/login_button_signup" />
