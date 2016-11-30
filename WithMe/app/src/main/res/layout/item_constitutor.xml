@@ -27,6 +27,7 @@
             android:paddingTop="10dp"
             android:paddingLeft="10dp"
             android:textSize="20sp"
+            android:gravity="center"
             android:text="test" />
 
         <TextView
@@ -34,6 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
+            android:gravity="center"
             android:paddingLeft="10dp"
             android:text="test" />
 

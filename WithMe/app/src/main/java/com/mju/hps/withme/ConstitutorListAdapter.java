@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.StringTokenizer;
 
 /**
  * Created by KMC on 2016. 11. 30..
@@ -58,9 +60,19 @@ public class ConstitutorListAdapter extends BaseAdapter {
         ConstitutorItem constitutorItem = constitutorList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
+        Calendar calendar = Calendar.getInstance();
+        int nowYear = calendar.get(java.util.Calendar.YEAR);
+        String birth = constitutorItem.getBirth();
+        StringTokenizer token = new StringTokenizer(birth, ".");
+        int birthYear = Integer.parseInt(token.nextToken());
+        int old = nowYear - birthYear;
+        if(old < 0) {
+            old = 0;
+        }
+        String gender = (constitutorItem.getGender().equals("Man")) ? "남" : "여";
         getProfileImage(constitutorItem.getMail(), imageView);
-        textView.setText(constitutorItem.getMail() + ", " + constitutorItem.getName());
-        textView2.setText(constitutorItem.getGender() + ", " + constitutorItem.getBirth());
+        textView.setText(constitutorItem.getMail());
+        textView2.setText(constitutorItem.getName() + "(" + old + ", " + gender +")");
 
         return convertView;
     }

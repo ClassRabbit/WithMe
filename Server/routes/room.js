@@ -454,9 +454,10 @@ router.post('/secession', function(req, res, next) {
         body: "다른 룸메이트를 찾아봅시다.",
         sound: "default"
       };
-      Join.findById({user:req.body.user}, function(err){
+      Join.findOneAndRemove({user:req.body.user}, function(err){
         if(err) {
           console.log("조인 삭제 실패");
+          console.log(err);
           return res.json({result: 'fail'});
         }
         console.log("조인 삭제 성공");
