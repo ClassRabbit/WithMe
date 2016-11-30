@@ -154,6 +154,7 @@ router.post('/chat', function (req, res){
         // message.to = to;
         message.registration_ids = registration_ids;
         message.data = {
+          data0: 'chat',
           data1: req.body.user,
           data2: req.body.name,
           data3: req.body.time,

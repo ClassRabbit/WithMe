@@ -33,28 +33,38 @@ public class FcmMessagingService extends FirebaseMessagingService {
         Log.i("MessagingService", "onMessageReceived");
 //        String from = message.getFrom();
         Map<String, String> data = message.getData();
-        String id = data.get("data1");
-        String name = data.get("data2");
-        String time = data.get("data3");
-        String text = data.get("data4");
+        String type = data.get("data0");
+        Log.e("MessegeType", type);
+        if(type.equals("chat")){
+            String id = data.get("data1");
+            String name = data.get("data2");
+            String time = data.get("data3");
+            String text = data.get("data4");
 //        chatMessage.setId(122);//dummy
-        ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setMessage(name + " : " +text);
-        chatMessage.setDate(time);
-        if(id.equals(User.getInstance().getId())){
-            chatMessage.setMe(true);
-        }
-        if(ChatActivity.handler == null){
-            Log.e("handler", "null");
-        }
-        else {
-            Log.e("handler", "created");
-            ChatActivity.handler.sendMessage(Message.obtain(ChatActivity.handler, ChatActivity.MSG_CHAT_SUCCESS, chatMessage));
+            ChatMessage chatMessage = new ChatMessage();
+            chatMessage.setMessage(name + " : " +text);
+            chatMessage.setDate(time);
+            if(id.equals(User.getInstance().getId())){
+                chatMessage.setMe(true);
+            }
+            if(ChatActivity.handler == null){
+                Log.e("handler", "null");
+            }
+            else {
+                Log.e("handler", "created");
+                ChatActivity.handler.sendMessage(Message.obtain(ChatActivity.handler, ChatActivity.MSG_CHAT_SUCCESS, chatMessage));
 //            if(!id.equals(User.getInstance().getId())){
 //                sendPushNotification(name + " : " +text);
 //            }
 
+            }
         }
+        else if(type.equals("room")){
+            String title = data.get("data1");
+            String body = data.get("data2");
+            sendPushNotification(title);
+        }
+
     }
 
 

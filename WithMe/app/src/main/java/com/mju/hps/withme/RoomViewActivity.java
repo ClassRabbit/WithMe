@@ -529,8 +529,18 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         @Override
                         public void onClick(View view) {
                             secessionButton.setClickable(false);
+                            String roomId = null;
+                            try{
+                                roomId = room.getString("id");
+                            }
+                            catch(Exception e){
+                                Log.e("onCreateView3", e.toString());
+                                return;
+                            }
                             final String json = "{" +
-                                    "\"user\" : \"" + User.getInstance().getId() + "\"" +
+                                    "\"user\" : \"" + User.getInstance().getId() + "\", " +
+                                    "\"userName\" : \"" + User.getInstance().getName() + "\", " +
+                                    "\"room\" : \"" + roomId + "\"" +
                                     "}";
                             new Thread() {
                                 public void run() {
@@ -564,8 +574,17 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         @Override
                         public void onClick(View view) {
                             joinCancleButton.setClickable(false);
+                            String roomId = null;
+                            try{
+                                roomId = room.getString("id");
+                            }
+                            catch(Exception e){
+                                Log.e("onCreateView3", e.toString());
+                                return;
+                            }
                             final String json = "{" +
-                                    "\"user\" : \"" + User.getInstance().getId() + "\"" +
+                                    "\"user\" : \"" + User.getInstance().getId() + "\", " +
+                                    "\"room\" : \"" + roomId + "\"" +
                                     "}";
                             new Thread() {
                                 public void run() {
