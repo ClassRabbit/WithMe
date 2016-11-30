@@ -11,7 +11,8 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class Constants {
-    public static final String SERVER_URL = "http://192.168.40.22:3000";          //민찬 연구실 맥미니
+//    public static final String SERVER_URL = "http://192.168.40.22:3000";          //민찬 연구실 맥미니
+    public static final String SERVER_URL = "http://192.168.49.242:3000";          //민찬 노트북
 //    public static final String SERVER_URL = "http://192.168.0.2:3000"; //유태 기숙사
 //    public static final String SERVER_URL = "http://192.168.0.7:3000"; //유태 기숙사
 //    public static final String SERVER_URL = "http://192.168.123.105:3000";          //민찬 자취방

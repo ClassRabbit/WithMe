@@ -283,6 +283,7 @@ router.post('/refuce', function(req, res, next) {
   //   return res.json({result: 'success'});
   // });
   Join.findById(req.body.joinId, function(err, join){
+    console.log(req.body);
     if(err) {
       console.log("조인 거절 : 조인검색실패");
       return res.json({result: 'fail'});
@@ -292,11 +293,12 @@ router.post('/refuce', function(req, res, next) {
         console.log("조인 거절 : 유저검색실패");
         return res.json({result: 'fail'});
       }
-      join.remove().exec(function(err){
+      Join.findById(req.body.joinId).remove().exec(function(err){
         if(err) {
           console.log("조인 거절 : 조인삭제실패");
           return res.json({result: 'fail'});
         }
+        return res.json({result: 'success'});
         var message = new SingleMessage();
         message.to = user.token;
         message.data = {
@@ -456,14 +458,14 @@ router.post('/destroy', function(req, res, next) {
   //     return res.json({result: 'fail'});
   //   }
   //   console.log("방삭제 - 조인들 삭제 성공");
-  //   Room.findOneAndRemove({_id:req.body.room}, function(err){
-  //     if(err) {
-  //       console.log("방삭제 실패");
-  //       return res.json({result: 'fail'});
-  //     }
-  //     console.log("방삭제 성공");
-  //     return res.json({result: 'success'});
-  //   });
+    // Room.findOneAndRemove({_id:req.body.room}, function(err){
+    //   if(err) {
+    //     console.log("방삭제 실패");
+    //     return res.json({result: 'fail'});
+    //   }
+    //   console.log("방삭제 성공");
+    //   return res.json({result: 'success'});
+    // });
   //
   // });
   Join.find({room: req.body.room}, function(err, joins){
@@ -483,42 +485,50 @@ router.post('/destroy', function(req, res, next) {
         console.log("방삭제 - 유저들 검색 실패");
         return res.json({result: 'fail'});
       }
-      joins.remove().exec(function(err){
+      // joins.remove().exec(function(err){
+      Join.find({room: req.body.room}).remove().exec(function(err){
         if(err) {
           console.log("방삭제 - 조인들 삭제 실패");
           return res.json({result: 'fail'});
         }
-        res.json({result: 'success'});
-        var registration_ids = [];
-        for(var j in users){
-          if(users[j].token !== ""){
-            registration_ids.push(users[j].token);
-            console.log(users[j].mail + " : " + users[j].token);
-          }
-        }
-        console.log('length is ' + registration_ids.length);
-        var message = new MulticastMessage();
-        // message.to = to;
-        message.registration_ids = registration_ids;
-        message.data = {
-          data0: 'room',
-          data1: '참여하신 방이 삭제되었습니다.',
-          data2: '새로운 방을 구해봅시다.',
-        };
-        message.notification ={
-          title: '참여하신 방이 삭제되었습니다.',
-          body: '새로운 방을 구해봅시다.',
-          sound: "default"
-        };
-        fcm.send(message, function(err,response){
+        Room.findOneAndRemove({_id:req.body.room}, function(err){
           if(err) {
-            console.log(err);
-            console.log("Something has gone wrong !");
-            return;
+            console.log("방삭제 실패");
+            return res.json({result: 'fail'});
           }
-          else {
-            console.log("Successfully sent with resposne :  ",response);
+          console.log("방삭제 성공");
+          res.json({result: 'success'});
+          var registration_ids = [];
+          for(var j in users){
+            if(users[j].token !== ""){
+              registration_ids.push(users[j].token);
+              console.log(users[j].mail + " : " + users[j].token);
+            }
           }
+          console.log('length is ' + registration_ids.length);
+          var message = new MulticastMessage();
+          // message.to = to;
+          message.registration_ids = registration_ids;
+          message.data = {
+            data0: 'room',
+            data1: '참여하신 방이 삭제되었습니다.',
+            data2: '새로운 방을 구해봅시다.',
+          };
+          message.notification ={
+            title: '참여하신 방이 삭제되었습니다.',
+            body: '새로운 방을 구해봅시다.',
+            sound: "default"
+          };
+          fcm.send(message, function(err,response){
+            if(err) {
+              console.log(err);
+              console.log("Something has gone wrong !");
+              return;
+            }
+            else {
+              console.log("Successfully sent with resposne :  ",response);
+            }
+          });
         });
       });
     });
