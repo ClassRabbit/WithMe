@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10sp" >
+
             <com.mju.hps.withme.RadiusImageView
                 android:layout_width="match_parent"
                 android:layout_height="100sp"
@@ -28,7 +29,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="20sp"
                 android:layout_centerHorizontal="true" />
-            </TableRow>
+
+        </TableRow>
 
         <TableRow
             android:layout_width="wrap_content"
@@ -46,26 +48,6 @@
                 android:layout_width="wrap_content"
                 android:hint="in E-mail address"
                 android:id="@+id/user_info_edit_email"/>
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10sp" >
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Name"
-                android:layout_weight="1"/>
-
-            <EditText
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:hint="in Name"
-                android:gravity="left"
-                android:id="@+id/user_info_edit_name"/>
 
         </TableRow>
 
@@ -97,15 +79,37 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Birthday"
+                android:text="Name"
                 android:layout_weight="1"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:hint="in Birthday"
-                android:id="@+id/user_info_edit_birth"
-                android:onClick="birthClicked"/>
+                android:hint="in Name"
+                android:gravity="left"
+                android:id="@+id/user_info_edit_name"/>
+
+        </TableRow>
+
+
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Phone"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:hint="in PhoneNumber"
+                android:inputType="phone"
+                android:id="@+id/user_info_edit_phone"/>
 
         </TableRow>
 
@@ -141,25 +145,28 @@
 
         </TableRow>
 
-
         <TableRow
             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10sp" >
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Phone"
+                android:text="Birthday"
                 android:layout_weight="1"/>
 
             <EditText
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:hint="in PhoneNumber"
-                android:id="@+id/user_info_edit_phone"/>
+                android:inputType="none"
+                android:hint="in Birthday"
+                android:id="@+id/user_info_edit_birth"
+                android:onClick="onBirthClicked"/>
 
         </TableRow>
+
+
 
         <TableRow
             android:layout_width="wrap_content"

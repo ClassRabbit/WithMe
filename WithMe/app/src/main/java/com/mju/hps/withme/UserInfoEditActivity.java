@@ -14,6 +14,8 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,6 +42,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.mju.hps.withme.constants.Constants.CROP_FROM_CAMERA;
 import static com.mju.hps.withme.constants.Constants.PICK_FROM_ALBUM;
@@ -67,6 +70,18 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
     private android.support.v7.app.AlertDialog theAlertDialog;
 
     private Handler handler;
+
+    protected InputFilter filterPhone = new InputFilter() {
+        public CharSequence filter(CharSequence source, int start, int end,
+                                   Spanned dest, int dstart, int dend) {
+
+            Pattern ps = Pattern.compile("^[0-9]+$");
+            if (!ps.matcher(source).matches()) {
+                return "";
+            }
+            return null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +116,9 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         birth = (EditText)findViewById(R.id.user_info_edit_birth);
         password = (EditText) findViewById(R.id.user_info_edit_password);
         phone = (EditText)findViewById(R.id.user_info_edit_phone);
+        phone.setFilters(new InputFilter[] {filterPhone});
 
+        email.setEnabled(false);
         genderGroup = (RadioGroup)findViewById(R.id.user_info_edit_gender);
 
         infoEditBtn = (Button)findViewById(R.id.user_info_edit_button);
@@ -117,22 +134,6 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         ServerManager.getInstance().getUserProfileImage(User.getInstance().getMail(), profileImage);
 
     }
-    public void birthClicked (View v){
-        String birth = User.getInstance().getBirth();
-        Log.e("Birth!!", birth);
-        //수정 필요
-        String []births = birth.split(".");
-        new DatePickerDialog(this, dateSetListener, 2016, 12, 12).show();
-    }
-
-    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            birth.setText("" + year + "." + monthOfYear+1 +"." + dayOfMonth);
-        }
-    };
 
     @Override
     protected void onStart() {
@@ -322,6 +323,24 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
             }.start();
         }
     }
+
+    public void onBirthClicked (View v){
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+
+        new DatePickerDialog(this, dateSetListener,
+                calendar.get(java.util.Calendar.YEAR),
+                calendar.get(java.util.Calendar.MONTH),
+                calendar.get(java.util.Calendar.DATE)).show();
+    }
+
+    private DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            birth.setText("" + year + "." + (monthOfYear+1) +"." + dayOfMonth);
+        }
+    };
 
     /**
      * 카메라에서 이미지 가져오기

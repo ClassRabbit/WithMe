@@ -25,7 +25,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
+            android:inputType="textWebEmailAddress"
             android:hint="input your id"
             android:ems="10"
             android:layout_marginTop="20sp"
@@ -122,18 +122,18 @@
             android:layout_alignParentStart="true"
             android:onClick="onBirthClicked"/>
 
-            <Button
-                android:text="Button"
-                android:layout_width="300sp"
-                android:layout_height="wrap_content"
-                android:id="@+id/sign_up"
-                android:background="@color/colorButtonChoice"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10sp"
-                android:layout_below="@+id/signup_input_birth"
-                android:textColor="@color/colorWhite"
-                android:onClick="createUser" />
+        <Button
+            android:text="Button"
+            android:layout_width="300sp"
+            android:layout_height="wrap_content"
+            android:id="@+id/sign_up"
+            android:background="@color/colorButtonChoice"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10sp"
+            android:layout_below="@+id/signup_input_birth"
+            android:textColor="@color/colorWhite"
+            android:onClick="createUser" />
 
     </RelativeLayout>
 
