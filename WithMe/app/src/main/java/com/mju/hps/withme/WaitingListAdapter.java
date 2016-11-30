@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.server.ServerManager;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -98,7 +100,21 @@ public class WaitingListAdapter extends BaseAdapter{
                             return;
                         }
                         waitingList.remove(position);
-                        RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_WAITING_ACK, ""));
+                        try{
+                            JSONObject res = new JSONObject(response);
+                            if(res.getString("result").equals("fail")){
+                                RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_ERROR, ""));
+                                return;
+                            }
+                            else if(res.getString("result").equals("null")){
+                                RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_USER_NULL, ""));
+                                return;
+                            }
+                            RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_WAITING_ACK, ""));
+                        }
+                        catch (Exception e) {
+                            Log.e("onCreateView4", e.toString());
+                        }
                     }
                 }.start();
             }
@@ -122,7 +138,22 @@ public class WaitingListAdapter extends BaseAdapter{
                             RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_ERROR, ""));
                             return;
                         }
-                        RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_WAITING_REFUCE, ""));
+                        waitingList.remove(position);
+                        try{
+                            JSONObject res = new JSONObject(response);
+                            if(res.getString("result").equals("fail")){
+                                RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_ERROR, ""));
+                                return;
+                            }
+                            else if(res.getString("result").equals("null")){
+                                RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_USER_NULL, ""));
+                                return;
+                            }
+                            RoomViewActivity.handler.sendMessage(Message.obtain(RoomViewActivity.handler, RoomViewActivity.MSG_ROOM_VIEW_WAITING_REFUCE, ""));
+                        }
+                        catch (Exception e) {
+                            Log.e("onCreateView4", e.toString());
+                        }
                     }
                 }.start();
             }

@@ -140,7 +140,11 @@ router.post('/chat', function (req, res){
         // var senderName;
         var registration_ids = [];
         for(var j in users){
-          if(users[j].token !== ""){
+          if(users[j].token === "null"){
+            console.log("NULL 들어감");
+            continue;
+          }
+          if(users[j].token !== "" && users[j].token !== null){
             registration_ids.push(users[j].token);
             console.log(users[j].mail + " : " + users[j].token);
           }

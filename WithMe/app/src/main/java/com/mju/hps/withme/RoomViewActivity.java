@@ -75,6 +75,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     public static final int MSG_ROOM_VIEW_JOINCANCLE_SUCCESS = 10;
     public static final int MSG_ROOM_VIEW_DESTROY_SUCCESS = 11;
     public static final int MSG_ROOM_VIEW_NULL = 12;
+    public static final int MSG_ROOM_VIEW_USER_NULL = 13;
 
     private static String roomId;
     public static Handler handler;
@@ -241,6 +242,15 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         intent =new Intent(RoomViewActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         RoomViewActivity.this.startActivity(intent);
+                        break;
+                    case MSG_ROOM_VIEW_USER_NULL:
+                        refreshIntent = new Intent(RoomViewActivity.this, RoomViewActivity.class);
+                        refreshIntent.putExtra("roomId", roomId);
+                        refreshIntent.putExtra("tabLocation", 2);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        refreshIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        Toast.makeText(RoomViewActivity.this, "이미 참여를 취소한 인원입니다.", Toast.LENGTH_SHORT).show();
+                        startActivity(refreshIntent);
                         break;
                     case MSG_ROOM_VIEW_DESTROY_SUCCESS:
                         Toast.makeText(RoomViewActivity.this, "방을 삭제하였습니다.", Toast.LENGTH_SHORT).show();

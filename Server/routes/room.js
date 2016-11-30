@@ -317,7 +317,7 @@ router.post('/ack', function(req, res, next) {
     }
     if(join === null){
       console.log("조인 없음");
-      return res.json({result: 'fail'});
+      return res.json({result: 'null'});
     }
     join.position = 'constitutor';
     join.save(function(err, join){
@@ -331,6 +331,10 @@ router.post('/ack', function(req, res, next) {
         if(err){
           console.log('fcm 유저 검색 실패');
           return;
+        }
+        if(user === null){
+          console.log("조인 수락 : 유저 없음");
+          return res.json({result: 'null'});
         }
         var message = new SingleMessage();
         message.to = user.token;
@@ -367,10 +371,18 @@ router.post('/refuce', function(req, res, next) {
       console.log("조인 거절 : 조인검색실패");
       return res.json({result: 'fail'});
     }
+    if(join === null){
+      console.log("조인 거절 : 유저 없음");
+      return res.json({result: 'null'});
+    }
     User.findById(join.user, function(err, user){
       if(err) {
         console.log("조인 거절 : 유저검색실패");
         return res.json({result: 'fail'});
+      }
+      if(user === null) {
+        console.log("조인 거절 : 유저 없음");
+        return res.json({result: 'null'});
       }
       Join.findById(req.body.joinId).remove().exec(function(err){
         if(err) {

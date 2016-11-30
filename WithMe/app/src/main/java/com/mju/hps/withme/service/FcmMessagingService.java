@@ -53,6 +53,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
             else {
                 Log.e("handler", "created");
                 ChatActivity.handler.sendMessage(Message.obtain(ChatActivity.handler, ChatActivity.MSG_CHAT_SUCCESS, chatMessage));
+                sendPushNotification(name, text);
 //            if(!id.equals(User.getInstance().getId())){
 //                sendPushNotification(name + " : " +text);
 //            }
@@ -62,14 +63,14 @@ public class FcmMessagingService extends FirebaseMessagingService {
         else if(type.equals("room")){
             String title = data.get("data1");
             String body = data.get("data2");
-            sendPushNotification(title);
+            sendPushNotification(title, body);
         }
 
     }
 
 
     //푸쉬 알람 생성 함수
-    private void sendPushNotification(String message) {
+    private void sendPushNotification(String title, String message) {
         Log.e("noti", message);
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -80,7 +81,7 @@ public class FcmMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher) )
-                .setContentTitle("Push Title ")
+                .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri).setLights(000000255,500,2000)
