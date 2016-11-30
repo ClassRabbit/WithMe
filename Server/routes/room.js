@@ -97,6 +97,62 @@ router.post('/create', function(req, res, next) {
   });
 });
 
+router.post('/fix', function(req, res, next) {
+  var form = new multipart.Form();
+  form.parse(req, function(err, fields, files) {
+    // var newRoom = new Room();
+    var body = JSON.parse(fields.body);
+    // 임시 유저 아이디.
+    console.log("*******Body*******");
+    console.log(body);
+    console.log("******/Body*******");
+    // console.log("files.image[2]******************");
+    // console.log(files.image[2]);
+    // console.log("****files++**********");
+
+    Room.findById(body.roomId, function(err, room){
+      if(err){
+        console.log("방 검색 실패");
+        return res.json({result: 'fail'});
+      }
+      if(room === null){
+        console.log('방 검색 비어있음');
+      }
+      room.user = body.user;
+      room.title = body.title;
+      room.content = body.content;
+      room.latitude = body.latitude;
+      room.longitude = body.longitude;
+      room.address = body.address;
+      room.limit = body.limit;
+      room.numberOfImages = files.image.length;
+      room.save(function(err, room){
+        if(err) {
+          console.log("방 수정 실패");
+          return res.json({result: 'fail'});
+        }
+        console.log("방 수정 성공");
+        var dirPath = "./public/images/room/" + room.id;
+        ensureExists(dirPath, 0777, function (err){
+          if(err){
+            console.log("mkdir ERR!!");
+            throw err;
+          }
+          else{
+            console.log('Created newdir');
+          }
+        });
+        console.log("Length : " + files.image.length);
+        for (var j=0; j<files.image.length; j++){
+          // console.log(files.image[j]);
+          imageUpload(files.image[j], dirPath);
+        }
+        return res.json({result: 'success'});
+      });
+    });
+  });
+});
+
 function imageUpload(file, dirPath){
   fs.readFile(file.path, function(err, data){
       var filePath = dirPath + "/" + file.originalFilename;
@@ -115,7 +171,9 @@ function ensureExists(path, mask, cb) {
     }
     fs.mkdir(path, mask, function(err) {
         if (err) {
-            if (err.code == 'EEXIST') cb(null); // ignore the error if the folder already exists
+            if (err.code == 'EEXIST'){
+              cb(null); // ignore the error if the folder already exists
+            }
             else cb(err); // something else went wrong
         } else cb(null); // successfully created folder
     });
@@ -319,7 +377,7 @@ router.post('/refuce', function(req, res, next) {
           console.log("조인 거절 : 조인삭제실패");
           return res.json({result: 'fail'});
         }
-        return res.json({result: 'success'});
+        res.json({result: 'success'});
         var message = new SingleMessage();
         message.to = user.token;
         message.data = {
