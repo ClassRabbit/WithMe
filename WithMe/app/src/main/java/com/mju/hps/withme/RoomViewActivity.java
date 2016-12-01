@@ -3,6 +3,7 @@ package com.mju.hps.withme;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Handler;
@@ -126,6 +127,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
         //정보 받기
         final Intent intent = getIntent();
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            Log.e("roomViewonStart", "nfc");
             // 받은 인텐트에서 Ndef 메시지를 취득한다
             Parcelable[] rawMsgs = intent
                     .getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -138,8 +140,13 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
             tabLocation = 0;
         }
         else {
+            Log.e("roomViewonStart", "else");
             roomId = (String)intent.getSerializableExtra("roomId");
-            tabLocation = (int)intent.getSerializableExtra("tabLocation");
+            if(roomId == null){
+                Uri uri = intent.getData();
+                roomId = uri.getQueryParameter("roomId");
+            }
+            tabLocation = intent.getIntExtra("tabLocation", 0);
         }
 
 

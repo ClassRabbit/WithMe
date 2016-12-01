@@ -8,7 +8,13 @@ import android.nfc.NfcEvent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
+
+import com.kakao.kakaolink.AppActionBuilder;
+import com.kakao.kakaolink.AppActionInfoBuilder;
+import com.kakao.kakaolink.KakaoLink;
+import com.kakao.kakaolink.KakaoTalkLinkMessageBuilder;
 
 import java.nio.charset.Charset;
 
@@ -71,5 +77,28 @@ public class NfcActivity extends AppCompatActivity implements NfcAdapter.CreateN
         // 생성한 Ndef 메시지를 반환한다
         // ※반환한 Ndef 메시지를 NFC 어댑터가 송신한다(Push)
         return msg;
+    }
+
+    public void sendKakao(View view){
+        try{
+            final KakaoLink kakaoLink = KakaoLink.getKakaoLink(this);
+            final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder = kakaoLink.createKakaoTalkLinkMessageBuilder();
+            String text = "룸메이트를 구합니다!";
+            kakaoTalkLinkMessageBuilder.addText(text);
+            Log.e("roomId", roomId);
+            kakaoTalkLinkMessageBuilder.addAppLink("WithMe",
+                    new AppActionBuilder()
+                            .addActionInfo(AppActionInfoBuilder
+                                    .createAndroidActionInfoBuilder()
+                                    .setExecuteParam("roomId=" + roomId)
+                                    .setMarketParam("referrer=kakaotalklink")
+                                    .build())
+                            .build());
+            kakaoLink.sendMessage(kakaoTalkLinkMessageBuilder, this);
+
+        }
+        catch (Exception e) {
+            Log.e("kakao", e.toString());
+        }
     }
 }

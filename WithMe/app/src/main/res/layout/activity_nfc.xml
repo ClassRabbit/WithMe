@@ -10,4 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.mju.hps.withme.NfcActivity">
 
+    <Button
+        android:text="kakao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="156dp"
+        android:id="@+id/nfc_button_kakao"
+        android:onClick="sendKakao"/>
 </RelativeLayout>
