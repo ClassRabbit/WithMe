@@ -4,12 +4,13 @@
     android:layout_height="match_parent">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="취소하기"
+        android:text="취 소 하 기"
+        android:layout_margin="20dp"
         android:textColor="#ffffff"
         android:layout_gravity="center"
-        android:background="@drawable/cancel_button"
+        android:background="#401317"
         android:id="@+id/room_view_button_secession"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

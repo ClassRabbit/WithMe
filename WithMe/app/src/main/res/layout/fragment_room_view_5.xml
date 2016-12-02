@@ -5,21 +5,26 @@
 
     <Button
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/cancel_button"
+        android:background="#401317"
+        android:textColor="#ffffff"
+        android:text="취 소 하 기"
         android:id="@+id/room_view_button_joinCancle"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="31dp" />
+        android:layout_marginBottom="43dp" />
 
     <ImageView
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:background="@drawable/wait_join"
+        android:background="@drawable/waiting_join1"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:id="@+id/imageView4"
+        android:layout_marginBottom="69dp"
         android:layout_above="@+id/room_view_button_joinCancle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="88dp" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

@@ -15,8 +15,10 @@
 
     <Button
         android:background="#3c3f41"
-        android:layout_width="wrap_content"
+        android:padding="10sp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:textColor="#ffffff"
         android:text="룸메이트 신청하기"
         android:id="@+id/room_view_button_join"
