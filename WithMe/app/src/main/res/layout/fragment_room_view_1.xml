@@ -74,6 +74,10 @@
                 android:id="@+id/room_title"
                 android:text="방 제목"
                 android:textSize="20sp"
+                android:textColor="#ffffff"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:background="@drawable/room_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -87,10 +91,12 @@
             >
 
             <TextView
+                android:textColor="#000000"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textview_border"
+                android:paddingLeft="10sp"
+                android:textSize="15sp"
                 android:id="@+id/room_title_info"/>
 
         </TableRow>
@@ -105,6 +111,10 @@
                 android:id="@+id/room_content"
                 android:text="방 정보"
                 android:textSize="20sp"
+                android:textColor="#ffffff"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:background="@drawable/room_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -117,10 +127,12 @@
             >
 
             <TextView
+                android:textColor="#000000"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/textview_border"
+                android:textSize="15sp"
+                android:paddingLeft="10sp"
                 android:id="@+id/room_content_info" />
 
         </TableRow>
@@ -135,6 +147,10 @@
                 android:layout_weight="1"
                 android:text="방 주소"
                 android:textSize="20sp"
+                android:textColor="#ffffff"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
+                android:background="@drawable/room_textview"
                 android:layout_below="@+id/room_content_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -147,11 +163,13 @@
             android:layout_margin="10sp"
             >
             <TextView
+                android:textColor="#000000"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
+                android:textSize="15sp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/room_address"
-                android:background="@drawable/textview_border"
+                android:paddingLeft="10sp"
                 android:id="@+id/room_address_info" />
 
         </TableRow>
@@ -178,6 +196,10 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/room_people_num"
                 android:text="방 인원 수"
+                android:textColor="#ffffff"
+                android:background="@drawable/room_textview"
+                android:gravity="center_vertical"
+                android:paddingLeft="10sp"
                 android:textSize="20sp"/>
         </TableRow>
 
@@ -189,12 +211,15 @@
             <LinearLayout
                 android:orientation="horizontal">
                 <TextView
+                    android:textColor="#000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/room_recent_people"
+                    android:layout_marginLeft="10sp"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:textColor="#000000"
                     android:id="@+id/room_divide"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -203,6 +228,7 @@
                     android:textSize="20sp"/>
 
                 <TextView
+                    android:textColor="#000000"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/room_people_all"
