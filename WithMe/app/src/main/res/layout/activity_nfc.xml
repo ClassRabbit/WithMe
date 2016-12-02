@@ -8,15 +8,51 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorBackgroundStandard"
     tools:context="com.mju.hps.withme.NfcActivity">
 
     <Button
-        android:text="kakao"
+        android:layout_margin="5dp"
+        android:paddingRight="10dip"
+        android:paddingLeft="10dip"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
+        android:drawablePadding="10dip"
+        android:drawableLeft="@drawable/kakao_talk_1"
+        android:gravity="left|center_vertical"
+        android:text="로 초대해주세요!"
+        android:textColor="#3c1e1e"
+        android:background="@color/colorKakao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="156dp"
         android:id="@+id/nfc_button_kakao"
-        android:onClick="sendKakao"/>
+        android:onClick="sendKakao"
+        android:layout_marginBottom="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textColor="#ffffff"
+        android:text="룸메이트를 초대하세요!"
+        android:background="@drawable/blue_button"
+        android:textSize="20sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="45dp"
+        android:id="@+id/textView"
+        android:layout_above="@+id/nfc_view"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/nfc_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/use_nfc"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>
