@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.mju.hps.withme.constants.BackPressCloseHandler;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.database.DatabaseLab;
 import com.mju.hps.withme.model.User;
@@ -49,10 +51,15 @@ public class MainActivity extends AppCompatActivity
     private boolean isJoin;
     private JSONObject myRoom;
 
+    private BackPressCloseHandler backPressCloseHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         listview = (ListView)findViewById(R.id.room_list);
         adapter = new RoomListAdapter();
@@ -196,7 +203,8 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            backPressCloseHandler.onBackPressed();
+//            super.onBackPressed();
         }
     }
 

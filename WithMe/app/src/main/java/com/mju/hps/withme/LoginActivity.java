@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.mju.hps.withme.constants.BackPressCloseHandler;
 import com.mju.hps.withme.constants.Constants;
 import com.mju.hps.withme.database.DatabaseLab;
 import com.mju.hps.withme.database.DatabaseSchema;
@@ -40,11 +41,16 @@ public class LoginActivity extends AppCompatActivity {
     Button loginButton;
     Handler handler;
 
+    private BackPressCloseHandler backPressCloseHandler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         setupUI(findViewById(R.id.activity_login));
+
+        backPressCloseHandler = new BackPressCloseHandler(this);
 
         handler = new Handler() {
             @Override
@@ -92,6 +98,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        backPressCloseHandler.onBackPressed();
     }
 
     public void login(View view) {
