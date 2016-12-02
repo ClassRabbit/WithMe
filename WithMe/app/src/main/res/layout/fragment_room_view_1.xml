@@ -25,8 +25,8 @@
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="10sp"
-                android:layout_marginRight="-40sp"
+                android:layout_marginLeft="5sp"
+                android:layout_marginRight="-5sp"
                 android:layout_height="250sp"
                 android:layout_weight="1"
                 android:layout_gravity="center"
@@ -180,7 +180,8 @@
             android:layout_margin="10sp"
             >
             <com.google.android.gms.maps.MapView android:id="@+id/room_view_mapView"
-                android:layout_width="250sp"
+                android:layout_marginRight="30sp"
+                android:layout_width="match_parent"
                 android:layout_height="250sp"/>
 
         </TableRow>

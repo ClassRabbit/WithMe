@@ -46,6 +46,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -337,7 +338,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements OnMapReadyCallback{
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -362,6 +363,11 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
             return fragment;
         }
 
+        private GoogleMap mMap;
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            mMap = googleMap;
+        }
 
         //
         // 실제 뷰 그리는 곳
@@ -381,7 +387,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
 
 
                 // google map
-                MapView mapView; GoogleMap mMap;
+                MapView mapView;
                 mapView = (MapView) rootView.findViewById(R.id.room_view_mapView);
                 mapView.onCreate(savedInstanceState);
 //                mapView.onCreate(savedInstanceState);
@@ -462,6 +468,8 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                 marker.snippet(address);
                 mMap.addMarker(marker).showInfoWindow();
 
+                mapView.onResume();
+                mapView.getMapAsync(this);
                 return rootView;
             }
             else if(getArguments().getInt(ARG_SECTION_NUMBER) == 2){
