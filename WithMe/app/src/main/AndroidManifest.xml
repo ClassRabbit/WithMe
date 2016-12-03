@@ -76,19 +76,24 @@
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity" />
+        <activity android:name=".SignupActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChatActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:label="채팅방"/>
         <activity android:name=".UserInfoActivity"
             android:label="회원 정보"/>
         <activity android:name=".UserInfoEditActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:label="회원 정보 수정" />
         <activity android:name=".RoomCreateActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:label="방 만들기"/>
 
         <!-- Google Api 키 삽입 -->

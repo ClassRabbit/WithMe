@@ -790,7 +790,9 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                     final Button joinButton = (Button)rootView.findViewById((R.id.room_view_button_join));
                     try{
                         if((room.getInt("limit")+1) <= joins.length()){
-//                            joinButton.setText("신청불가");
+                            joinButton.setText("룸메이트 신청불가");
+                            TextView waitText = (TextView)rootView.findViewById(R.id.room_view_text_visit);
+                            waitText.setText("이 방은 정원이 마감되었습니다.");
 //                            joinButton.setVisibility(View.GONE);
                             joinButton.setEnabled(false);
                         }

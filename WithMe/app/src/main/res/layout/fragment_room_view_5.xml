@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="잠시만 기다려주세요!"
+            android:text="룸메이트로 승인 대기중 입니다."
             android:textColor="@color/colorButtonChoice"/>
 
         <ImageView

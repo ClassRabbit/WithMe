@@ -15,7 +15,8 @@
             android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="잠시만 기다려주세요!"
+            android:text="이 방에 룸메이트가 되시겠습니까?"
+            android:id="@+id/room_view_text_visit"
             android:textColor="@color/colorButtonChoice"
             android:textSize="20sp"/>
 
