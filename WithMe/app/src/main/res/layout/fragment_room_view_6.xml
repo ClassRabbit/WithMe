@@ -1,29 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:srcCompat="@drawable/want_join"
-        android:id="@+id/imageView3"
-        android:layout_marginBottom="72dp"
-        android:layout_above="@+id/room_view_button_join"
-        android:layout_centerHorizontal="true" />
 
-    <Button
-        android:background="#3c3f41"
-        android:padding="10sp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:textColor="#ffffff"
-        android:text="룸메이트 신청하기"
-        android:id="@+id/room_view_button_join"
-        android:layout_marginBottom="30dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="잠시만 기다려주세요!"
+            android:textColor="@color/colorButtonChoice"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:layout_marginTop="30dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:srcCompat="@drawable/want_join"
+            android:layout_gravity="center"
+            android:id="@+id/imageView3"
+            android:layout_marginBottom="72dp"
+            android:layout_above="@+id/room_view_button_join"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:background="#3c3f41"
+            android:padding="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:textColor="#ffffff"
+            android:text="룸메이트 신청하기"
+            android:id="@+id/room_view_button_join"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
+
+    </LinearLayout>
+</ScrollView>

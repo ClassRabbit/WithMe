@@ -1,30 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_gravity="center"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#401317"
-        android:textColor="#ffffff"
-        android:text="취 소 하 기"
-        android:id="@+id/room_view_button_joinCancle"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="43dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:background="@drawable/waiting_join1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/imageView4"
-        android:layout_marginBottom="69dp"
-        android:layout_above="@+id/room_view_button_joinCancle"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="잠시만 기다려주세요!"
+            android:textColor="@color/colorButtonChoice"/>
+
+        <ImageView
+            android:layout_marginTop="30dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:background="@drawable/waiting_join1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/imageView4"
+            android:layout_marginBottom="69dp"
+            android:layout_gravity="center"
+            android:layout_above="@+id/room_view_button_joinCancle"
+            android:layout_centerHorizontal="true" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/chat_join2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="채팅참여"
+                android:textColor="#ffffff"
+                android:background="@color/colorButtonChoice"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#401317"
+            android:textColor="#ffffff"
+            android:text="취 소 하 기"
+            android:id="@+id/room_view_button_joinCancle"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="43dp" />
+
+
+
+    </LinearLayout>
+</ScrollView>

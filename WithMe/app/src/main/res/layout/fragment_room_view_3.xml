@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:id="@+id/testLi"
-        android:orientation="horizontal">
+        android:gravity="center">
 
         <Button
-            android:layout_marginLeft="20dp"
             android:text="방 수정하기"
             android:background="@drawable/blue_button"
             android:textColor="#ffffff"
@@ -21,32 +21,56 @@
 
 
         <Button
-            android:text="NFC"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/blue_button"
-            android:textColor="#ffffff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/room_view_button_nfc" />
-
-        <Button
             android:text="방 없애기"
             android:background="@drawable/blue_button"
             android:layout_marginLeft="20dp"
             android:textColor="#ffffff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/room_view_button_fix"
             android:id="@+id/room_view_button_destroy" />
 
-    </LinearLayout>
+    </RelativeLayout>
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="채팅참여"
+        android:background="@drawable/blue_button"
+        android:textColor="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/room_view_button_chat" />
+
+    <Button
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="초대하기"
+        android:background="@drawable/blue_button"
+        android:textColor="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/room_view_button_nfc" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:id="@+id/room_view_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10sp"
+        android:text="대기리스트"
+        android:gravity="left|center_vertical"
+        android:textSize="20sp"
+        android:textColor="#ffffff"
+        android:background="@drawable/room_textview"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="11dp"
-        android:layout_below="@+id/testLi"
         android:id="@+id/room_view_listview_waiting"
         android:layout_alignParentStart="true" />
 
 
-</RelativeLayout>
+</LinearLayout>

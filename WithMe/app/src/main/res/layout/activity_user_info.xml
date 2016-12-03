@@ -36,7 +36,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="E-mail"
+                android:text="이메일"
                 android:gravity="center"
                 android:layout_marginBottom="1sp"
                 android:layout_marginLeft="20sp"
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Name"
+                android:text="이름"
                 android:gravity="center"
                 android:layout_marginBottom="1sp"
                 android:layout_marginLeft="20sp"
@@ -84,7 +84,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Birthday"
+                android:text="생일"
                 android:gravity="center"
                 android:layout_marginBottom="1sp"
                 android:layout_marginLeft="20sp"
@@ -109,7 +109,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Gender"
+                android:text="성별"
                 android:gravity="center"
                 android:layout_marginBottom="1sp"
                 android:layout_marginLeft="20sp"
@@ -134,7 +134,7 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="PhoneNumber"
+                android:text="전화번호"
                 android:gravity="center"
                 android:layout_marginBottom="1sp"
                 android:layout_marginLeft="20sp"

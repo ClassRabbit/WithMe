@@ -1,26 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="취 소 하 기"
-        android:layout_margin="20dp"
-        android:textColor="#ffffff"
-        android:layout_gravity="center"
-        android:background="#401317"
-        android:id="@+id/room_view_button_secession"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:background="@drawable/constitutor_join"
-        android:layout_above="@+id/room_view_button_secession"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="68dp" />
-</RelativeLayout>
+        <TextView
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="잠시만 기다려주세요!"
+            android:textColor="@color/colorButtonChoice"/>
+
+        <ImageView
+            android:layout_marginTop="30dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:background="@drawable/constitutor_join"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="68dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/chat_join1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="채팅참여"
+                android:textColor="#ffffff"
+                android:background="@color/colorButtonChoice"/>
+
+            <Button
+                android:id="@+id/nfc_join1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="초대하기"
+                android:layout_toRightOf="@+id/chat_join1"
+                android:textColor="#ffffff"
+                android:background="@color/colorButtonChoice"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="탈 퇴 하 기"
+            android:layout_margin="20dp"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            android:background="#401317"
+            android:id="@+id/room_view_button_secession"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp" />
+
+
+    </LinearLayout>
+</ScrollView>
