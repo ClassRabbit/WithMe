@@ -15,9 +15,9 @@ public class Constants {
 //    public static final String SERVER_URL = "http://192.168.49.242:3000";          //민찬 노트북
 //    public static final String SERVER_URL = "http://192.168.0.2:3000"; //유태 기숙사
 //    public static final String SERVER_URL = "http://192.168.0.7:3000"; //유태 기숙사
-//    public static final String SERVER_URL = "http://192.168.123.105:3000";          //민찬 자취방
+    public static final String SERVER_URL = "http://192.168.123.105:3000";          //민찬 자취방
 //    public static final String SERVER_URL = "http://192.168.1.125:3000"; //유태 레알집
-    public static final String SERVER_URL = "http://192.168.0.14:3000"; // coffee bay
+//    public static final String SERVER_URL = "http://192.168.0.14:3000"; // coffee bay
 
     public static final int REQUEST_CODE_LOCATION_COARSE = 1;
     public static final int REQUEST_CODE_LOCATION_FINE = 2;

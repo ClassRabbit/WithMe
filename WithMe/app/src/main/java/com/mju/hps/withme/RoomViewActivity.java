@@ -389,7 +389,8 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                 // google map
                 MapView mapView;
                 mapView = (MapView) rootView.findViewById(R.id.room_view_mapView);
-                mapView.onCreate(savedInstanceState);
+                Bundle newBundle = new Bundle();
+                mapView.onCreate(newBundle);
 //                mapView.onCreate(savedInstanceState);
                 // Gets to GoogleMap from the MapView and does initialization stuff
                 try {
@@ -614,25 +615,25 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         }
                     });
 
-                    //Chatting button
-                    final Button chatButton = (Button)rootView.findViewById((R.id.room_view_button_chat));
-                    chatButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-//                            fixButton.setClickable(false);
-
-                            Intent intent = new Intent(context, ChatActivity.class);
-                            String roomId = null;
-                            try{
-                                roomId = room.getString("id");
-                            }
-                            catch (Exception e){
-                                Log.e("chat", e.toString());
-                            }
-                            intent.putExtra("roomId", roomId);
-                            startActivity(intent);
-                        }
-                    });
+//                    //Chatting button
+//                    final Button chatButton = (Button)rootView.findViewById((R.id.room_view_button_chat));
+//                    chatButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+////                            fixButton.setClickable(false);
+//
+//                            Intent intent = new Intent(context, ChatActivity.class);
+//                            String roomId = null;
+//                            try{
+//                                roomId = room.getString("id");
+//                            }
+//                            catch (Exception e){
+//                                Log.e("chat", e.toString());
+//                            }
+//                            intent.putExtra("roomId", roomId);
+//                            startActivity(intent);
+//                        }
+//                    });
                 }
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("constitutor")){               //이방의 구성자일때
                     Log.i("onCreateView", "4");
@@ -763,25 +764,25 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         }
                     });
 
-                    //Chatting button
-                    final Button chatButton = (Button)rootView.findViewById((R.id.chat_join2));
-                    chatButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-//                            fixButton.setClickable(false);
-
-                            Intent intent = new Intent(context, ChatActivity.class);
-                            String roomId = null;
-                            try{
-                                roomId = room.getString("id");
-                            }
-                            catch (Exception e){
-                                Log.e("chat", e.toString());
-                            }
-                            intent.putExtra("roomId", roomId);
-                            startActivity(intent);
-                        }
-                    });
+//                    //Chatting button
+//                    final Button chatButton = (Button)rootView.findViewById((R.id.chat_join2));
+//                    chatButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+////                            fixButton.setClickable(false);
+//
+//                            Intent intent = new Intent(context, ChatActivity.class);
+//                            String roomId = null;
+//                            try{
+//                                roomId = room.getString("id");
+//                            }
+//                            catch (Exception e){
+//                                Log.e("chat", e.toString());
+//                            }
+//                            intent.putExtra("roomId", roomId);
+//                            startActivity(intent);
+//                        }
+//                    });
                 }
                 else {                                                                                    //방문자
                     Log.i("onCreateView", "6");
@@ -893,7 +894,7 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         return "관리";
                     }
                     else if(positionStr.equals("constitutor")) {
-                        return "'모집현황'";
+                        return "모집현황";
                     }
                     else if(positionStr.equals("waiting")){
                         return "모집현황";

@@ -47,13 +47,16 @@ public class FcmMessagingService extends FirebaseMessagingService {
             if(id.equals(User.getInstance().getId())){
                 chatMessage.setMe(true);
             }
+            else {
+                sendPushNotification(name, text);
+            }
             if(ChatActivity.handler == null){
                 Log.e("handler", "null");
             }
             else {
                 Log.e("handler", "created");
                 ChatActivity.handler.sendMessage(Message.obtain(ChatActivity.handler, ChatActivity.MSG_CHAT_SUCCESS, chatMessage));
-                sendPushNotification(name, text);
+
 //            if(!id.equals(User.getInstance().getId())){
 //                sendPushNotification(name + " : " +text);
 //            }

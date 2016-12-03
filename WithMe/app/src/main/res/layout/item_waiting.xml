@@ -51,8 +51,7 @@
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:id="@+id/item_waiting_button_ack"
-        android:background="@drawable/agree_button"
-        android:layout_weight="1" />
+        android:background="@drawable/agree_button" />
 
     <Button
         android:layout_marginRight="10dp"
@@ -60,7 +59,6 @@
         android:layout_height="30dp"
         android:layout_gravity="center"
         android:id="@+id/item_waiting_button_refuce"
-        android:background="@drawable/refuse_button"
-        android:layout_weight="1" />
+        android:background="@drawable/refuse_button" />
 
 </LinearLayout>
