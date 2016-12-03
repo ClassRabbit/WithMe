@@ -82,10 +82,14 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".UserInfoActivity" />
-        <activity android:name=".UserInfoEditActivity" />
-        <activity android:name=".RoomCreateActivity" />
+        <activity android:name=".ChatActivity"
+            android:label="채팅방"/>
+        <activity android:name=".UserInfoActivity"
+            android:label="회원 정보"/>
+        <activity android:name=".UserInfoEditActivity"
+            android:label="회원 정보 수정" />
+        <activity android:name=".RoomCreateActivity"
+            android:label="방 만들기"/>
 
         <!-- Google Api 키 삽입 -->
         <meta-data

@@ -10,21 +10,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <Button
-            android:layout_width="150sp"
-            android:layout_height="55sp"
-            android:id="@+id/login_button_signup"
-            android:background="#25282e"
-            android:text="가 입 하 기"
-            android:textColor="#ffffff"
-            android:layout_alignTop="@+id/login_button_login"
-            android:layout_alignEnd="@+id/login_input_password"
-            android:onClick="sign_up"
-            android:elevation="0sp" />
+        android:layout_height="match_parent"
+        android:paddingBottom="20dp"
+        >
 
         <EditText
-            android:layout_width="300sp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_width="match_parent"
             android:layout_height="50sp"
             android:id="@+id/login_input_mail"
             android:hint="Email"
@@ -34,11 +27,12 @@
             android:paddingLeft="10sp"
             android:background="@drawable/textview_border"
             android:layout_below="@+id/imageView2"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50sp" />
+            android:layout_centerHorizontal="true" />
 
         <EditText
-            android:layout_width="300sp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_width="match_parent"
             android:layout_height="50sp"
             android:id="@+id/login_input_password"
             android:inputType="textPassword"
@@ -48,27 +42,48 @@
             android:textColor="#000000"
             android:textColorHint="#C0C0C0"
             android:background="@drawable/textview_border"
-            android:layout_below="@+id/login_input_mail"
-            android:layout_alignStart="@+id/login_input_mail" />
-
-        <Button
-            android:layout_width="150sp"
-            android:layout_height="55sp"
-            android:id="@+id/login_button_login"
-            android:background="#25282e"
-            android:text="로 그 인 하 기"
-            android:textColor="#ffffff"
-            android:layout_marginTop="19sp"
-            android:layout_below="@+id/login_input_password"
-            android:layout_toStartOf="@+id/login_button_signup" />
+            android:layout_below="@+id/login_input_mail"/>
 
         <ImageView
-            android:layout_width="200sp"
-            android:layout_height="200sp"
+            android:layout_margin="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:srcCompat="@drawable/whitelogo"
             android:id="@+id/imageView2"
-            android:layout_marginTop="80sp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true" />
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_below="@+id/login_input_password">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_button_login"
+                android:background="#25282e"
+                android:text="로 그 인 하 기"
+                android:layout_weight="1"
+                android:textColor="#ffffff" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_button_signup"
+                android:background="#25282e"
+                android:text="가 입 하 기"
+                android:layout_weight="1"
+                android:textColor="#ffffff"
+                android:onClick="sign_up"
+                android:layout_marginLeft="10dp"
+                android:elevation="0sp" />
+
+        </LinearLayout>
     </RelativeLayout>
 </ScrollView>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_user_info"
@@ -8,149 +8,144 @@
     tools:context="com.mju.hps.withme.UserInfoActivity">
 
 
-    <ImageView
-        android:layout_width="100sp"
-        app:srcCompat="@drawable/user_information"
-        android:id="@+id/user_info_profile"
-        android:layout_height="100sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14sp" />
-
     <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/user_info_profile"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="22sp"
+        android:layout_below="@+id/user_info_edit_profileImage"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:id="@+id/user_info_table">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1sp" />
-
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp"
+            >
 
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="이메일"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="in E-mail address"
-                android:gravity="left"
-                android:id="@+id/user_info_email"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"/>
+            <ImageView
+                android:layout_weight="1"
+                android:layout_width="100sp"
+                android:src="@drawable/user_information"
+                android:id="@+id/user_info_profile"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="14sp" />
 
         </TableRow>
 
         <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textSize="25sp"
+                android:text="이메일"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="이메일 주소를 입력해주세요"
+                android:textSize="25sp"
+                android:id="@+id/user_info_email"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="25sp"
                 android:text="이름"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="in Name"
-                android:id="@+id/user_info_name"
+                android:text="이름을 입력해주세요"
+                android:textSize="25sp"
                 android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"/>
+                android:id="@+id/user_info_name"/>
 
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="생일"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="in Birthday"
-                android:id="@+id/user_info_birth"
-                android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"/>
-
-        </TableRow>
 
 
         <TableRow
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="성별"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="in Gender"
-                android:id="@+id/user_info_gender"
-                android:gravity="left"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"/>
-
-        </TableRow>
-
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="전화번호"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"
-                android:layout_marginLeft="20sp"
-                android:padding="8sp"/>
+                android:textSize="25sp"
+                android:layout_weight="1"/>
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="in PhoneNumber"
-                android:gravity="left"
-                android:id="@+id/user_info_phone"
-                android:layout_marginBottom="1sp"
-                android:padding="8sp"/>
+                android:text="전화번호를 입력해주세요"
+                android:inputType="phone"
+                android:textSize="25sp"
+                android:id="@+id/user_info_phone"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="성별"
+                android:textSize="25sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="성별을 입력해주세요"
+                android:textSize="25sp"
+                android:id="@+id/user_info_gender" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10sp" >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="생일"
+                android:textSize="25sp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="태어난 날짜를 선택해주세요"
+                android:textSize="25sp"
+                android:id="@+id/user_info_birth"
+                />
 
         </TableRow>
 
     </TableLayout>
+</ScrollView>
 
-</RelativeLayout>
