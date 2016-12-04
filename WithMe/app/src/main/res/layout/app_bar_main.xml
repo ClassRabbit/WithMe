@@ -24,6 +24,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/roomcreate"
+        android:visibility="invisible"
         app:backgroundTint="@color/colorButtonChoice" />
 
 </android.support.design.widget.CoordinatorLayout>
