@@ -18,15 +18,17 @@
 
         <Button
             android:text="실행"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="11dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:id="@+id/intro_button"
             android:textColor="@color/colorWhite"
             android:onClick="introButtonAct"
-            android:background="@color/colorButtonRealChoice" />
+            android:background="#25282e" />
 
     </RelativeLayout>
 

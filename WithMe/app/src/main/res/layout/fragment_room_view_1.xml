@@ -180,7 +180,7 @@
             android:layout_margin="10sp"
             >
             <com.google.android.gms.maps.MapView android:id="@+id/room_view_mapView"
-                android:layout_marginRight="30sp"
+
                 android:layout_width="match_parent"
                 android:layout_height="250sp"/>
 

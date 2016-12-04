@@ -69,7 +69,7 @@ public class ConstitutorListAdapter extends BaseAdapter {
         if(old < 0) {
             old = 0;
         }
-        String gender = (constitutorItem.getGender().equals("Man")) ? "남" : "여";
+        String gender = (constitutorItem.getGender().equals("남")) ? "남" : "여";
         getProfileImage(constitutorItem.getMail(), imageView);
         textView.setText(constitutorItem.getMail());
         textView2.setText(constitutorItem.getName() + "(" + old + ", " + gender +")");

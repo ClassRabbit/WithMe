@@ -77,7 +77,7 @@ public class WaitingListAdapter extends BaseAdapter{
         int old = nowYear - birthYear;
         if(old < 0) {
             old = 0;
-        }String gender = (waitingItem.getGender().equals("Man")) ? "남" : "여";
+        }String gender = (waitingItem.getGender().equals("남")) ? "남" : "여";
 
         getProfileImage(waitingItem.getMail(), imageView);
         textView.setText(waitingItem.getName() + " (" + waitingItem.getPhone()  + ")\n"  + old + "세 " + gender);

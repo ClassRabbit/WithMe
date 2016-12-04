@@ -144,7 +144,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
         password.setText(User.getInstance().getPassword());
         phone.setText("" + User.getInstance().getPhone());
         Log.e("GENDER", (User.getInstance().getGender()));
-        if((User.getInstance().getGender()).equals("Man")){
+        if((User.getInstance().getGender()).equals("남")){
             ((RadioButton) findViewById(R.id.user_info_edit_gender_man)).setChecked(true);
         }
         else {
@@ -279,6 +279,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                                 DatabaseLab.getInstance().loginUser();
                                 handler.sendMessage(Message.obtain(handler, MSG_EDIT_SUCCESS, ""));
                                 Intent resultIntent=new Intent(activity, UserInfoActivity.class);
+                                resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 activity.startActivity(resultIntent);
                             }
                         } catch (Throwable t) {
@@ -312,6 +313,7 @@ public class UserInfoEditActivity extends AppCompatActivity implements View.OnCl
                                 DatabaseLab.getInstance().loginUser();
                                 handler.sendMessage(Message.obtain(handler, MSG_EDIT_SUCCESS, ""));
                                 Intent resultIntent=new Intent(activity, UserInfoActivity.class);
+                                resultIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 activity.startActivity(resultIntent);
                             }
                         } catch (Throwable t) {
