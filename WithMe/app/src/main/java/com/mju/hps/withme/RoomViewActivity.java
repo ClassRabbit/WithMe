@@ -700,25 +700,25 @@ public class RoomViewActivity extends AppCompatActivity implements BaseSliderVie
                         }
                     });
 
-                    //Chatting button
-                    final Button chatButton = (Button)rootView.findViewById((R.id.chat_join1));
-                    chatButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-//                            fixButton.setClickable(false);
-
-                            Intent intent = new Intent(context, ChatActivity.class);
-                            String roomId = null;
-                            try{
-                                roomId = room.getString("id");
-                            }
-                            catch (Exception e){
-                                Log.e("chat", e.toString());
-                            }
-                            intent.putExtra("roomId", roomId);
-                            startActivity(intent);
-                        }
-                    });
+//                    //Chatting button
+//                    final Button chatButton = (Button)rootView.findViewById((R.id.chat_join1));
+//                    chatButton.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+////                            fixButton.setClickable(false);
+//
+//                            Intent intent = new Intent(context, ChatActivity.class);
+//                            String roomId = null;
+//                            try{
+//                                roomId = room.getString("id");
+//                            }
+//                            catch (Exception e){
+//                                Log.e("chat", e.toString());
+//                            }
+//                            intent.putExtra("roomId", roomId);
+//                            startActivity(intent);
+//                        }
+//                    });
                 }
                 else if (getArguments().getString(ARG_JOIN_POSITION).equals("waiting")) {                  //대기중일때
                     Log.i("onCreateView", "5");
