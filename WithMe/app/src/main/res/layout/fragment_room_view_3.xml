@@ -45,10 +45,12 @@
     <Button
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:text="초대하기"
         android:background="@drawable/blue_button"
         android:textColor="#ffffff"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/room_view_button_nfc" />
 
