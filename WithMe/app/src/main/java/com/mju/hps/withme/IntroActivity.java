@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
 import android.provider.ContactsContract;
@@ -24,7 +25,7 @@ import com.mju.hps.withme.service.FcmInstanceIdService;
 import com.mju.hps.withme.service.FcmMessagingService;
 
 public class IntroActivity extends Activity {
-
+    private MediaPlayer mp;
     Button introButton;
 
     @Override
@@ -34,6 +35,9 @@ public class IntroActivity extends Activity {
         introButton =(Button)findViewById(R.id.intro_button);
         int permissionCnt = 0;
 
+        mp = new MediaPlayer();
+        mp = MediaPlayer.create(this, R.raw.intro_music);
+        mp.start();
         //
         // init 필수내용
         //
@@ -133,6 +137,15 @@ public class IntroActivity extends Activity {
         // 뒤로가기 했을경우 안나오도록 없애주기 >> finish!!
         finish();
 
+    }
+
+    public void onDestroy(){
+        // 액티비티가 종료될 때
+        super.onDestroy();
+        if(mp != null)
+            mp.release();
+        // MediaPlayer 객체를 Release합니다.
+        mp = null;
     }
 
 

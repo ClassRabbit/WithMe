@@ -5,23 +5,25 @@
         <item
             android:id="@+id/user_info"
             android:icon="@drawable/user_information"
-            android:title="User Info" />
+            android:title="사용자 정보" />
         <item
             android:id="@+id/user_home"
             android:icon="@drawable/home_icon"
-            android:title="Home" />
-        <!--<item-->
-            <!--android:id="@+id/room_status"-->
-            <!--android:icon="@drawable/roomstatus"-->
-            <!--android:title="Find Room" />-->
+            android:title="등록된 방가기" />
+
+        <item
+            android:id="@+id/application_info"
+            android:icon="@drawable/information"
+            android:title="사용 설명 영상" />
+
         <item
             android:id="@+id/chatting"
             android:icon="@drawable/chat_icon"
-            android:title="Chatting" />
+            android:title="채팅" />
         <item
             android:id="@+id/log_out"
             android:icon="@drawable/logoutapp"
-            android:title="Logout" />
+            android:title="로그아웃" />
 
     </group>
 

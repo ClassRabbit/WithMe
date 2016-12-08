@@ -266,6 +266,10 @@ public class MainActivity extends AppCompatActivity
 //                startActivity(intent);
 //            }
 //        }
+        else if (id == R.id.application_info) {
+            Intent intent = new Intent(this, InfoActivity.class);
+            startActivity(intent);
+        }
         else if (id == R.id.chatting) {
             if(!isJoin){
                 Toast.makeText(MainActivity.this, "방에 참여되셔야 이용 가능합니다.", Toast.LENGTH_SHORT).show();
