@@ -35,9 +35,7 @@ public class IntroActivity extends Activity {
         introButton =(Button)findViewById(R.id.intro_button);
         int permissionCnt = 0;
 
-        mp = new MediaPlayer();
-        mp = MediaPlayer.create(this, R.raw.intro_music);
-        mp.start();
+
         //
         // init 필수내용
         //
@@ -112,6 +110,11 @@ public class IntroActivity extends Activity {
                     }
                 }, 1000);
             }
+        }
+        else {
+            mp = new MediaPlayer();
+            mp = MediaPlayer.create(this, R.raw.intro_music);
+            mp.start();
         }
 
 //        //permission.
